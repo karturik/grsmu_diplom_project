@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block page_content %}
+<div class="col-md-8 offset-md-2">
+    <h1>Преподаватели</h1>
+    <hr>
+    {% for teacher in teachers %}
+    <h2><a href="{% url 'demo_site_detail' teacher.pk %}">{{ teacher.name }}</a></h2>
+    <h4>{{ teacher.position }}</h4>
+    Кафедра: <a href="{% url 'demo_site_department' teacher.departments.title %}">
+    {{ teacher.departments.title }}
+    </a>
+
+    {% endfor %}
+</div>
+{% endblock %}

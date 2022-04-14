@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block page_content %}
+<div class="col-md-8 offset-md-2">
+    <h1>{{ teacher.name }}</h1>
+    <small>
+        {{ teacher.position }} |&nbsp;
+        Кафедра: <a href="{% url 'demo_site_department' teacher.departments.title %}">
+    {{ teacher.departments.title }}
+    </a>
+    </small>
+    <h3>Оставьте комментарий:</h3>
+    <form action="/demo_site/{{ teacher.pk }}/" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.author }}
+        </div>
+        <div class="form-group">
+            {{ form.body }}
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+    <h3>Комментарии:</h3>
+    {% for comment in comments %}
+    <p>
+        On {{comment.created_on.date }}&nbsp;
+        <b>{{ comment.author }}</b> Напишите:
+    </p>
+    <p>{{ comment.body }}</p>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock %}

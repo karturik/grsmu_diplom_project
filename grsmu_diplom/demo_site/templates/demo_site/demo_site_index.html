@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block page_content %}
 <div class="col-md-8 offset-md-2">
+    {% for message in messages %}
+        <p style="color: turquoise">{{ message }}</p>
+    {% endfor %}
     <h1>Преподаватели</h1>
     <hr>
     {% for teacher in teachers %}

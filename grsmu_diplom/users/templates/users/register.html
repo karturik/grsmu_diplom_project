@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+<div class="col-md-8 offset-md-2">
+    <h1>Регистрация</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <p>Логин: {{ register_form.username }}</p>
+        <p>{{ register_form.email.label }}: {{ register_form.email }}</p>
+        <p>Пароль: {{ register_form.password1 }}</p>
+        <p>Подтверждение пароля: {{ register_form.password2 }}</p>
+        {% for message in messages %}
+                <p style="color: turquoise">{{ message }}</p>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Готово</button>
+    </form>
+    <p class="text-center">Если у Вас уже есть аккаунт, <a href="/user/login">Войти</a></p>
+
+
+</div>
+{% endblock %}

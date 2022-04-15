@@ -8,7 +8,7 @@ def demo_site_index(request):
     context = {
         "teachers": teachers,
     }
-    return render(request, "demo_site_index.html", context)
+    return render(request, "demo_site/demo_site_index.html", context)
 
 def demo_site_department(request, department):
     teachers = Teacher.objects.filter(
@@ -18,7 +18,7 @@ def demo_site_department(request, department):
         "department": department,
         "teachers": teachers
     }
-    return render(request, "demo_site_department.html", context)
+    return render(request, "demo_site/demo_site_department.html", context)
 
 def demo_site_detail(request, pk):
     teacher = Teacher.objects.get(pk=pk)
@@ -39,4 +39,4 @@ def demo_site_detail(request, pk):
         "comments": comments,
         "form": form,
     }
-    return render(request, "demo_site_detail.html", context)
+    return render(request, "demo_site/demo_site_detail.html", context)

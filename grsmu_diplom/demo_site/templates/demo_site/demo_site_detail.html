@@ -8,8 +8,9 @@
     {{ teacher.departments.title }}
     </a>
     </small>
+    {% if user.is_authenticated %}
     <h3>Оставьте комментарий:</h3>
-    <form action="/demo_site/{{ teacher.pk }}/" method="post">
+    <form action="/demo_site/teacher/{{ teacher.pk }}/" method="post">
         {% csrf_token %}
         <div class="form-group">
             {{ form.author }}
@@ -19,6 +20,11 @@
         </div>
         <button type="submit" class="btn btn-primary">Отправить</button>
     </form>
+    {% else %}
+    <h3>Чтобы оставлять комментарии необходимо войти в аккаунт!</h3>
+    {% endif %}
+
+
     <h3>Комментарии:</h3>
     {% for comment in comments %}
     <p>

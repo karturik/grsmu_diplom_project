@@ -10,7 +10,7 @@ class Teacher(models.Model):
     departments = models.ForeignKey('Department', on_delete=models.CASCADE)
 
 class Comment(models.Model):
-    author = models.CharField(max_length=20)
+    author = models.CharField(max_length=30)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)

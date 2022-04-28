@@ -13,9 +13,6 @@
     <form action="/demo_site/teacher/{{ teacher.pk }}/" method="post">
         {% csrf_token %}
         <div class="form-group">
-            {{ form.author }}
-        </div>
-        <div class="form-group">
             {{ form.body }}
         </div>
         <button type="submit" class="btn btn-primary">Отправить</button>
@@ -29,10 +26,13 @@
     {% for comment in comments %}
     <p>
         On {{comment.created_on.date }}&nbsp;
-        <b>{{ comment.author }}</b> Напишите:
+        <b>{{ comment.author }}</b> Пишет:
     </p>
-    <p>{{ comment.body }}</p>
-    <hr>
+    <fieldset><p>{{ comment.body }}</p></fieldset>
+    {% if comment.author == request.user.username %}
+        <a href="{% url 'comment_deletion' comment.pk %}">Удалить</a>
+        <a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

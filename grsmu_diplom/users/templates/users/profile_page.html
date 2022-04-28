@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+    {% block page_content %}
+
+	<br><br>
+	<div class="container mx-auto">
+	    <div class="row">
+	    	<div class="col-md-3">
+		    	<div class="card p-4">
+			    	<h4 class="card-title font-weight-bold text-center">Привет, {{ user.username|title }}</h4>
+		    	    <hr>
+                    <div class="card-text">
+                        <p class="text-muted mb-0" style="font-size: 12px">Имя:</p>
+                        <p>{{ user.username }}</p>
+                        <p class="text-muted mb-0" style="font-size: 12px">Email::</p>
+                        <p>{{ user.email }}</p>
+                        <p class="text-muted mb-0" style="font-size: 12px">Курс:</p>
+                        <p>{{ user.profile.course }}</p>
+						<div class="text-right">
+							<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#profileModal">Изменить</button>
+						</div>
+                    </div>
+                </div>
+		  	</div>
+<!--			Табличка с отзывами-->
+		    <div class="col-sm">
+			<h4 class="card-title font-weight-bold text-left">Ваши отзывы</h4>
+			{% for comment in comments %}
+			<div class="row">
+		    	<div class="card p-4">
+		    	    <hr>
+                    <div class="card-text">
+                        <p class="text-muted mb-0" style="font-size: 12px">{{ comment.teacher.name }}</p>
+                        <p>{{ comment.body }}</p>
+						<p class="text-muted mb-0" style="font-size: 12px">{{ comment.created_on }}</p>
+                    </div>
+					<a href="{% url 'comment_deletion' comment.pk %}">Удалить</a>
+        			<a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
+                </div>
+			</div>
+			{% endfor %}
+		</div>
+
+<!--		Форма для изменения данных профиля-->
+		<div class="modal fade" tabindex="-1" id="profileModal" role="dialog">
+	  	<div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      	<div class="modal-header">
+			        <h5 class="modal-title">Изменить</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+		        </div>
+		        <div class="modal-body">
+			        <form method="post">
+			          	{% csrf_token %}
+			          	<p>Логин: {{ user_form.username }}</p>
+        				<p>Email: {{ user_form.email }}</p>
+        				<p>Курс: {{ profile_form.course }}</p>
+		        </div>
+		      	<div class="modal-footer">
+		        		<button type="submit" class="btn btn-primary">Сохранить</button>
+		        	</form>
+		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+		        </div>
+		    </div>
+	  	</div>
+	</div>
+  </div>
+</div>
+
+{% endblock %}

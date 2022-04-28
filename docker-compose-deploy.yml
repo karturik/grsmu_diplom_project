@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:13.6-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=141928
+      - POSTGRES_DB=demo
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    expose:
+      - "5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  app:
+    build:
+      context: .
+    volumes:
+      - static_data:/vol/web
+    environment:
+      - SECRET_KEY=django-insecure-942d!krf#ih2rr9jyime%6k#@-h4!*etdg#n%ctltayf2vna%-
+      - ALLOWED_HOSTS=127.0.0.1,localhost
+      - DEBUG=1
+      - DB_NAME=demo
+      - DB_USER=postgres
+      - DB_PASSWORD=141928
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      - db
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    depends_on:
+      - app
+
+volumes:
+  static_data:
+  db_data:

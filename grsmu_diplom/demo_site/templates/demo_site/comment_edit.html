@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block page_content %}
+<div class="col-md-8 offset-md-2">
+    <h1>Редактирование комментария:</h1>
+    <form method = "POST">
+    {% csrf_token %}
+        <div class="form-group">
+            {{ form }}
+        </div>
+    <button type="submit" class="btn btn-primary">Изменить</button>
+    </form>
+</div>
+{% endblock %}

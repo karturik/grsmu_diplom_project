@@ -25,6 +25,8 @@ services:
     environment:
       - DEBUG=1
       - ALLOWED_HOSTS=localhost
+      - EMAIL_HOST_USER=grsmu.check@gmail.com
+      - EMAIL_HOST_PASSWORD=fc6-5KJ-sT8-KK7
       - DB_NAME=demo
       - DB_USER=postgres
       - DB_PASSWORD=141928

@@ -8,3 +8,6 @@ Enter password: ...
 $ psql -U postgres -h localhost}
 
 if not Group.objects.filter(name='customer').exists():
+
+GMAIL login grsmu.check
+password: fc6-5KJ-sT8-KK7

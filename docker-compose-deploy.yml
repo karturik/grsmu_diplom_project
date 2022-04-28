@@ -22,6 +22,8 @@ services:
       - SECRET_KEY=django-insecure-942d!krf#ih2rr9jyime%6k#@-h4!*etdg#n%ctltayf2vna%-
       - ALLOWED_HOSTS=127.0.0.1,localhost
       - DEBUG=1
+      - EMAIL_HOST_USER=grsmu.check@gmail.com
+      - EMAIL_HOST_PASSWORD=fc6-5KJ-sT8-KK7
       - DB_NAME=demo
       - DB_USER=postgres
       - DB_PASSWORD=141928

@@ -59,17 +59,17 @@ def profile_page(request):
     if request.method == "POST":
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user)
-        if user_form.is_valid():
+        if user_form.is_valid() and profile_form.is_valid():
+            profile_form.save()
             user_form.save()
+            #обновляет логин в "автор комментариев"
             for comment in comments:
                 comment.author = str(request.user)
                 comment.save()
-        elif profile_form.is_valid():
-            profile_form.save()
             messages.success(request, ('Изменения сохранены!'))
         else:
             messages.error(request, ('Не удалось сохранить изменения'))
-        return redirect ('users:profile')
+        return redirect ('/user/profile')
     user_form = UserForm(instance = request.user)
     profile_form = ProfileForm(instance = request.user.profile)
     context = {
@@ -102,7 +102,7 @@ def password_reset_request(request):
                     }
                     email = render_to_string(email_template_name, c)
                     try:
-                        send_mail(subject, email, 'admin@example.com', [user.email], fail_silently=False)
+                        send_mail(subject, email, 'grsmu.check@gmail.com', [user.email], fail_silently=False)
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
                     return redirect ("/password_reset/done/")

@@ -10,6 +10,7 @@
 			    	<h4 class="card-title font-weight-bold text-center">Привет, {{ user.username|title }}</h4>
 		    	    <hr>
                     <div class="card-text">
+						<p><img src="{{ profile.picture.url }}" alt="Profile Picture" width="100" height="100"></p>
                         <p class="text-muted mb-0" style="font-size: 12px">Имя:</p>
                         <p>{{ user.username }}</p>
                         <p class="text-muted mb-0" style="font-size: 12px">Email::</p>
@@ -57,6 +58,7 @@
 			          	<p>Логин: {{ user_form.username }}</p>
         				<p>Email: {{ user_form.email }}</p>
         				<p>Курс: {{ profile_form.course }}</p>
+						<a href="/user/password_reset">Сменить пароль</a>
 		        </div>
 		      	<div class="modal-footer">
 		        		<button type="submit" class="btn btn-primary">Сохранить</button>
@@ -68,5 +70,4 @@
 	</div>
   </div>
 </div>
-
 {% endblock %}

@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    picture = models.ImageField(null=True, blank=True)
+    profile_pic = models.ImageField(null=True, blank=True, upload_to='profile_pics', default='user.jpg')
     course = models.IntegerField(default=1)
 
     @receiver(post_save, sender=User)

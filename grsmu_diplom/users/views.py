@@ -58,8 +58,9 @@ def profile_page(request):
     comments = Comment.objects.filter(author=request.user).order_by('-created_on')
     if request.method == "POST":
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if user_form.is_valid() and profile_form.is_valid():
+            request.user.profile_pic = profile_form.cleaned_data.get('profile_pic')
             profile_form.save()
             user_form.save()
             #обновляет логин в "автор комментариев"

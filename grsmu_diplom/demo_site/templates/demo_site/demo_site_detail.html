@@ -9,6 +9,7 @@
     </a>
     </small>
     {% if user.is_authenticated %}
+<!--    ОСТАВИТЬ КОММЕНТАРИЙ-->
     <h3>Оставьте комментарий:</h3>
     <form action="/demo_site/teacher/{{ teacher.pk }}/" method="post">
         {% csrf_token %}
@@ -18,7 +19,16 @@
         <button type="submit" class="btn btn-primary">Отправить</button>
     </form>
     {% else %}
-    <h3>Чтобы оставлять комментарии необходимо войти в аккаунт!</h3>
+    <div class="card">
+    <div class="card-header">
+    Оставить комментарий
+    </div>
+    <div class="card-body">
+    <p class="card-text">Чтобы оставлять комментарии необходимо войти в аккаунт!</p>
+    <a href="/user/login" class="btn btn-primary">Войти</a>
+    </div>
+    </div>
+<!--    <h3>Чтобы оставлять комментарии необходимо войти в аккаунт!</h3>-->
     {% endif %}
 
 

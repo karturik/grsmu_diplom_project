@@ -21,10 +21,11 @@ services:
       - "8000:8000"
     volumes:
       - ./grsmu_diplom:/app
+      - ./grsmu_diplom/media:/vol/web/media
     command: sh -c "python manage.py runserver 0.0.0.0:8000"
     environment:
       - DEBUG=1
-      - ALLOWED_HOSTS=localhost
+      - ALLOWED_HOSTS=localhost, 0.0.0.0
       - EMAIL_HOST_USER=grsmu.check@gmail.com
       - EMAIL_HOST_PASSWORD=fc6-5KJ-sT8-KK7
       - DB_NAME=demo

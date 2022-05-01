@@ -1,16 +1,33 @@
 {% extends "base.html" %}
 {% block page_content %}
+{% load static %}
+
 <div class="col-md-8 offset-md-2">
     <h1>{{ department | title }}</h1>
     <hr>
-    {% for teacher in teachers %}
-    <h2><a href="{% url 'demo_site_detail' teacher.pk %}">{{ teacher.name }}</a></h2>
-    <h3>{{ teacher.position }}</h3>
-    <small>
-    Кафедра: <a href="{% url 'demo_site_department' teacher.departments.title %}">
-    {{ teacher.departments.title }}
-    </a>
-    </small>
-    {% endfor %}
+
 </div>
+
+
+<div class="container">
+    <div class="row">
+       {% for teacher in teachers %}
+        <div class="col-md-4">
+            <div class="teacher-card">
+                <div class="card-body">
+                    {% if profile.profile_pic %}
+                    <img class = "img img-responsive" src="{{ profile.profile_pic.url }}" alt="Profile Picture" >
+                    {% else %}
+                    <img class = "img img-responsive" src="{% static 'images/teacher.jpg' %}" alt="Profile Picture" >
+                    {% endif %}
+                    <a href="{% url 'demo_site_detail' teacher.pk %}" class="teacher-name">{{ teacher.name|title }}</a>
+                    <div class="teacher-position">{{ teacher.position }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
 {% endblock %}

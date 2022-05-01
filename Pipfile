@@ -5,14 +5,13 @@ name = "pypi"
 
 [packages]
 asgiref = "==3.5.0"
-psycopg2 = "==2.9.3"
 sqlparse = "==0.4.2"
 tzdata = "==2022.1"
 Django = ">=4.0.3<4.1"
 Pillow = "==9.1.0"
-uWSGI = ">=2.0.20<2.1"
 psycopg2-binary = "*"
 simple-websocket = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 

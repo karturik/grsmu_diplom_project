@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'demo_site',
     'users',
+    # 3-d side apps
+
 ]
 
 MIDDLEWARE = [

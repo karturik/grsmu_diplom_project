@@ -6,6 +6,10 @@ from django.views import generic
 from django.urls import reverse_lazy, reverse
 from .forms import CommentForm
 
+# SCRAPING
+import requests
+from bs4 import BeautifulSoup
+
 
 # Create your views here.
 def demo_site_index(request):
@@ -16,9 +20,7 @@ def demo_site_index(request):
     return render(request, "demo_site/demo_site_index.html", context)
 
 def demo_site_department(request, department):
-    teachers = Teacher.objects.filter(
-        departments__title__contains=department
-    )
+    teachers = Teacher.objects.filter(departments__title__contains=department)
     context = {
         "department": department,
         "teachers": teachers
@@ -67,3 +69,15 @@ class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateVie
         print(comment.author, type(comment.author))
         print(self.request.user, type(self.request.user))
         return str(self.request.user) == str(comment.author)
+
+# SCRAPING
+def info_scraping(request):
+    url = "http://www.grsmu.by/ru/university/structure/chairs/"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    departments = soup.find_all("div", class_="category-item")
+    dep_list=[]
+    for dep in departments:
+        title = dep.find('span').text
+        dep_list.append(title)
+    return render(request, "scraping/scraping_page.html", {'dep_list': dep_list})

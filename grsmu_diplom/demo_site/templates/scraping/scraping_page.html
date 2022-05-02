@@ -1,9 +1,27 @@
 {% extends "base.html" %}
 {% block page_content %}
 <div class="col-md-8 offset-md-2">
-    <h1>Скрапер будет тут</h1>
-    <h2>{% for dep in dep_list %}</h2>
-        <li>{{ dep }}</li>
+    <h1>Обновление базы сайта</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+    <h2>Уже добавлены на сайт:</h2>
+    {% for dep in exist_dep_list %}
+    <li style="color: green">{{ dep }}</li>
     {% endfor %}
+        </div>
+    <div class="col-md-6">
+    <h2>Не добавлены на сайт:</h2>
+    {% for dep in new_dep_list %}
+    <li style="color: red">{{ dep }}</li>
+    {% endfor %}
+        </div>
+    </div>
+    <form method = "POST">
+    {% csrf_token %}
+        {{ department_add_form }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
 </div>
 {% endblock %}

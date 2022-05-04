@@ -46,7 +46,7 @@ def teacher_scraping(request):
         if title == 'Оториноларингологии и глазных болезней':
             dep_list.append('Кафедра оториноларингологии')
             dep_list.append('Кафедра глазных болезней')
-        if title != 'Инфекционных болезней':
+        if title != 'Инфекционных болезней' and title !='Оториноларингологии и глазных болезней':
             dep_list.append(title)
         links = dep.find('a')['href']
 
@@ -90,17 +90,27 @@ def teacher_scraping(request):
 # ДОБАВЛЕНИЕ В БАЗУ ПО КНОПКЕ
     form = TeacherAddForm(request.POST)
     if request.method == "POST":
-        for dep in dep_list:
-            department = dep
+        # for dep in dep_list:
+        #     department = dep
+        #     if not Department.objects.filter(title=department).exists():
+        #         Department(title=department).save()
+        #     for i in all_info:
+        #         for key, value in i.items():
+        #             name = key
+        #             position = value
+        #             teacher = Teacher(department=Department.objects.get(title=department), name=name, position=position)
+        #             if not Teacher.objects.filter(name=name, position=position).exists():
+        #                 teacher.save()
+        for i in range(len(dep_list)):
+            department = dep_list[i]
             if not Department.objects.filter(title=department).exists():
                 Department(title=department).save()
-            for i in all_info:
-                for key, value in i.items():
-                    name = key
-                    position = value
-                    teacher = Teacher(department=Department.objects.get(title=department), name=name, position=position)
-                    if not Teacher.objects.filter(name=name, position=position).exists():
-                        teacher.save()
+            for key, value in all_info[i].items():
+                name = key
+                position = value
+                teacher = Teacher(department=Department.objects.get(title=department), name=name, position=position)
+                if not Teacher.objects.filter(name=name, position=position).exists():
+                    teacher.save()
         messages.success(request, ('Изменения сохранены!'))
 
 

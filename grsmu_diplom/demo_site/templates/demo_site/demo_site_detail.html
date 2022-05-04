@@ -4,7 +4,7 @@
     <h1>{{ teacher.name }}</h1>
     <small>
         {{ teacher.position }} |&nbsp;
-        Кафедра: <a href="{% url 'demo_site_department' teacher.departments.title %}">
+        Кафедра: <a href="{% url 'demo_site_department' teacher.department.title %}">
     {{ teacher.departments.title }}
     </a>
     </small>

@@ -10,14 +10,14 @@ from .forms import CommentForm
 
 # Create your views here.
 def demo_site_index(request):
-    departments = Department.objects.all()
+    department = Department.objects.all()
     context = {
-        "departments": departments,
+        "departments": department,
     }
     return render(request, "demo_site/demo_site_index.html", context)
 
 def demo_site_department(request, department):
-    teachers = Teacher.objects.filter(departments__title__contains=department)
+    teachers = Teacher.objects.filter(department__title__contains=department)
     context = {
         "department": department,
         "teachers": teachers

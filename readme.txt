@@ -31,3 +31,5 @@ t.save() # this will update only
 
 
 if not Group.objects.filter(name='customer').exists():
+
+Для выбора предмета подойдет class Select

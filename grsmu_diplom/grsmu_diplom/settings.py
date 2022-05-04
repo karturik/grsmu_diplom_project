@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'demo_site',
     'users',
+    'scraper',
     # 3-d side apps
 
 ]
@@ -62,7 +63,7 @@ ROOT_URLCONF = 'grsmu_diplom.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["grsmu_diplom/templates/"],
+        'DIRS': [BASE_DIR / 'grsmu_diplom/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

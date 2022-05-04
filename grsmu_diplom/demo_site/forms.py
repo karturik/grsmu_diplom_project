@@ -9,7 +9,3 @@ class CommentForm(forms.Form):
         })
     )
 
-class DepartmentAddForm(forms.ModelForm):
-    class Meta:
-        model = Department
-        fields = ['title']

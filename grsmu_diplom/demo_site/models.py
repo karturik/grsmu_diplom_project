@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import Profile
 
 # Create your models here.
 class Department(models.Model):
@@ -15,3 +16,10 @@ class Comment(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
+
+class Vote(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    communication = models.IntegerField(default=0)
+    teaching = models.IntegerField(default=0)
+    demanding = models.IntegerField(default=0)

@@ -60,3 +60,7 @@
 .teacher-card:hover .teacher-position {
     bottom: 60px;
 }
+
+.card-poptya{
+    position: fixed;
+}

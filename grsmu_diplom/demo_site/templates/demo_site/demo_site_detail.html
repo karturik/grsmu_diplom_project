@@ -1,23 +1,52 @@
 {% extends "base.html" %}
 {% block page_content %}
+{% load static %}
+
 <div class="col-md-8 offset-md-2">
     <h1>{{ teacher.name }}</h1>
     <small>
         {{ teacher.position }} |&nbsp;
         Кафедра: <a href="{% url 'demo_site_department' teacher.department.title %}">
-    {{ teacher.departments.title }}
+    {{ teacher.department.title }}
     </a>
     </small>
-    {% if user.is_authenticated %}
+
 <!--    ОСТАВИТЬ КОММЕНТАРИЙ-->
+    {% if user.is_authenticated %}
     <h3>Оставьте комментарий:</h3>
     <form action="/demo_site/teacher/{{ teacher.pk }}/" method="post">
         {% csrf_token %}
         <div class="form-group">
             {{ form.body }}
         </div>
-        <button type="submit" class="btn btn-primary">Отправить</button>
+        <a class="btn btn-outline-primary" data-toggle="collapse" href="#collapse{{teacher.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{teacher.pk}}">Оценка</a>
+        <button type="submit" name="comment_left" class="btn btn-primary">Отправить</button>
     </form>
+<!--VOTING-->
+    <div class = "collapse" id = "collapse{{ teacher.pk }}">
+        <div class="card card-body shadow">
+            <h6>Оценить: {{ teacher.name }}</h6>
+            <hr>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in vote_form %}
+                    <div class="row">
+                        <div class="col-10" id="slider_{{field.name}}_{{teacher.pk}}" onclick="sliderUpdate('{{field.name}}', {{teacher.pk}})">
+                            {{field.label}}
+                            <p>{{field}}</p>
+                        </div>
+                        <div class="col-2 my-auto">
+                            <h6 class="text-center"><span id="score_{{field.name}}_{{teacher.pk}}" class="text-primary">6</span></h6>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="text-right">
+                    <button type="submit" name="score_submit" class="btn btn-outline-primary">Оценить</button>
+                </div>
+            </form>
+        </div>
+</div>
+<!--END VOTING-->
     {% else %}
     <div class="card">
     <div class="card-header">
@@ -28,21 +57,36 @@
     <a href="/user/login" class="btn btn-primary">Войти</a>
     </div>
     </div>
-<!--    <h3>Чтобы оставлять комментарии необходимо войти в аккаунт!</h3>-->
     {% endif %}
 
-
+<!--COMMENTS-->
     <h3>Комментарии:</h3>
     {% for comment in comments %}
-    <p>
-        On {{comment.created_on.date }}&nbsp;
-        <b>{{ comment.author }}</b> Пишет:
-    </p>
-    <fieldset><p>{{ comment.body }}</p></fieldset>
-    {% if comment.author == request.user.username %}
+            <div class="media g-mb-30 media-comment">
+                {% if profile.profile_pic %}
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{{ profile.profile_pic.url }}" alt="Image Description">
+            	{% else %}
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{% static 'images/user.jpg' %}" alt="Image Description">
+                {% endif %}
+                <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+              <div class="g-mb-15">
+                <h5 class="h5 g-color-gray-dark-v1 mb-0">{{ comment.author }}</h5>
+                <span class="g-color-gray-dark-v4 g-font-size-12">{{comment.created_on.date }}</span>
+                <p>{{ comment.body }}</p>
+            </div>
+            {% if comment.author == request.user.username %}
         <a href="{% url 'comment_deletion' comment.pk %}">Удалить</a>
         <a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
-    {% endif %}
+            {% endif %}
+            </div>
+        </div>
     {% endfor %}
 </div>
+
+<script>
+    function sliderUpdate(field, pk) {
+        document.getElementById("score_" + field + "_" + pk).innerText = document.getElementById("slider_" + field + "_" + pk).getElementsByClassName(field)[0].value;
+        }
+</script>
+
 {% endblock %}

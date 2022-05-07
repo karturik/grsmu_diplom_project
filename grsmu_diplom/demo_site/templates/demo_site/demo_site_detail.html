@@ -55,13 +55,14 @@
     Оставить комментарий
     </div>
     <div class="card-body">
-    <p class="card-text">Чтобы оставлять комментарии необходимо войти в аккаунт!</p>
+    <p class="card-text">Чтобы оставлять и читать комментарии необходимо войти в аккаунт!</p>
     <a href="/user/login" class="btn btn-primary">Войти</a>
     </div>
     </div>
     {% endif %}
 
 <!--COMMENTS-->
+    {% if group == 'Student' %}
     <h3>Комментарии:</h3>
     {% for comment in comments %}
             <div class="media g-mb-30 media-comment">
@@ -83,6 +84,18 @@
             </div>
         </div>
     {% endfor %}
+    {% elif group == 'Not_student' %}
+    <div class="card">
+    <div class="card-header">
+    Комментарии
+    </div>
+    <div class="card-body">
+    <p class="card-text">Чтобы просматривать комментарии необходимо подтвердить аккаунт!</p>
+    <a href="/user/profile" class="btn btn-primary">Подтвердить</a>
+    </div>
+    </div>
+    {% endif %}
+
 </div>
 
 <script>

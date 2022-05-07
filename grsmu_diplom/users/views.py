@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from .models import Profile
 from demo_site.models import Comment
-from .forms import NewUserForm, UserForm, ProfileForm
+from .forms import NewUserForm, UserForm, ProfileForm, StudentVerificationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import Group
+import requests
+
 
 #password reset
 from django.core.mail import send_mail, BadHeaderError
@@ -17,13 +20,23 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 
+#MOODLE check
+from bs4 import BeautifulSoup
+
+
 
 # Create your views here.
 def register_request(request):
+    if not Group.objects.filter(name='Student').exists():
+        Group.objects.create(name='Student')
+        Group.objects.create(name='Not_student')
+    Student_group = Group.objects.get(name='Student')
+    Not_student_group = Group.objects.get(name='Not_student')
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.groups.add(Not_student_group)
             login(request, user)
             messages.success(request, "Регистрация прошла успешно")
             return redirect("demo_site_index")
@@ -57,29 +70,61 @@ def logout_request(request):
 def profile_page(request):
     comments = Comment.objects.filter(author=request.user).order_by('-created_on')
     if request.method == "POST":
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            request.user.profile_pic = profile_form.cleaned_data.get('profile_pic')
-            profile_form.save()
-            user_form.save()
-            #обновляет логин в "автор комментариев"
-            for comment in comments:
-                comment.author = str(request.user)
-                comment.save()
-            messages.success(request, ('Изменения сохранены!'))
-        else:
-            messages.error(request, ('Не удалось сохранить изменения'))
-        return redirect ('/user/profile')
+        if "user_change" in request.POST:
+            user_form = UserForm(request.POST, instance=request.user)
+            profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+            #обновление картинки профиля
+            if user_form.is_valid() and profile_form.is_valid():
+                request.user.profile_pic = profile_form.cleaned_data.get('profile_pic')
+                profile_form.save()
+                user_form.save()
+                #обновляет логин в "автор комментариев"
+                for comment in comments:
+                    comment.author = str(request.user)
+                    comment.save()
+                messages.success(request, ('Изменения сохранены!'))
+            else:
+                messages.error(request, ('Не удалось сохранить изменения'))
+            return redirect ('/user/profile')
+        # MOODLE CHECK
+        if "acc_verification" in request.POST:
+            Student_group = Group.objects.get(name='Student')
+            moodle_form = StudentVerificationForm(request.POST)
+            if moodle_form.is_valid():
+                moodle_username = moodle_form.cleaned_data['username']
+                moodle_password = moodle_form.cleaned_data['password']
+                login_data = {
+                        'username': moodle_username,
+                        'password': moodle_password}
+                with requests.Session() as s:
+                      url = "http://edu.grsmu.by/login/index.php"
+                      r = s.get(url)
+                      soup = BeautifulSoup(r.content)
+                      login_data['form-control'] = soup.find('input', attrs={'class':'form-control'})['value']
+                      r = s.post(url, data=login_data)
+                      if "http://edu.grsmu.by/user/profile.php?id" in str(r.content):
+                          request.user.groups.clear()
+                          request.user.groups.add(Student_group)
+                          messages.info(request, "Аккаунт подтвержден!")
+                          return redirect('users:profile')
+                      else:
+                          messages.error(request, "Логин или пароль неверный.")
+            else:
+                messages.error(request, "Логин или пароль неверный.")
     user_form = UserForm(instance = request.user)
     profile_form = ProfileForm(instance = request.user.profile)
+    moodle_form = StudentVerificationForm(request.POST)
+    group = str(request.user.groups.get())
     context = {
         "user": request.user,
         "user_form": user_form,
         "profile_form": profile_form,
         "comments": comments,
+        "group": group,
+        "moodle_form": moodle_form,
     }
-    return render(request=request, template_name='users/profile_page.html', context=context)
+
+    return render(request=request, template_name='users/profile_page.html', context=context, )
 
 # password reset functions
 def password_reset_request(request):
@@ -109,3 +154,22 @@ def password_reset_request(request):
                     return redirect ("/password_reset/done/")
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="password/password_reset.html", context={"password_reset_form":password_reset_form})
+
+# import requests
+# from bs4 import BeautifulSoup
+#
+# login_data= {
+#     'username': 'kazukevichartur',
+#     'password': 'Karturik141928/'
+# }
+#
+# with requests.Session() as s:
+#   url = "http://edu.grsmu.by/login/index.php"
+#   r = s.get(url)
+#   soup = BeautifulSoup(r.content, 'html5lib')
+#   login_data['form-control'] = soup.find('input', attrs={'class':'form-control'})['value']
+#   r = s.post(url, data=login_data)
+#   if "http://edu.grsmu.by/user/profile.php?id" in str(r.content):
+#     print('Proshlo')
+#   else:
+#     print("Ne proshlo")

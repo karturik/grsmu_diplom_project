@@ -90,17 +90,6 @@ def teacher_scraping(request):
 # ДОБАВЛЕНИЕ В БАЗУ ПО КНОПКЕ
     form = TeacherAddForm(request.POST)
     if request.method == "POST":
-        # for dep in dep_list:
-        #     department = dep
-        #     if not Department.objects.filter(title=department).exists():
-        #         Department(title=department).save()
-        #     for i in all_info:
-        #         for key, value in i.items():
-        #             name = key
-        #             position = value
-        #             teacher = Teacher(department=Department.objects.get(title=department), name=name, position=position)
-        #             if not Teacher.objects.filter(name=name, position=position).exists():
-        #                 teacher.save()
         for i in range(len(dep_list)):
             department = dep_list[i]
             if not Department.objects.filter(title=department).exists():

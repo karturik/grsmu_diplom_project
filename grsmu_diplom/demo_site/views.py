@@ -31,6 +31,10 @@ def demo_site_detail(request, pk):
     form = CommentForm()
     vote_form = VoteForm()
     vote_form.calculate_averages(teacher)
+    if not request.user.is_authenticated:
+        group = 0
+    else:
+        group = str(request.user.groups.get())
     if request.method == "POST":
         if "comment_left" in request.POST:
             form = CommentForm(request.POST)
@@ -58,6 +62,7 @@ def demo_site_detail(request, pk):
         "comments": comments,
         "form": form,
         "vote_form": vote_form,
+        "group": group
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 

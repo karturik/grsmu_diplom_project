@@ -30,6 +30,7 @@ def demo_site_detail(request, pk):
     teacher = Teacher.objects.get(pk=pk)
     form = CommentForm()
     vote_form = VoteForm()
+    vote_form.calculate_averages(teacher)
     if request.method == "POST":
         if "comment_left" in request.POST:
             form = CommentForm(request.POST)
@@ -46,7 +47,7 @@ def demo_site_detail(request, pk):
                 form = vote_form.save(commit=False)
                 form.profile = request.user.profile
                 form.teacher = teacher
-                vote_form.save()
+                form.save()
                 messages.success(request, (f'{form.teacher.name}, оценка сохранена'))
             else:
                 messages.error(request,('Ошибка при сохранении оценки'))

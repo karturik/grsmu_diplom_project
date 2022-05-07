@@ -10,6 +10,8 @@
     {{ teacher.department.title }}
     </a>
     </small>
+    <p class="text-muted" style="font-size:12px">Коммуникабельность: {{ teacher.communication_average }} | Обучение: {{ teacher.teaching_average }} | Требовательность: {{ teacher.demanding_average }}</p>
+
 
 <!--    ОСТАВИТЬ КОММЕНТАРИЙ-->
     {% if user.is_authenticated %}

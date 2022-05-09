@@ -2,6 +2,7 @@ from django.db import models
 from users.models import Profile
 
 
+
 # Create your models here.
 class Department(models.Model):
     title = models.CharField(max_length=120)
@@ -10,10 +11,13 @@ class Teacher(models.Model):
     name = models.CharField(max_length=50)
     position = models.CharField(max_length=40)
     department = models.ForeignKey('Department', on_delete=models.CASCADE)
-    teacher_pic = models.ImageField(null=True, blank=True, upload_to='teacher_pics', default='user.jpg')
+    teacher_img = models.ImageField(null=True, blank=True, upload_to='teacher_pics', default='user.jpg')
+    image_src = models.CharField(max_length=100, default="0")
     communication_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
     teaching_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
     demanding_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
+
+
 
 class Comment(models.Model):
     author = models.CharField(max_length=30)

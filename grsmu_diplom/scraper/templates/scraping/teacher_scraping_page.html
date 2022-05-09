@@ -2,6 +2,10 @@
 {% block page_content %}
 <div class="col-md-8 offset-md-2">
 <form method = "POST">
+    <button type="submit" class="btn btn-primary">Получить данные</button>
+    <button type="submit" name="data-save" class="btn btn-primary">Сохранить</button>
+    {% csrf_token %}
+</form>
     {{ a }}
     {{ dep_list }}
     {{ link_list }}
@@ -9,7 +13,4 @@
    <li >{{ a }}</li>
     {% endfor %}
 
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-    </form>
 {% endblock %}

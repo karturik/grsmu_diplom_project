@@ -3,8 +3,9 @@
 <link href="{% static 'css/styles/demo_site/teachers.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'css/styles/demo_site/demo_site_detail.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'css/styles/users/profile_page.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/styles/scraper/teacher_scraping_page.css' %}" rel="stylesheet" type="text/css" />
 
-
+<div class="col-md-8 offset-md-2">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <div class="collapse navbar-collapse">
@@ -14,8 +15,9 @@
             </li>
           </ul>
         </div>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+      <form class="d-flex" method=POST action="{% url 'searching' %}">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="searched">
         <button class="btn btn-primary" type="submit">Искать</button>
       </form>
     </div>
@@ -58,6 +60,7 @@
     </div>
   </div>
 </nav>
+</div>
 
 <!--КОНЕЦ-->
 

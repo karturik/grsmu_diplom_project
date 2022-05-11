@@ -30,9 +30,9 @@ class VoteForm(forms.ModelForm):
             communication_total = vote_qs.aggregate(Sum('communication'))
             teaching_total = vote_qs.aggregate(Sum('teaching'))
             demanding_total = vote_qs.aggregate(Sum('demanding'))
-            teacher.communication_average = communication_total['communication__sum']/vote_count
-            teacher.teaching_average = teaching_total['teaching__sum']/vote_count
-            teacher.demanding_average = demanding_total['demanding__sum']/vote_count
+            teacher.communication_average = round(communication_total['communication__sum']/vote_count, 1)
+            teacher.teaching_average = round(teaching_total['teaching__sum']/vote_count, 1)
+            teacher.demanding_average = round(demanding_total['demanding__sum']/vote_count, 1)
             teacher.save()
         else:
             teacher.communication_average = 0.0

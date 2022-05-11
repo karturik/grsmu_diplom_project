@@ -3,6 +3,20 @@
 {% load static %}
 
 <div class="col-md-8 offset-md-2">
+    <div class="container">
+            <div class="top">
+
+        <div class="row justify-content-md-center">
+    <div class="col-md-auto">
+    {% if not teacher.teacher_img %}
+    <img class = "img_detail" src="{{ teacher.teacher_img.url }}" alt="Teacher Picture" >
+    {% else %}
+    <img class = "img_detail" src="{% static 'images/teacher.jpg' %}" alt="Teacher Picture" >
+    {% endif %}
+    </div>
+
+    <div class="col-md">
+        <div class="row">
     <h1>{{ teacher.name }}</h1>
     <small>
         {{ teacher.position }} |&nbsp;
@@ -11,6 +25,25 @@
     </a>
     </small>
     <p class="text-muted" style="font-size:12px">Коммуникабельность: {{ teacher.communication_average }} | Обучение: {{ teacher.teaching_average }} | Требовательность: {{ teacher.demanding_average }}</p>
+    </div>
+    <div class="row">
+        <div class="col-md"> Коммуникабельность
+    <div class="pie" style="--p:{{ teacher.communication_average }};--c:#0d6efd;--b:8px"> {{ teacher.communication_average }}</div>
+    </div>
+    <div class="col-md"> Обучение
+    <div class="pie" style="--p:{{ teacher.teaching_average }};--c:#0d6efd;--b:8px"> {{ teacher.teaching_average }}</div>
+    </div>
+    <div class="col-md"> Требовательность
+    <div class="pie" style="--p:{{ teacher.demanding_average }};--c:#0d6efd;--b:8px"> {{ teacher.demanding_average }}</div>
+    </div>
+     <small>Количество голосов: {{ vote_count }}</small>
+
+    </div>
+    </div>
+    </div>
+</div>
+</div>
+
 
 
 <!--    ОСТАВИТЬ КОММЕНТАРИЙ-->

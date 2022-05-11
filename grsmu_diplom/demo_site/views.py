@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Teacher, Department, Comment
+from .models import Teacher, Department, Comment, Vote
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views import generic
@@ -29,6 +29,7 @@ def demo_site_department(request, department):
 def demo_site_detail(request, pk):
     teacher = Teacher.objects.get(pk=pk)
     form = CommentForm()
+    vote_count = Vote.objects.filter(teacher=teacher).count()
     vote_form = VoteForm()
     vote_form.calculate_averages(teacher)
     if not request.user.is_authenticated:
@@ -62,7 +63,8 @@ def demo_site_detail(request, pk):
         "comments": comments,
         "form": form,
         "vote_form": vote_form,
-        "group": group
+        "group": group,
+        "vote_count": vote_count
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 
@@ -87,5 +89,12 @@ class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateVie
         comment = self.get_object()
         return str(self.request.user) == str(comment.author)
 
+def searching(request):
+    if request.method == "POST":
+        searched = request.POST.get('searched')
+        results = Teacher.objects.filter(name=searched)
+        return render(request, "demo_site/search_page.html", {'searched':searched, "results":results})
+    else:
+        return render(request, "demo_site/search_page.html")
 
 

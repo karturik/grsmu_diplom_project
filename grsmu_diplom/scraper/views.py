@@ -46,9 +46,15 @@ def department_scraping(request):
 
 def teacher_scraping(request):
     dep_list = []
+    new_dep_list = []
+    old_dep_list = []
     link_list = []
-    a = 0
+    a = -3
     all_info = []
+    name_list = []
+    new_names = []
+    teacher_count = Teacher.objects.all().count()
+    base_department_count = Department.objects.all().count()
     if request.method == "POST":
         url = "http://www.grsmu.by/ru/university/structure/chairs/"
         response = requests.get(url)
@@ -59,28 +65,32 @@ def teacher_scraping(request):
             if title == 'Оториноларингологии и глазных болезней':
                 dep_list.append('Кафедра оториноларингологии')
                 dep_list.append('Кафедра глазных болезней')
-            if title != 'Инфекционных болезней' and title !='Оториноларингологии и глазных болезней':
+            if title != 'Инфекционных болезней' and title != 'Оториноларингологии и глазных болезней':
                 dep_list.append(title)
+            if not Department.objects.filter(title=title).exists() and title != 'Инфекционных болезней' and title != 'Оториноларингологии и глазных болезней':
+                new_dep_list.append(title)
+            else:
+                old_dep_list.append(title)
             links = dep.find('a')['href']
             if '/chairs/cafedry_4' in links:
-                link_list.append('http://www.grsmu.by'+links+'prof/')
+                link_list.append('http://www.grsmu.by' + links + 'prof/')
             if 'chairs/cafedry_8' in links:
-                link_list.append('http://www.grsmu.by'+links+'8_sostav/')
+                link_list.append('http://www.grsmu.by' + links + '8_sostav/')
             if 'chairs/cafedry_10' in links:
-                link_list.append('http://www.grsmu.by'+links+'pps/')
+                link_list.append('http://www.grsmu.by' + links + 'pps/')
             if 'chairs/cafedry_19' in links:
-                link_list.append('http://www.grsmu.by'+links+'cafedry_19_sostav/')
+                link_list.append('http://www.grsmu.by' + links + 'cafedry_19_sostav/')
             if '/chairs/cafedry_25' in links:
-                link_list.append('http://www.grsmu.by'+links+'prof/')
+                link_list.append('http://www.grsmu.by' + links + 'prof/')
             if '/chairs/kafedry_28/' in links:
-                link_list.append('http://www.grsmu.by'+links+'prof/')
+                link_list.append('http://www.grsmu.by' + links + 'prof/')
             if '/chairs/cafedry_26/' in links:
-                link_list.append('http://www.grsmu.by'+links+'prof/')
+                link_list.append('http://www.grsmu.by' + links + 'prof/')
             if '/chairs/cafedry_21/' in links:
-                link_list.append('http://www.grsmu.by'+links+'cafedry_21_sostav/')
+                link_list.append('http://www.grsmu.by' + links + 'cafedry_21_sostav/')
             if '/chairs/kafedry_34/' in links:
-                link_list.append('http://www.grsmu.by'+links+'otorinolaringology/sostav_ent/')
-                link_list.append('http://www.grsmu.by'+links+'ophtalmology/sostav_eyes/')
+                link_list.append('http://www.grsmu.by' + links + 'otorinolaringology/sostav_ent/')
+                link_list.append('http://www.grsmu.by' + links + 'ophtalmology/sostav_eyes/')
             if 'ru/university/' in links:
                 link_list.append('http://www.grsmu.by' + links + 'sostav/')
         for link in link_list:
@@ -90,14 +100,18 @@ def teacher_scraping(request):
             soup = BeautifulSoup(response.content, "html.parser")
             teachers_info = soup.find_all("div", class_="inf")
             for teacher in teachers_info:
-                name = teacher.find('a').text
                 a += 1
+                name = teacher.find('a').text
+                if not Teacher.objects.filter(name=name).exists():
+                    new_names.append(name)
+                else:
+                    name_list.append(name)
                 position = teacher.find('p').text
                 department_info[name] = position
                 if not department_info in all_info:
                     all_info.append(department_info)
 
-# ДОЕНИЕ В БАЗУ ПО КНОПКЕ
+# ДОБАВЛЕНИЕ В БАЗУ ПО КНОПКЕ
         form = TeacherAddForm(request.POST)
         if "data-save" in request.POST:
             for i in range(len(dep_list)):
@@ -111,9 +125,22 @@ def teacher_scraping(request):
                     if not Teacher.objects.filter(name=name, position=position).exists():
                         teacher.save()
             messages.success(request, ('Изменения сохранены!'))
+    grsmu_dep_count = len(dep_list)
+    context = {
+        'a': a,
+        'dep_list': dep_list,
+        'link_list': link_list,
+        'all_info': all_info,
+        'name_list': name_list,
+        'new_names': new_names,
+        'teacher_count':teacher_count,
+        'base_department_count':base_department_count,
+        'new_dep_list':new_dep_list,
+        'old_dep_list':old_dep_list,
+        'grsmu_dep_count':grsmu_dep_count,
+    }
 
-
-    return render(request, "scraping/teacher_scraping_page.html", {'a':a ,'dep_list':dep_list,'link_list':link_list ,'all_info':all_info})
+    return render(request, "scraping/teacher_scraping_page.html", context)
 
 def teacher_pic_scraping(request):
     dep_list = []
@@ -131,27 +158,40 @@ def teacher_pic_scraping(request):
         # ФОРМИРУЕМ ССЫЛКИ НА ПРОФ.СОСТАВ
         for dep in departments:
             links = dep.find('a')['href']
-            if '/chairs/cafedry_4' in links:
-                link_list.append('http://www.grsmu.by'+links+'prof/')
-            if 'chairs/cafedry_8' in links:
-                link_list.append('http://www.grsmu.by'+links+'8_sostav/')
-            if 'chairs/cafedry_10' in links:
-                link_list.append('http://www.grsmu.by'+links+'pps/')
-            if 'chairs/cafedry_19' in links:
-                link_list.append('http://www.grsmu.by'+links+'cafedry_19_sostav/')
-            if '/chairs/cafedry_25' in links:
-                link_list.append('http://www.grsmu.by'+links+'prof/')
-            if '/chairs/kafedry_28/' in links:
-                link_list.append('http://www.grsmu.by'+links+'prof/')
-            if '/chairs/cafedry_26/' in links:
-                link_list.append('http://www.grsmu.by'+links+'prof/')
-            if '/chairs/cafedry_21/' in links:
-                link_list.append('http://www.grsmu.by'+links+'cafedry_21_sostav/')
-            if '/chairs/kafedry_34/' in links:
-                link_list.append('http://www.grsmu.by'+links+'otorinolaringology/sostav_ent/')
-                link_list.append('http://www.grsmu.by'+links+'ophtalmology/sostav_eyes/')
-            if 'ru/university/' in links:
-                link_list.append('http://www.grsmu.by' + links + 'sostav/')
+            if '/chairs/cafedry_4' or 'chairs/cafedry_8' or 'chairs/cafedry_10' or 'chairs/cafedry_19' or '/chairs/cafedry_25' or '/chairs/kafedry_28/' or '/chairs/cafedry_26/' or '/chairs/cafedry_21/' or '/chairs/kafedry_34/' or 'infekcii-grodno.wixsite' in links:
+                if '/chairs/cafedry_4' in links:
+                    link_list.append('http://www.grsmu.by'+links+'prof/')
+                    break
+                elif 'chairs/cafedry_8' in links:
+                    link_list.append('http://www.grsmu.by'+links+'8_sostav/')
+                    break
+                elif 'chairs/cafedry_10' in links:
+                    link_list.append('http://www.grsmu.by'+links+'pps/')
+                    break
+                elif 'chairs/cafedry_19' in links:
+                    link_list.append('http://www.grsmu.by'+links+'cafedry_19_sostav/')
+                    break
+                elif '/chairs/cafedry_25' in links:
+                    link_list.append('http://www.grsmu.by'+links+'prof/')
+                    break
+                elif '/chairs/kafedry_28/' in links:
+                    link_list.append('http://www.grsmu.by'+links+'prof/')
+                    break
+                elif '/chairs/cafedry_26/' in links:
+                    link_list.append('http://www.grsmu.by'+links+'prof/')
+                    break
+                elif '/chairs/cafedry_21/' in links:
+                    link_list.append('http://www.grsmu.by'+links+'cafedry_21_sostav/')
+                    break
+                elif '/chairs/kafedry_34/' in links:
+                    link_list.append('http://www.grsmu.by'+links+'otorinolaringology/sostav_ent/')
+                    link_list.append('http://www.grsmu.by'+links+'ophtalmology/sostav_eyes/')
+                    break
+                elif 'infekcii-grodno.wixsite' in links:
+                    pass
+                break
+            else:
+                    link_list.append('http://www.grsmu.by' + links + 'sostav/')
         for link in link_list:
             url = link
             response = requests.get(url)

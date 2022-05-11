@@ -1,16 +1,65 @@
 {% extends "base.html" %}
 {% block page_content %}
+{% load static %}
+
+
 <div class="col-md-8 offset-md-2">
 <form method = "POST">
     <button type="submit" class="btn btn-primary">Получить данные</button>
-    <button type="submit" name="data-save" class="btn btn-primary">Сохранить</button>
+    <a href="pic_update">Обновить фотографии</a>
     {% csrf_token %}
 </form>
-    {{ a }}
-    {{ dep_list }}
-    {{ link_list }}
-{% for a in all_info %}
-   <li >{{ a }}</li>
+
+
+
+<form method = "POST">
+    <button type="submit" name="data-save" class="btn btn-primary">Обновить базу</button>
+    {% csrf_token %}
+</form>
+
+    <h2>Кафедры:</h2>
+<h3>Найдено кафедр на сайте ГрГМУ: {{ grsmu_dep_count }}</h3>
+<h3>Найдено кафедр в базе: {{ base_department_count }}</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+    <h3>Уже добавлены на сайт:</h3>
+    <details>
+    <summary>Добавлены</summary>
+    {% for dep in old_dep_list %}
+    <li style="color: green">{{ dep }}</li>
     {% endfor %}
+    </details>
+        </div>
+    <div class="col-md-6">
+    <h3>Не добавлены на сайт:</h3>
+    {% for dep in new_dep_list %}
+    <li style="color: red">{{ dep }}</li>
+    {% endfor %}
+    </div>
+</div>
+		    	    <hr>
+    <h2>Преподаватели:</h2>
+    <h3>Найдено преподавателей на сайте ГрГМУ: {{ a }}</h3>
+    <h3>Найдено преподавателей в базе: {{ teacher_count }}</h3>
+    <div class="row">
+        <div class="col-md-6">
+    <h3>Уже добавлены на сайт:</h3>
+    <details>
+    <summary>Добавлены</summary>
+    {% for name in name_list %}
+    <li style="color: green">{{ name }}</li>
+    {% endfor %}
+    </details>
+        </div>
+    <div class="col-md-6">
+    <h3>Не добавлены на сайт:</h3>
+    {% for name in new_names %}
+    <li style="color: red">{{ name }}</li>
+    {% endfor %}
+    </div>
+    </div>
+</div>
+
 
 {% endblock %}

@@ -7,15 +7,21 @@ from users.models import Profile
 class Department(models.Model):
     title = models.CharField(max_length=120)
 
+    def __str__(self):
+        return self.title
+
 class Teacher(models.Model):
     name = models.CharField(max_length=50)
     position = models.CharField(max_length=40)
     department = models.ForeignKey('Department', on_delete=models.CASCADE)
     teacher_img = models.ImageField(null=True, blank=True, upload_to='teacher_pics', default='user.jpg')
     image_src = models.CharField(max_length=100, default="0")
-    communication_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
-    teaching_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
-    demanding_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
+    communication_average = models.DecimalField(default=0, max_digits=2, decimal_places=1)
+    teaching_average = models.DecimalField(default=0, max_digits=2, decimal_places=1)
+    demanding_average = models.DecimalField(default=0, max_digits=2, decimal_places=1)
+
+    def __str__(self):
+        return self.name
 
 
 

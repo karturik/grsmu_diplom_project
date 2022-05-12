@@ -4,50 +4,36 @@
 <link href="{% static 'css/styles/demo_site/demo_site_detail.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'css/styles/users/profile_page.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'css/styles/scraper/teacher_scraping_page.css' %}" rel="stylesheet" type="text/css" />
-
-<div class="col-md-8 offset-md-2">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <div class="collapse navbar-collapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="navbar-brand">
-                <h1>Главная</h1>
-            </li>
-          </ul>
-        </div>
-      <form class="d-flex" method=POST action="{% url 'searching' %}">
-        {% csrf_token %}
-        <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="searched">
-        <button class="btn btn-primary" type="submit">Искать</button>
-      </form>
-    </div>
-</nav>
+<link href="{% static 'css/styles/demo_site/demo_site_index.css' %}" rel="stylesheet" type="text/css" />
 
 <!--НАЧАЛО-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container">
+
+
+<div class="container position-sticky z-index-sticky top-0">
+    <div class="row">
+      <div class="col-12">
+<nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+    <div class="container-fluid px-0">
     <a class="navbar-brand" href="/demo_site/">Главная</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">⟱</span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/demo_site/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Кафедры
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {% for department in departments %}
-            <li><a class="dropdown-item" href="{% url 'demo_site_department' department.title %}">{{ department.title }}</a></li>
-            {% endfor %}
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
+          <li class="nav-item">
+          <a class="nav-link" href="/demo_site/">Кафедры</a>
         </li>
           {% if user.is_authenticated %}
           <li class="nav-item">
           <a class="nav-link" href="{% url 'users:profile' %}">Профиль</a>
         </li>
+          <li class="nav-item">
+        <form class="d-flex" method=POST action="{% url 'searching' %}">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="searched">
+        <button class="btn btn-primary" type="submit">Искать</button>
+      </form>
+      </li>
           {% endif %}
       </ul>
         {% if user.is_authenticated %}
@@ -61,12 +47,36 @@
   </div>
 </nav>
 </div>
+</div>
+</div>
+<!--<header class="header-2">-->
+<!--    <div class="page-header min-vh-75 relative" style="background-image: url('/images/grsmu.jpg')">-->
+<!--      <span class="mask bg-gradient-primary opacity-4"></span>-->
+<!--      <div class="container">-->
+<!--        <div class="row">-->
+<!--          <div class="col-lg-7 text-center mx-auto">-->
+<!--            <h1 class="text-white pt-3 mt-n5">Material Kit 2</h1>-->
+<!--            <p class="lead text-white mt-3">Free & Open Source Web UI Kit built over Bootstrap 5. <br /> Join over 1.6 million developers around the world. </p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </header>-->
+
+
+
+
+
+
+
 
 <!--КОНЕЦ-->
 
-<div class="container">
     {% include 'users/messages.html' %}
+<div class="content-main-block">
+<div class="col-md-8 offset-md-2">
     {% block page_content %}{% endblock %}
+</div>
 </div>
 
 <script src="{% static 'js/bootstrap.bundle.js' %}" type="text/javascript"></script>

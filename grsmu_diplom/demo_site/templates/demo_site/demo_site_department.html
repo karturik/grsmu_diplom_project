@@ -14,7 +14,7 @@
        {% for teacher in teachers %}
         <div class="col-md-3">
             <div class="teacher-card">
-                <div class="card-body">
+                <div class="teacher-card-body">
                     {% if not teacher.teacher_img %}
                     <img class = "img img-responsive" src="{{ teacher.teacher_img.url }}" alt="Teacher Picture" >
                     {% else %}
@@ -28,6 +28,7 @@
         {% endfor %}
     </div>
 </div>
+
 
 
 {% endblock %}

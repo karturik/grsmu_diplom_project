@@ -93,6 +93,7 @@ def teacher_scraping(request):
                 link_list.append('http://www.grsmu.by' + links + 'ophtalmology/sostav_eyes/')
             if 'ru/university/' in links:
                 link_list.append('http://www.grsmu.by' + links + 'sostav/')
+
         for link in link_list:
             department_info = {}
             url = link

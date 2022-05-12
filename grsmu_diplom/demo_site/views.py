@@ -11,6 +11,9 @@ from django.contrib import messages
 
 
 # Create your views here.
+# def main_page(request):
+#     return render(request, 'demo_site/main_page.html')
+
 def demo_site_index(request):
     department = Department.objects.all()
     context = {

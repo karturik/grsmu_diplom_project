@@ -2,7 +2,7 @@
 {% block page_content %}
 {% load static %}
 
-<div class="col-md-8 offset-md-2">
+
     <div class="container">
             <div class="top">
 
@@ -59,7 +59,7 @@
     </form>
 <!--VOTING-->
     <div class = "collapse" id = "collapse{{ teacher.pk }}">
-        <div class="card card-body shadow">
+        <div class="vote-card shadow">
             <h6>Оценить: {{ teacher.name }}</h6>
             <hr>
             <form method="post">
@@ -129,7 +129,6 @@
     </div>
     {% endif %}
 
-</div>
 
 <script>
     function sliderUpdate(field, pk) {

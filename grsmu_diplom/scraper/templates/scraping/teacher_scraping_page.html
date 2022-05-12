@@ -10,10 +10,11 @@
     {% csrf_token %}
 </form>
 
+    {{ link_list }}
 
 
 <form method = "POST">
-    <button type="submit" name="data-save" class="btn btn-primary">Обновить базу</button>
+    <button type="submit" name="data-save" class="btn btn-primary">Добавить в базу</button>
     {% csrf_token %}
 </form>
 

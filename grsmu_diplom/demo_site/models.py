@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import Profile
+from django.contrib.auth.models import User
 
 
 
@@ -14,7 +15,7 @@ class Teacher(models.Model):
     name = models.CharField(max_length=50)
     position = models.CharField(max_length=40)
     department = models.ForeignKey('Department', on_delete=models.CASCADE)
-    teacher_img = models.ImageField(null=True, blank=True, upload_to='teacher_pics', default='user.jpg')
+    teacher_img = models.ImageField(null=True, blank=True, upload_to='teacher_pics')
     image_src = models.CharField(max_length=100, default="0")
     communication_average = models.DecimalField(default=0, max_digits=2, decimal_places=1)
     teaching_average = models.DecimalField(default=0, max_digits=2, decimal_places=1)
@@ -34,9 +35,11 @@ class CommentAnswer(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     comment = models.ForeignKey('Comment', on_delete=models.CASCADE)
+    teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
 
 class Vote(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    # profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     communication = models.IntegerField(default=0)
     teaching = models.IntegerField(default=0)

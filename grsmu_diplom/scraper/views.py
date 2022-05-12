@@ -8,7 +8,7 @@ from .forms import DepartmentAddForm, TeacherAddForm
 # SCRAPING
 import requests
 from bs4 import BeautifulSoup
-# from .forms import DepartmentAddForm
+from django.contrib.admin.views.decorators import staff_member_required
 
 # IMAGE SCRAPING
 from urllib.request import urlopen
@@ -18,9 +18,11 @@ from django.template.defaultfilters import slugify
 from django.core.files import File
 
 # Create your views here.
+@staff_member_required
 def scraping(request):
     return render (request, "scraping/scraping.html")
 
+@staff_member_required
 def department_scraping(request):
     url = "http://www.grsmu.by/ru/university/structure/chairs/"
     response = requests.get(url)
@@ -44,6 +46,7 @@ def department_scraping(request):
         messages.success(request, ('Изменения сохранены!'))
     return render(request, "scraping/department_scraping_page.html", {'new_dep_list': new_dep_list, 'exist_dep_list': exist_dep_list, 'form':form})
 
+@staff_member_required
 def teacher_scraping(request):
     dep_list = []
     new_dep_list = []
@@ -112,6 +115,8 @@ def teacher_scraping(request):
                 if not department_info in all_info:
                     all_info.append(department_info)
 
+
+
 # ДОБАВЛЕНИЕ В БАЗУ ПО КНОПКЕ
         form = TeacherAddForm(request.POST)
         if "data-save" in request.POST:
@@ -143,6 +148,7 @@ def teacher_scraping(request):
 
     return render(request, "scraping/teacher_scraping_page.html", context)
 
+@staff_member_required
 def teacher_pic_scraping(request):
     dep_list = []
     link_list = []

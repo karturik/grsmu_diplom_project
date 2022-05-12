@@ -37,9 +37,8 @@ def demo_site_detail(request, pk):
     vote_form = VoteForm()
     vote_form.calculate_averages(teacher)
     comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
-    comment_answers = []
-    for comment in comments:
-        comment_answers.append(CommentAnswer.objects.filter(comment=comment))
+    votes = Vote.objects.filter(teacher=teacher, user=request.user)
+    comment_answers = CommentAnswer.objects.filter(teacher=teacher)
     if not request.user.is_authenticated:
         group = 0
     else:
@@ -57,8 +56,13 @@ def demo_site_detail(request, pk):
         elif "score_submit" in request.POST:
             vote_form = VoteForm(request.POST)
             if vote_form.is_valid():
+                if votes:
+                    for vote in votes:
+                        vote_form = VoteForm(request.POST, instance=vote)
+                else:
+                    pass
                 form = vote_form.save(commit=False)
-                form.profile = request.user.profile
+                form.user = request.user
                 form.teacher = teacher
                 form.save()
                 messages.success(request, (f'{form.teacher.name}, оценка сохранена'))
@@ -70,7 +74,8 @@ def demo_site_detail(request, pk):
                 comment_pk = int(request.POST.get('comment_pk'))
                 answer = CommentAnswer(author = request.user,
                     body = answer_form.cleaned_data['body'],
-                    comment = Comment.objects.get(pk=comment_pk))
+                    comment = Comment.objects.get(pk=comment_pk),
+                    teacher=teacher)
                 answer.save()
                 # form = answer_form.save(commit=False)
                 # form.author = request.user
@@ -87,6 +92,7 @@ def demo_site_detail(request, pk):
         "group": group,
         "vote_count": vote_count,
         "comment_answers": comment_answers,
+        "votes": votes,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 
@@ -98,7 +104,7 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteV
 
     def test_func(self):
         comment = self.get_object()
-        return str(self.request.user) == str(comment.author)
+        return str(self.request.user) == str(comment.author) or self.request.user.is_superuser
 
 class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Comment

@@ -32,6 +32,9 @@
 				{% elif group == 'Student' %}
 			<button type="button" class="btn btn-success">Аккаунт подтвержден!</button>
 				{% endif %}
+				{% if user.is_superuser %}
+			<a href="/scraper/" class="btn btn-warning">Обновить базу данных</a>
+				{% endif %}
 		</div>
 <!--			Табличка с отзывами-->
 		    <div class="col-sm">

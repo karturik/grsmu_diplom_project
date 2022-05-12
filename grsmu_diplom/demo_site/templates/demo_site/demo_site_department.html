@@ -15,7 +15,7 @@
         <div class="col-md-3">
             <div class="teacher-card">
                 <div class="teacher-card-body">
-                    {% if not teacher.teacher_img %}
+                    {% if teacher.teacher_img %}
                     <img class = "img img-responsive" src="{{ teacher.teacher_img.url }}" alt="Teacher Picture" >
                     {% else %}
                     <img class = "img img-responsive" src="{% static 'images/teacher.jpg' %}" alt="Teacher Picture" >

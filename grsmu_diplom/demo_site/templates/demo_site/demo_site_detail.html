@@ -8,7 +8,7 @@
 
         <div class="row justify-content-md-center">
     <div class="col-md-auto">
-    {% if not teacher.teacher_img %}
+    {% if teacher.teacher_img %}
     <img class = "img_detail" src="{{ teacher.teacher_img.url }}" alt="Teacher Picture" >
     {% else %}
     <img class = "img_detail" src="{% static 'images/teacher.jpg' %}" alt="Teacher Picture" >
@@ -60,6 +60,7 @@
 <!--VOTING-->
     <div class = "collapse" id = "collapse{{ teacher.pk }}">
         <div class="vote-card shadow">
+
             <h6>Оценить: {{ teacher.name }}</h6>
             <hr>
             <form method="post">
@@ -99,8 +100,8 @@
     <h3>Комментарии:</h3>
     {% for comment in comments %}
             <div class="media g-mb-30 media-comment">
-                {% if profile.profile_pic %}
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{{ profile.profile_pic.url }}" alt="Image Description">
+                {% if comment.author.profile.profile_pic %}
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{{ comment.author.profile.profile_pic.url }}" alt="Image Description">
             	{% else %}
                 <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{% static 'images/user.jpg' %}" alt="Image Description">
                 {% endif %}
@@ -110,18 +111,34 @@
                 <span class="g-color-gray-dark-v4 g-font-size-12">{{comment.created_on.date }}</span>
                 <p>{{ comment.body }}</p>
             </div>
-            {% if comment.author == request.user.username %}
+            {% if comment.author == request.user.username or request.user.is_superuser %}
         <a href="{% url 'comment_deletion' comment.pk %}">Удалить</a>
         <a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
             {% endif %}
         <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{comment.pk}}">Ответить</a>
             </div>
         </div>
+<!--ANSWERS-->
     {% for answer in comment_answers %}
-    {{ answer }}AAA
-    {{ answer.commet }}
-    {% if answer.comment.pk == comment.pk %}
-    {{ answer }}
+    {% if answer.comment == comment %}
+        <div class="media g-mb-30 media-comment-answer">
+                {% if answer.user.profile.profile_pic %}
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{{ answer.user.profile.profile_pic.url }}" alt="Image Description">
+            	{% else %}
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{% static 'images/user.jpg' %}" alt="Image Description">
+                {% endif %}
+                <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+              <div class="g-mb-15">
+                <h5 class="h5 g-color-gray-dark-v1 mb-0">{{ answer.author }}</h5>
+                <span class="g-color-gray-dark-v4 g-font-size-12">{{answer.created_on.date }}</span>
+                <p>{{ answer.body }}</p>
+            </div>
+            {% if answer.author == request.user.username or request.user.is_superuser %}
+        <a href="{% url 'comment_deletion' comment.pk %}">Удалить</a>
+            {% endif %}
+        <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{comment.pk}}">Ответить</a>
+            </div>
+        </div>
     {% endif %}
     {% endfor %}
 

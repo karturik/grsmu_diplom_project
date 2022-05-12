@@ -41,7 +41,12 @@
 }
 
 .media-comment {
-    margin-top:20px
+    margin-top:20px;
+}
+
+.media-comment-answer {
+    text-align: end;
+
 }
 
 .img_detail {

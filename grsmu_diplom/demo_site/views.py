@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Teacher, Department, Comment, Vote
+from .models import Teacher, Department, Comment, Vote, CommentAnswer
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse_lazy, reverse
-from .forms import CommentForm, VoteForm
+from .forms import CommentForm, VoteForm, CommentAnswerForm
 from django.contrib import messages
 
 
@@ -31,21 +31,26 @@ def demo_site_department(request, department):
 
 def demo_site_detail(request, pk):
     teacher = Teacher.objects.get(pk=pk)
-    form = CommentForm()
+    comment_form = CommentForm()
+    answer_form = CommentAnswerForm()
     vote_count = Vote.objects.filter(teacher=teacher).count()
     vote_form = VoteForm()
     vote_form.calculate_averages(teacher)
+    comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
+    comment_answers = []
+    for comment in comments:
+        comment_answers.append(CommentAnswer.objects.filter(comment=comment))
     if not request.user.is_authenticated:
         group = 0
     else:
         group = str(request.user.groups.get())
     if request.method == "POST":
         if "comment_left" in request.POST:
-            form = CommentForm(request.POST)
-            if form.is_valid():
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
                 comment = Comment(
                     author = request.user,
-                    body = form.cleaned_data['body'],
+                    body = comment_form.cleaned_data['body'],
                     teacher = teacher
                 )
                 comment.save()
@@ -59,15 +64,29 @@ def demo_site_detail(request, pk):
                 messages.success(request, (f'{form.teacher.name}, оценка сохранена'))
             else:
                 messages.error(request,('Ошибка при сохранении оценки'))
+        elif "comment_answer" in request.POST:
+            answer_form = CommentAnswerForm(request.POST)
+            if answer_form.is_valid():
+                comment_pk = int(request.POST.get('comment_pk'))
+                answer = CommentAnswer(author = request.user,
+                    body = answer_form.cleaned_data['body'],
+                    comment = Comment.objects.get(pk=comment_pk))
+                answer.save()
+                # form = answer_form.save(commit=False)
+                # form.author = request.user
+                # pk = request.POST.get['comment.pk']
+                # form.comment = Comment.objects.filter(pk=pk)
+                # form.save()
         return redirect ('demo_site_detail', pk)
-    comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
     context = {
         "teacher": teacher,
         "comments": comments,
-        "form": form,
+        "comment_form": comment_form,
+        "answer_form": answer_form,
         "vote_form": vote_form,
         "group": group,
-        "vote_count": vote_count
+        "vote_count": vote_count,
+        "comment_answers": comment_answers,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 

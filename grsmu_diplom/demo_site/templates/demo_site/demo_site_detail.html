@@ -52,7 +52,7 @@
     <form action="/demo_site/teacher/{{ teacher.pk }}/" method="post">
         {% csrf_token %}
         <div class="form-group">
-            {{ form.body }}
+            {{ comment_form.body }}
         </div>
         <a class="btn btn-outline-primary" data-toggle="collapse" href="#collapse{{teacher.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{teacher.pk}}">Оценка</a>
         <button type="submit" name="comment_left" class="btn btn-primary">Отправить</button>
@@ -114,9 +114,34 @@
         <a href="{% url 'comment_deletion' comment.pk %}">Удалить</a>
         <a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
             {% endif %}
+        <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{comment.pk}}">Ответить</a>
             </div>
         </div>
+    {% for answer in comment_answers %}
+    {{ answer }}AAA
+    {{ answer.commet }}
+    {% if answer.comment.pk == comment.pk %}
+    {{ answer }}
+    {% endif %}
     {% endfor %}
+
+    <!--COMMENT ANSWER-->
+    <div class = "collapse" id = "collapse{{comment.pk}}">
+        <div class="vote-card shadow">
+            <form method="post">
+                {% csrf_token %}
+                <p>{{answer_form.body}}</p>
+                <div class="text-right">
+                    <input type="hidden" name="comment_pk" value="{{ comment.pk }}">
+                    <button type="submit" name="comment_answer" class="btn btn-outline-primary">Ответить</button>
+                </div>
+            </form>
+        </div>
+</div>
+    {% endfor %}
+<!--COMMENT ANSWER-->
+
+
     {% elif group == 'Not_student' %}
     <div class="card">
     <div class="card-header">
@@ -128,6 +153,8 @@
     </div>
     </div>
     {% endif %}
+
+
 
 
 <script>

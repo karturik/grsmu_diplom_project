@@ -23,13 +23,17 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
 
-
-
 class Comment(models.Model):
     author = models.CharField(max_length=30)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
+
+class CommentAnswer(models.Model):
+    author = models.CharField(max_length=30)
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    comment = models.ForeignKey('Comment', on_delete=models.CASCADE)
 
 class Vote(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)

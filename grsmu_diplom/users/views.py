@@ -75,8 +75,8 @@ def profile_page(request):
             profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
             #обновление картинки профиля
             if user_form.is_valid() and profile_form.is_valid():
-                request.user.profile_pic = profile_form.cleaned_data.get('profile_pic')
                 profile_form.save()
+                request.user.profile_pic = profile_form.cleaned_data.get('profile_pic')
                 user_form.save()
                 #обновляет логин в "автор комментариев"
                 for comment in comments:

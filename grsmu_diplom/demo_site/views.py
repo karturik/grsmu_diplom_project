@@ -7,6 +7,9 @@ from django.urls import reverse_lazy, reverse
 from .forms import CommentForm, VoteForm, CommentAnswerForm
 from django.contrib import messages
 
+# SEARCHING
+from django.db.models import Q
+
 
 
 
@@ -15,7 +18,7 @@ from django.contrib import messages
 #     return render(request, 'demo_site/main_page.html')
 
 def demo_site_index(request):
-    department = Department.objects.all()
+    department = Department.objects.order_by('title')
     context = {
         "departments": department,
     }
@@ -119,8 +122,8 @@ class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateVie
 
 def searching(request):
     if request.method == "POST":
-        searched = request.POST.get('searched')
-        results = Teacher.objects.filter(name=searched)
+        searched = request.POST.get('searched').title()
+        results = Teacher.objects.filter(name__icontains=searched)
         return render(request, "demo_site/search_page.html", {'searched':searched, "results":results})
     else:
         return render(request, "demo_site/search_page.html")

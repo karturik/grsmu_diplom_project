@@ -101,9 +101,9 @@
     {% for comment in comments %}
             <div class="media g-mb-30 media-comment">
                 {% if comment.author.profile.profile_pic %}
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{{ comment.author.profile.profile_pic.url }}" alt="Image Description">
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-img" src="{{ comment.author.profile.profile_pic.url }}" alt="Image Description">
             	{% else %}
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{% static 'images/user.jpg' %}" alt="Image Description">
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-img" src="{% static 'images/user.jpg' %}" alt="Image Description">
                 {% endif %}
                 <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
               <div class="g-mb-15">
@@ -123,9 +123,9 @@
     {% if answer.comment == comment %}
         <div class="media g-mb-30 media-comment-answer">
                 {% if answer.user.profile.profile_pic %}
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{{ answer.user.profile.profile_pic.url }}" alt="Image Description">
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{{ answer.user.profile.profile_pic.url }}" alt="Image Description">
             	{% else %}
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{% static 'images/user.jpg' %}" alt="Image Description">
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static 'images/user.jpg' %}" alt="Image Description">
                 {% endif %}
                 <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
               <div class="g-mb-15">
@@ -136,7 +136,6 @@
             {% if answer.author == request.user.username or request.user.is_superuser %}
         <a href="{% url 'comment_deletion' comment.pk %}">Удалить</a>
             {% endif %}
-        <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{comment.pk}}">Ответить</a>
             </div>
         </div>
     {% endif %}

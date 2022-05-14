@@ -39,7 +39,6 @@ class CommentAnswer(models.Model):
 
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    # profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     communication = models.IntegerField(default=0)
     teaching = models.IntegerField(default=0)

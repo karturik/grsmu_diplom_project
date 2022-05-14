@@ -1,13 +1,42 @@
 {% extends "base.html" %}
 {% block page_content %}
+{% load static %}
 <div class="col-md-8 offset-md-2">
-    <h1>Поиск по сайту</h1>
     {% if searched %}
-    <h2>{{ searched }}</h2>
+    <h1>Поиск по сайту: {{ searched }}</h1>
     {% for result in results %}
-    {{ result }}
+    <p><div class="container">
+    <div class="top">
+    <div class="row justify-content-md-center">
+    <div class="col-md-auto">
+    {% if result.teacher_img %}
+    <img class = "img_detail" src="{{ result.teacher_img.url }}" height="150px" alt="Teacher Picture" >
+    {% else %}
+    <img class = "img_detail" src="{% static 'images/teacher.jpg' %}" height="150px" alt="Teacher Picture" >
+    {% endif %}
+    </div>
+    <div class="col-md">
+        <div class="row">
+    <a href="{% url 'demo_site_detail' result.pk %}"><h2>{{ result.name }}</h2></a>
+    <small>
+        {{ result.position }} |&nbsp;
+        Кафедра: <a href="{% url 'demo_site_department' result.department.title %}">
+    {{ result.department.title }}
+    </a>
+    </small>
+    <div class="row ">
+    <small>Коммуникабельность: {{ result.communication_average }} | Обучение: {{ result.teaching_average }} | Требовательность: {{ result.demanding_average }}
+    </small>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div></p>
+    <hr>
     {% endfor %}
     {% endif %}
+
 
 </div>
 {% endblock %}

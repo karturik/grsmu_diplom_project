@@ -13,8 +13,8 @@
     <div class="row">
        {% for teacher in teachers %}
         <div class="col-md-3">
-            <div class="teacher-card">
-                <div class="teacher-card-body">
+            <div class="teacher-card" style = "min-height: 300px;">
+                <div class="teacher-card-body" style = "max-height: 300px;">
                     {% if teacher.teacher_img %}
                     <img class = "img img-responsive" src="{{ teacher.teacher_img.url }}" alt="Teacher Picture" >
                     {% else %}

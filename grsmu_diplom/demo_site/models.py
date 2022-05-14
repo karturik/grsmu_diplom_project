@@ -25,7 +25,7 @@ class Teacher(models.Model):
         return self.name
 
 class Comment(models.Model):
-    author = models.CharField(max_length=30)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)

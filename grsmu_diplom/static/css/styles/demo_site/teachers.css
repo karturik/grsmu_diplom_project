@@ -28,7 +28,12 @@
     height: auto;
 }
 
-.teacher-card .teacher-name {
+.teacher-card-body {
+    min-height: 94%;
+    background-color: tan;
+}
+
+.teacher-name {
     position: absolute;
     text-align: center;
     bottom: 30px;
@@ -50,7 +55,7 @@
 }
 
 .teacher-card:hover img {
-    filter: grayscale(100%);
+    filter: blur(5px);
 
 }
 

@@ -79,9 +79,6 @@ def profile_page(request):
                 request.user.profile_pic = profile_form.cleaned_data.get('profile_pic')
                 user_form.save()
                 #обновляет логин в "автор комментариев"
-                for comment in comments:
-                    comment.author = str(request.user)
-                    comment.save()
                 messages.success(request, ('Изменения сохранены!'))
             else:
                 messages.error(request, ('Не удалось сохранить изменения'))

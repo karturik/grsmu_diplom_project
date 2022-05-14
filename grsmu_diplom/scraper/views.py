@@ -16,6 +16,7 @@ from tempfile import NamedTemporaryFile
 import os
 from django.template.defaultfilters import slugify
 from django.core.files import File
+from urllib.parse import urlparse
 
 # Create your views here.
 @staff_member_required
@@ -115,8 +116,6 @@ def teacher_scraping(request):
                 if not department_info in all_info:
                     all_info.append(department_info)
 
-
-
 # ДОБАВЛЕНИЕ В БАЗУ ПО КНОПКЕ
         form = TeacherAddForm(request.POST)
         if "data-save" in request.POST:
@@ -165,40 +164,27 @@ def teacher_pic_scraping(request):
         # ФОРМИРУЕМ ССЫЛКИ НА ПРОФ.СОСТАВ
         for dep in departments:
             links = dep.find('a')['href']
-            if '/chairs/cafedry_4' or 'chairs/cafedry_8' or 'chairs/cafedry_10' or 'chairs/cafedry_19' or '/chairs/cafedry_25' or '/chairs/kafedry_28/' or '/chairs/cafedry_26/' or '/chairs/cafedry_21/' or '/chairs/kafedry_34/' or 'infekcii-grodno.wixsite' in links:
-                if '/chairs/cafedry_4' in links:
-                    link_list.append('http://www.grsmu.by'+links+'prof/')
-                    break
-                elif 'chairs/cafedry_8' in links:
-                    link_list.append('http://www.grsmu.by'+links+'8_sostav/')
-                    break
-                elif 'chairs/cafedry_10' in links:
-                    link_list.append('http://www.grsmu.by'+links+'pps/')
-                    break
-                elif 'chairs/cafedry_19' in links:
-                    link_list.append('http://www.grsmu.by'+links+'cafedry_19_sostav/')
-                    break
-                elif '/chairs/cafedry_25' in links:
-                    link_list.append('http://www.grsmu.by'+links+'prof/')
-                    break
-                elif '/chairs/kafedry_28/' in links:
-                    link_list.append('http://www.grsmu.by'+links+'prof/')
-                    break
-                elif '/chairs/cafedry_26/' in links:
-                    link_list.append('http://www.grsmu.by'+links+'prof/')
-                    break
-                elif '/chairs/cafedry_21/' in links:
-                    link_list.append('http://www.grsmu.by'+links+'cafedry_21_sostav/')
-                    break
-                elif '/chairs/kafedry_34/' in links:
-                    link_list.append('http://www.grsmu.by'+links+'otorinolaringology/sostav_ent/')
-                    link_list.append('http://www.grsmu.by'+links+'ophtalmology/sostav_eyes/')
-                    break
-                elif 'infekcii-grodno.wixsite' in links:
-                    pass
-                break
-            else:
-                    link_list.append('http://www.grsmu.by' + links + 'sostav/')
+            if '/chairs/cafedry_4' in links:
+                link_list.append('http://www.grsmu.by' + links + 'prof/')
+            if 'chairs/cafedry_8' in links:
+                link_list.append('http://www.grsmu.by' + links + '8_sostav/')
+            if 'chairs/cafedry_10' in links:
+                link_list.append('http://www.grsmu.by' + links + 'pps/')
+            if 'chairs/cafedry_19' in links:
+                link_list.append('http://www.grsmu.by' + links + 'cafedry_19_sostav/')
+            if '/chairs/cafedry_25' in links:
+                link_list.append('http://www.grsmu.by' + links + 'prof/')
+            if '/chairs/kafedry_28/' in links:
+                link_list.append('http://www.grsmu.by' + links + 'prof/')
+            if '/chairs/cafedry_26/' in links:
+                link_list.append('http://www.grsmu.by' + links + 'prof/')
+            if '/chairs/cafedry_21/' in links:
+                link_list.append('http://www.grsmu.by' + links + 'cafedry_21_sostav/')
+            if '/chairs/kafedry_34/' in links:
+                link_list.append('http://www.grsmu.by' + links + 'otorinolaringology/sostav_ent/')
+                link_list.append('http://www.grsmu.by' + links + 'ophtalmology/sostav_eyes/')
+            if 'ru/university/' in links:
+                link_list.append('http://www.grsmu.by' + links + 'sostav/')
         for link in link_list:
             url = link
             response = requests.get(url)
@@ -217,49 +203,14 @@ def teacher_pic_scraping(request):
             img_link = "http://www.grsmu.by" + soup.find(class_="img")['href']
             pictures[name] = img_link
         for key, value in pictures.items():
-            teacher = Teacher(name=key)
-            image_url = value
+            img_url = value
+            teacher_name = key
+            name = urlparse(img_url).path.split('/')[-1]
+            teacher = Teacher.objects.get(name=teacher_name)
             img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(urlopen(image_url).read())
+            img_temp.write(urlopen(img_url).read())
             img_temp.flush()
-            teacher.teacher_img.save("image_%s" % teacher.pk, File(img_temp))
+            teacher.teacher_img.save(name, File(img_temp))
             teacher.save()
-
-
-
-        #     teacher(image_src=value).save()
-            # if self.url and not self.photo:
-            #     result = urllib.urlretrieve(self.url)
-            #     self.photo.save(
-            #         os.path.basename(self.url),
-            #         File(open(result[0], 'rb'))
-            #     )
-            #     self.save()
-
-
-            # string = "{}".format(name)
-            # slug = slugify(string)
-            # img_temp = NamedTemporaryFile(delete=True)
-            # img_temp.write(urlopen(img_link).read())
-            # img_temp.flush()
-            # filename, file_extension = os.path.splitext(img_link)
-            # teacher.image_src.save(img_link)
-            # teacher.teacher_img.save(f"{slug}{file_extension}", File(img_temp))
-
-# ДОЕНИЕ В БАЗУ ПО КНОПКЕ
-#         form = TeacherAddForm(request.POST)
-#         if "data-save" in request.POST:
-#             for i in range(len(dep_list)):
-#                 department = dep_list[i]
-#                 if not Department.objects.filter(title=department).exists():
-#                     Department(title=department).save()
-#                 for key, value in all_info[i].items():
-#                     name = key
-#                     position = value
-#                     teacher = Teacher(department=Department.objects.get(title=department), name=name, position=position)
-#                     if not Teacher.objects.filter(name=name, position=position).exists():
-#                         teacher.save()
-#             messages.success(request, ('Изменения сохранены!'))
-
 
     return render(request, "scraping/teacher_pic_scraping_page.html", {"a":a,"teach_link_list":teach_link_list, "pictures":pictures})

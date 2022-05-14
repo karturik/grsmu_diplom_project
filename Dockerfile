@@ -23,6 +23,8 @@ RUN adduser -D user
 RUN chown -R user:user /vol
 RUN chown -R user:user /app/db.sqlite3
 RUN chmod -R 755 /vol/web
+RUN chmod -R 755 /vol/web/static
+RUN chmod -R 755 /vol/web/media
 
 USER user
 

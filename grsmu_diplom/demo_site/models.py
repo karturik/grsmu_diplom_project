@@ -17,9 +17,9 @@ class Teacher(models.Model):
     department = models.ForeignKey('Department', on_delete=models.CASCADE)
     teacher_img = models.ImageField(null=True, blank=True, upload_to='teacher_pics')
     image_src = models.CharField(max_length=100, default="0")
-    communication_average = models.DecimalField(default=0, max_digits=2, decimal_places=1)
-    teaching_average = models.DecimalField(default=0, max_digits=2, decimal_places=1)
-    demanding_average = models.DecimalField(default=0, max_digits=2, decimal_places=1)
+    communication_average = models.FloatField(default=0.0)
+    teaching_average = models.FloatField(default=0.0)
+    demanding_average = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.name
@@ -31,7 +31,7 @@ class Comment(models.Model):
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
 
 class CommentAnswer(models.Model):
-    author = models.CharField(max_length=30)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     comment = models.ForeignKey('Comment', on_delete=models.CASCADE)

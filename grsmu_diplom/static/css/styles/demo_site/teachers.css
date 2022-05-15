@@ -26,12 +26,16 @@
     display: block;
     max-width: 100%;
     height: auto;
+    margin: auto;
 }
 
 .teacher-card-body {
     min-height: 94%;
     background-color: tan;
+    background-size: cover;
+
 }
+
 
 .teacher-name {
     position: absolute;
@@ -54,6 +58,10 @@
     transition: all linear 0.25s;
 }
 
+.teacher-card-body .background-image {
+    filter: blur(5px);
+}
+
 .teacher-card:hover img {
     filter: blur(5px);
 
@@ -67,6 +75,3 @@
     bottom: 60px;
 }
 
-.card-poptya{
-    position: fixed;
-}

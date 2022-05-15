@@ -56,6 +56,9 @@
 .comment-img {
 }
 
+.media-body .delete-form {
+max-width: 10px;
+}
 
 
 .img_detail {

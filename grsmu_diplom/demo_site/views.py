@@ -80,11 +80,14 @@ def demo_site_detail(request, pk):
                     comment = Comment.objects.get(pk=comment_pk),
                     teacher=teacher)
                 answer.save()
-                # form = answer_form.save(commit=False)
-                # form.author = request.user
-                # pk = request.POST.get['comment.pk']
-                # form.comment = Comment.objects.filter(pk=pk)
-                # form.save()
+        elif "answer_delete" in request.POST:
+            answer_pk = request.POST.get('answer_pk')
+            answer = CommentAnswer.objects.filter(pk=answer_pk)
+            answer.delete()
+        elif "comment_delete" in request.POST:
+            comment_pk = request.POST.get('comment_pk')
+            comment = Comment.objects.filter(pk=comment_pk)
+            comment.delete()
         return redirect ('demo_site_detail', pk)
     context = {
         "teacher": teacher,
@@ -99,15 +102,15 @@ def demo_site_detail(request, pk):
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 
-class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
-    model = Comment
-    template_name = 'demo_site/comment_deletion.html'
-    def get_success_url(self):
-        return reverse_lazy('demo_site_index')
-
-    def test_func(self):
-        comment = self.get_object()
-        return str(self.request.user) == str(comment.author) or self.request.user.is_superuser
+# class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+#     model = Comment
+#     template_name = 'demo_site/comment_deletion.html'
+#     def get_success_url(self):
+#         return reverse_lazy("demo_site_index")
+#
+#     def test_func(self):
+#         comment = self.get_object()
+#         return str(self.request.user) == str(comment.author) or self.request.user.is_superuser
 
 class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Comment

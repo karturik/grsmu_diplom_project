@@ -3,17 +3,12 @@
 <div class="col-md-8 offset-md-2">
     <h1>Обновление картинок сайта</h1>
     <form method = "POST">
-    <button type="submit" class="btn btn-primary">Получить</button>
+    <button type="submit" name="data-get" class="btn btn-primary">Получить список фото</button>
     {% csrf_token %}
+    <button type="submit" name="data-save" class="btn btn-primary">Добавить фото в базу</button>
     </form>
     {{ a }}
     {{ teach_link_list }}
     {{ pictures }}
-
-    <form method = "POST">
-    <button type="submit" class="btn btn-primary">Загрузить</button>
-        {{ form.as_p }}
-    {% csrf_token %}
-    </form>
 </div>
 {% endblock %}

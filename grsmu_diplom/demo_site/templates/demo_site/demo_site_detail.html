@@ -112,7 +112,7 @@
                 <p>{{ comment.body }}</p>
             </div>
             {% if comment.author == request.user or request.user.is_superuser %}
-            <form method="post" id="comment-deletion" style="margin-bottom: -25px;">
+            <form method="post" style="margin-bottom: -25px;">
             {% csrf_token %}
             <button type="submit" name="comment_delete" class="btn btn-danger">Удалить</button>
             <input type="hidden" name="comment_pk" value="{{ comment.pk }}">

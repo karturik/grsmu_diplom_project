@@ -83,6 +83,10 @@ def profile_page(request):
             else:
                 messages.error(request, ('Не удалось сохранить изменения'))
             return redirect ('/user/profile')
+        elif "comment_delete" in request.POST:
+            comment_pk = request.POST.get('comment_pk')
+            comment = Comment.objects.filter(pk=comment_pk)
+            comment.delete()
         # MOODLE CHECK
         if "acc_verification" in request.POST:
             Student_group = Group.objects.get(name='Student')

@@ -47,8 +47,12 @@
                         <p>{{ comment.body }}</p>
 						<p class="text-muted mb-0" style="font-size: 12px">{{ comment.created_on }}</p>
                     </div>
-					<a href="{% url 'comment_deletion' comment.pk %}">Удалить</a>
-        			<a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
+					<form method="post" style="margin-bottom: -25px;">
+            	{% csrf_token %}
+            	<button type="submit" name="comment_delete" class="btn btn-danger">Удалить</button>
+            	<input type="hidden" name="comment_pk" value="{{ comment.pk }}">
+            	<a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
+            	</form>
                 </div>
 			</div>
 			{% endfor %}

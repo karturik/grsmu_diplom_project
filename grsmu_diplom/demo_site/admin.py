@@ -18,6 +18,8 @@ class VoteAdmin(admin.ModelAdmin):
 class CommentAnswerAdmin(admin.ModelAdmin):
     pass
 
+
+
 class ProfileAdmin(admin.ModelAdmin):
     pass
 

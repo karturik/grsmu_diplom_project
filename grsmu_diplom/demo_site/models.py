@@ -29,6 +29,14 @@ class Comment(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, related_name="comment_like")
+    dislikes = models.ManyToManyField(User, related_name="comment_dislike")
+
+    def num_likes(self):
+        return self.likes.count()
+
+    def num_dislikes(self):
+        return self.dislikes.count()
 
 class CommentAnswer(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -37,10 +45,10 @@ class CommentAnswer(models.Model):
     comment = models.ForeignKey('Comment', on_delete=models.CASCADE)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
 
+
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     communication = models.IntegerField(default=0)
     teaching = models.IntegerField(default=0)
     demanding = models.IntegerField(default=0)
-

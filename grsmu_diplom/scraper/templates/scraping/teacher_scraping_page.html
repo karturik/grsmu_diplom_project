@@ -4,67 +4,67 @@
 
 
 <div class="col-md-8 offset-md-2">
-<form method = "POST">
-    <button type="submit" name="data-get" class="btn btn-primary">Получить данные</button>
-    {% csrf_token %}
-    <button type="submit" name="data-save" class="btn btn-primary">Добавить в базу</button>
-    <a href="pic_update">Обновить фотографии</a>
-</form>
+    <form method = "POST">
+        <button type="submit" name="data-get" class="btn btn-primary">Получить данные</button>
+        {% csrf_token %}
+        <button type="submit" name="data-save" class="btn btn-primary">Добавить в базу</button>
+        <a href="pic_update">Обновить фотографии</a>
+    </form>
 
     {% if a != -3 %}
-    <h2>Кафедры:</h2>
-<h3>Найдено кафедр на сайте ГрГМУ: {{ grsmu_dep_count }}</h3>
-<h3>Кафедр в базе: {{ base_department_count }}</h3>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-    <h3>Уже добавлены на сайт:</h3>
-    <details>
-    <summary>Добавлены</summary>
-    {% for dep in old_dep_list %}
-    <li style="color: green">{{ dep }}</li>
-    {% endfor %}
-    </details>
-        </div>
-    <div class="col-md-6">
-    <h3>Не добавлены на сайт:</h3>
-    <details>
-    <summary>Не добавлены</summary>
-    {% for dep in new_dep_list %}
-    <li style="color: red">{{ dep }}</li>
-    {% endfor %}
-        </details>
+        <h2>Кафедры:</h2>
+        <h3>Найдено кафедр на сайте ГрГМУ: {{ grsmu_dep_count }}</h3>
+        <h3>Кафедр в базе: {{ base_department_count }}</h3>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Уже добавлены на сайт:</h3>
+                    <details>
+                        <summary>Добавлены</summary>
+                        {% for dep in old_dep_list %}
+                            <li style="color: green">{{ dep }}</li>
+                        {% endfor %}
+                    </details>
+                </div>
+                <div class="col-md-6">
+                    <h3>Не добавлены на сайт:</h3>
+                    <details>
+                        <summary>Не добавлены</summary>
+                            {% for dep in new_dep_list %}
+                                <li style="color: red">{{ dep }}</li>
+                            {% endfor %}
+                    </details>
+                </div>
+            </div>
+		    <hr>
+            <h2>Преподаватели:</h2>
+            <h3>Найдено преподавателей на сайте ГрГМУ: {{ a }}</h3>
+            <h3>Преподавателей в базе: {{ teacher_count }}</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Уже добавлены на сайт:</h3>
+                    <details>
+                        <summary>Добавлены</summary>
+                        {% for name in name_list %}
+                            <li style="color: green">{{ name }}</li>
+                        {% endfor %}
+                    </details>
+                </div>
+                <div class="col-md-6">
+                    <h3>Ну добавлены на сайт:</h3>
+                    <details>
+                        <summary>Не добавлены</summary>
+                        {% for name in new_names %}
+                            <li style="color: red">{{ name }}</li>
+                        {% endfor %}
+                    </details>
+                </div>
+            </div>
+    {% else %}
+        <h3>Кафедр в базе: {{ base_department_count }}</h3>
+        <h3>Преподавателей в базе: {{ teacher_count }}</h3>
+    {% endif %}
     </div>
-</div>
-		    	    <hr>
-    <h2>Преподаватели:</h2>
-    <h3>Найдено преподавателей на сайте ГрГМУ: {{ a }}</h3>
-    <h3>Преподавателей в базе: {{ teacher_count }}</h3>
-    <div class="row">
-        <div class="col-md-6">
-    <h3>Уже добавлены на сайт:</h3>
-    <details>
-    <summary>Добавлены</summary>
-    {% for name in name_list %}
-    <li style="color: green">{{ name }}</li>
-    {% endfor %}
-    </details>
-        </div>
-    <div class="col-md-6">
-    <h3>Ну добавлены на сайт:</h3>
-    <details>
-    <summary>Не добавлены</summary>
-    {% for name in new_names %}
-    <li style="color: red">{{ name }}</li>
-    {% endfor %}
-    </details>
-    </div>
-    </div>
-{% else %}
- <h3>Кафедр в базе: {{ base_department_count }}</h3>
- <h3>Преподавателей в базе: {{ teacher_count }}</h3>
-{% endif %}
-</div>
 </div>
 
 {{ all_info }}

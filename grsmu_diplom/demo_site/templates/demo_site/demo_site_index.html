@@ -9,11 +9,11 @@
     backdrop-filter: blur(100px);
     padding-top: 20px;
     border-radius: 30px;">
-    <h1>Кафедры</h1>
-    <hr>
-    {% for department in departments %}
-    <h2><a href="{% url 'demo_site_department' department.title %}">{{ department.title }}</a></h2>
-    {% endfor %}
+        <h1>Кафедры</h1>
+        <hr>
+        {% for department in departments %}
+            <h2><a href="{% url 'demo_site_department' department.title %}">{{ department.title }}</a></h2>
+        {% endfor %}
     </div>
 </div>
 

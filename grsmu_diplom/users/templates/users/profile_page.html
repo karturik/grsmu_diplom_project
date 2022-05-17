@@ -37,50 +37,50 @@
 		</div>
 <!--			Табличка с отзывами-->
 		    <div class="col-sm">
-			<h4 class="card-title font-weight-bold text-left">Ваши отзывы</h4>
-			{% for comment in comments %}
-			<div class="row">
-		    	<div class="card p-5">
-		    	    <hr>
-                    <div class="card-text">
-                        <p class="text-muted mb-0" style="font-size: 12px">{{ comment.teacher.name }}</p>
-                        <p>{{ comment.body }}</p>
-						<p class="text-muted mb-0" style="font-size: 12px">{{ comment.created_on }}</p>
-                    </div>
-					<form method="post" style="margin-bottom: -25px;">
-            	{% csrf_token %}
-            	<button type="submit" name="comment_delete" class="btn btn-danger">Удалить</button>
-            	<input type="hidden" name="comment_pk" value="{{ comment.pk }}">
-            	<a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
-            	</form>
-                </div>
+				<h4 class="card-title font-weight-bold text-left">Ваши отзывы</h4>
+				{% for comment in comments %}
+					<div class="row">
+		    			<div class="card p-5">
+		    	    		<hr>
+                   			<div class="card-text">
+                        		<p class="text-muted mb-0" style="font-size: 12px">{{ comment.teacher.name }}</p>
+                        		<p>{{ comment.body }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">{{ comment.created_on }}</p>
+                    		</div>
+							<form method="post" style="margin-bottom: -25px;">
+            					{% csrf_token %}
+            					<button type="submit" name="comment_delete" class="btn btn-danger">Удалить</button>
+            					<input type="hidden" name="comment_pk" value="{{ comment.pk }}">
+            					<a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
+            				</form>
+                		</div>
+					</div>
+				{% endfor %}
 			</div>
-			{% endfor %}
-		</div>
 <!--ФОРМА ПРОВЕРКИ MOODLE-->
 		<div class="modal fade" tabindex="-1" id="VerificationModal" role="dialog">
-	  	<div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      	<div class="modal-header">
-			        <h5 class="modal-title">Верификация аккаунта</h5>
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-		        </div>
-		        <div class="modal-body">
-			        <form method="post" enctype="multipart/form-data">
-			          	{% csrf_token %}
-			          	<p>Логин MOODLE: {{ moodle_form.username }}</p>
-			          	<p>Пароль MOODLE: {{ moodle_form.password }}</p>
-						<small>Внимание! Введенные данные используются для разовой проверки и не сохраняются. Верификация аккаунта применяется для подтверждения того, что пользователь является студентом ГрГМУ.</small>
-        		</div>
-		      	<div class="modal-footer">
+	  		<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+			        	<h5 class="modal-title">Верификация аккаунта</h5>
+			        	<button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+			          		<span aria-hidden="true">&times;</span>
+			        	</button>
+		        	</div>
+		        	<div class="modal-body">
+			        	<form method="post" enctype="multipart/form-data">
+			          		{% csrf_token %}
+			          		<p>Логин MOODLE: {{ moodle_form.username }}</p>
+			          		<p>Пароль MOODLE: {{ moodle_form.password }}</p>
+							<small>Внимание! Введенные данные используются для разовой проверки и не сохраняются. Верификация аккаунта применяется для подтверждения того, что пользователь является студентом ГрГМУ.</small>
+        			</div>
+		      		<div class="modal-footer">
 		        		<button type="submit" name="acc_verification" class="btn btn-primary">Проверить</button>
-		        	</form>
-		        </div>
-		    </div>
-	  	</div>
-	</div>
+		        		</form>
+		        	</div>
+		    	</div>
+	  		</div>
+		</div>
 <!--Форма для изменения данных профиля-->
 	<div class="modal fade" tabindex="-1" id="profileModal" role="dialog">
 	  	<div class="modal-dialog" role="document">
@@ -88,7 +88,7 @@
 		      	<div class="modal-header">
 			        <h5 class="modal-title">Изменить</h5>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
+			        	<span aria-hidden="true">&times;</span>
 			        </button>
 		        </div>
 		        <div class="modal-body">
@@ -101,14 +101,13 @@
 						<a href="/user/password_reset">Сменить пароль</a>
 		        </div>
 		      	<div class="modal-footer">
-		        		<button type="submit" name = "user_change" class="btn btn-primary">Сохранить</button>
+		        	<button type="submit" name = "user_change" class="btn btn-primary">Сохранить</button>
 		        	</form>
 		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
 		        </div>
 		    </div>
 	  	</div>
 	</div>
-
-  </div>
+  	</div>
 </div>
 {% endblock %}

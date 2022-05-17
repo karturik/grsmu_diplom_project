@@ -3,13 +3,13 @@
 <div class="col-md-8 offset-md-2">
     <h1>Редактирование комментария:</h1>
     <div class="container">
-    <form method = "POST">
-    {% csrf_token %}
-        <div class="form-group">
-            {{ form.as_p }}
-        </div>
-    <button type="submit" class="btn btn-primary">Изменить</button>
-    </form>
-</div>
+        <form method = "POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Изменить</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

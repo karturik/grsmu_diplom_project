@@ -10,23 +10,10 @@ from django.contrib import messages
 # SEARCHING
 from django.db.models import Q
 
-#LIKE
-import json
-from django.http import JsonResponse
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-
 
 
 
 # Create your views here.
-# def main_page(request):
-#     return render(request, 'demo_site/main_page.html')
-
-# create a custom function to check the request type as
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-
 def demo_site_index(request):
     department = Department.objects.order_by('title')
     context = {
@@ -50,8 +37,11 @@ def demo_site_detail(request, pk):
     vote_form = VoteForm()
     vote_form.calculate_averages(teacher)
     comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
-    votes = Vote.objects.filter(teacher=teacher, user=request.user)
     comment_answers = CommentAnswer.objects.filter(teacher=teacher)
+    if request.user.is_authenticated:
+        votes = Vote.objects.filter(teacher=teacher, user=request.user)
+    else:
+        votes = Vote.objects.filter(teacher=teacher)
     if not request.user.is_authenticated:
         group = 0
     else:
@@ -73,7 +63,7 @@ def demo_site_detail(request, pk):
                     for vote in votes:
                         vote_form = VoteForm(request.POST, instance=vote)
                 else:
-                    pass
+                    vote_form = VoteForm(request.POST)
                 form = vote_form.save(commit=False)
                 form.user = request.user
                 form.teacher = teacher
@@ -98,6 +88,7 @@ def demo_site_detail(request, pk):
             comment_pk = request.POST.get('comment_pk')
             comment = Comment.objects.filter(pk=comment_pk)
             comment.delete()
+        return redirect ('demo_site_detail', pk)
     context = {
         "teacher": teacher,
         "comments": comments,
@@ -138,33 +129,6 @@ def searching(request):
         results = Teacher.objects.filter(name__icontains=searched)
         return render(request, "demo_site/search_page.html", {'searched':searched, "results":results})
     else:
-        return render(request, "search_page.html")
-
-def like_comment(request, id):
-    user=request.user
-    Like=False
-    if request.method=="POST":
-        comment_id=request.POST['comment_id']
-        get_comment=Comment.objects.filter(id=comment_id)
-        if user in get_comment.likes.all():
-            get_comment.likes.remove(user)
-            Like=False
-        else:
-            get_comment.likes.add(user)
-            Like=True
-        data={
-            'liked':Like,
-            'likes_count':get_comment.likes.all().count()
-        }
-        return JsonResponse(data, save=False)
-    return redirect(reverse("demo_site_detail", args=[str(id)]))
-
-
-
-
-
-
-
-
+        return render(request, "demo_site/search_page.html")
 
 

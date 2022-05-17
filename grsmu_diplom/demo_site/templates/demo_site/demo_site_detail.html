@@ -60,10 +60,9 @@
 <!--VOTING-->
     <div class = "collapse" id = "collapse{{ teacher.pk }}">
         <div class="vote-card shadow">
-
             <h6>Оценить: {{ teacher.name }}</h6>
             <hr>
-            <form method="post" id="vote-form">
+            <form method="post">
                 {% csrf_token %}
                 {% for field in vote_form %}
                     <div class="row">
@@ -121,17 +120,6 @@
             <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{comment.pk}}">Ответить</a>
             </form>
             </div>
-<!--  LIKE_BUTTON-->
-        <form action="{% url 'demo_site_detail' teacher.id %}" method="post" class="like-form">
-            {% csrf_token %}
-            {% if user not in comment.likes.all %}
-            <button type="submit" class="like-btn" name="comment_id" value="{{ comment.id }}"></button>
-            {% else %}
-            <button type="submit" class="btn btn-success" name="comment_id" value="{{ comment.id }}"></button>
-            {% endif %}
-            <span class="like-count">{{ comment.num_likes }}</span>
-        </form>
-<!--  LIKE_BUTTON-->
         </div>
 <!--ANSWERS-->
     {% for answer in comment_answers %}
@@ -197,33 +185,5 @@
         document.getElementById("score_" + field + "_" + pk).innerText = document.getElementById("slider_" + field + "_" + pk).getElementsByClassName(field)[0].value;
         }
 </script>
-
-<script>
-$(document).ready(function(){
-   $('.like-form').submit(function(e){
-       e.preventDefault();
-       const comment_id=$('.like-btn').val();
-       const token=$('input[name=csrfmiddlewaretoken]').val();
-       const url=$(this).attr('action')
-       $.ajax({
-            method: "POST",
-            url:url,
-            headers:{'X_CSRFToken': token},
-            data:{
-                'comment_id':comment_id
-            },
-            success:function(response){
-                console.log(response)
-                like=$('#like-count').text(response.likes_count)
-               parseInt(like)
-            },
-            error:function(response){
-                console.log("Failed ", response)
-            }
-       })
-   })
-})
-</script>
-
 
 {% endblock %}

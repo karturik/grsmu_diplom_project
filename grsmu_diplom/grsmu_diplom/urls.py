@@ -3,12 +3,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-# from demo_site.views import views
+from . import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('/', views.main_page, name="main_page"),
+    path('', views.main_page, name="main_page"),
     path('demo_site/', include("demo_site.urls")),
     path('user/', include("users.urls")),
     path('scraper/', include("scraper.urls")),

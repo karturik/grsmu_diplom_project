@@ -5,18 +5,19 @@
 <link href="{% static 'css/styles/users/profile_page.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'css/styles/scraper/teacher_scraping_page.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'css/styles/demo_site/demo_site_index.css' %}" rel="stylesheet" type="text/css" />
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<link href="{% static 'css/styles/grsmu_diplom/main_page.css' %}" rel="stylesheet" type="text/css" />-->
+
+<script src="{% static 'js/bootstrap.bundle.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/jquery-3.6.0.js' %}" type="text/javascript"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="{% static 'js/bootstrap.bundle.js' %}" type="text/javascript"></script>
-<script src="{% static 'js/jquery-3.6.0.min.js' %}" type="text/javascript"></script>
 
 <!--НАЧАЛО-->
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <title>GRSMU</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -25,7 +26,7 @@
       <div class="col-12">
 <nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
     <div class="container-fluid px-0">
-    <a class="navbar-brand" href="/demo_site/">Главная</a>
+    <a class="navbar-brand" href="/">Главная</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon">⟱</span>
     </button>
@@ -66,8 +67,9 @@
     {% include 'users/messages.html' %}
 <div class="content-main-block">
 <div class="col-md-8 offset-md-2">
+    <body>
     {% block page_content %}{% endblock %}
+    </body>
 </div>
 </div>
-
 

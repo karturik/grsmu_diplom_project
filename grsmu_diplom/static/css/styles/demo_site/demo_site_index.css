@@ -47,6 +47,7 @@ CARD
     background-clip: border-box;
     border: 0 solid rgba(0, 0, 0, 0.125);
     border-radius: 0.75rem;
+    margin-bottom: 10px;
 }
 html * {
     -webkit-font-smoothing: antialiased;

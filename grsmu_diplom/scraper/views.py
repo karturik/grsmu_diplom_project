@@ -146,9 +146,10 @@ def teacher_scraping(request):
                             teacher.save()
                 messages.success(request, ('Изменения сохранены!'))
                 teacher_count = Teacher.objects.all().count()
+                grsmu_dep_count = len(dep_list)
             except:
                 messages.error(request, ('Кэша не осталось, надо сначала получить данные'))
-    grsmu_dep_count = len(dep_list)
+    grsmu_dep_count = 2
     context = {
         'a': a,
         'dep_list': dep_list,
@@ -221,24 +222,23 @@ def teacher_pic_scraping(request):
                 name = soup.h1.string
                 img_link = "http://www.grsmu.by" + soup.find(class_="img")['href']
                 pictures[name] = img_link
-        if "data-save" in request.POST:
             for key, value in pictures.items():
                 img_url = value
                 teacher_name = key
                 teacher = Teacher.objects.get(name=teacher_name)
                 name = urlparse(img_url).path.split('/')[-1]
                 if not teacher.teacher_img:
-                    if path.exists('/vol/web/media/teacher_pics'):
-                        file_path = '/vol/web/media/teacher_pics' + str(name)
-                        if os.path.isfile(file_path):
-                            messages.info(request, (teacher_name + ' картинка уже загружена'))
-                            os.remove(file_path)
-                img_temp = NamedTemporaryFile(delete=True)
-                img_temp.write(urlopen(img_url).read())
-                img_temp.flush()
-                teacher.teacher_img.save(name, File(img_temp))
-                teacher.save()
-            messages.error(request, ('Кэша не осталось, надо сначала получить данные'))
+                    location = '/vol/web/media/teacher_pics'
+                    if path.exists(location):
+                        file = os.path.join(location, str(name))
+                        if os.path.isfile(file):
+                            messages.info(request, (teacher_name + ' фото уже есть'))
+                            os.remove(file)
+                    img_temp = NamedTemporaryFile(delete=True)
+                    img_temp.write(urlopen(img_url).read())
+                    img_temp.flush()
+                    teacher.teacher_img.save(name, File(img_temp))
+                    teacher.save()
 
         # teacher = Teacher.objects.get(name="Дешко Михаил Сергеевич")
         # file_path = '/vol/web/media/teacher_pics/1557571430.jpg'

@@ -3,9 +3,12 @@
 {% load static %}
 
 
-    <div class="container">
-            <div class="top">
-
+<div class="container" style="max-width: 1200px;
+    background-color: rgb(255 255 220 / 50%);
+    backdrop-filter: blur(100px);
+    padding-top: 20px;
+    border-radius: 30px;">
+   <div class="top">
         <div class="row justify-content-md-center">
     <div class="col-md-auto">
     {% if teacher.teacher_img %}
@@ -41,7 +44,6 @@
     </div>
     </div>
     </div>
-</div>
 </div>
 
 
@@ -97,7 +99,7 @@
 <!--COMMENTS-->
     {% if group == 'Student' %}
     <h3>Комментарии:</h3>
-    {% for comment in comments %}
+    {% for comment in page_obj %}
             <div class="media g-mb-30 media-comment">
                 {% if comment.author.profile.profile_pic %}
                 <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-img" src="{{ comment.author.profile.profile_pic.url }}" alt="Image Description">
@@ -163,8 +165,6 @@
 </div>
     {% endfor %}
 <!--COMMENT ANSWER-->
-
-
     {% elif group == 'Not_student' %}
     <div class="card">
     <div class="card-header">
@@ -174,10 +174,29 @@
     <p class="card-text">Чтобы просматривать комментарии необходимо подтвердить аккаунт!</p>
     <a href="/user/profile" class="btn btn-primary">Подтвердить</a>
     </div>
-    </div>
     {% endif %}
+</div>
+<div class="pagination_rounded">
+    <div class="step-links">
+        <ul>
+        {% if page_obj.has_previous %}
+          <li><a href="?page=1" class="prev">&laquo; First</a></li>
+            <li><a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i>Prev</a></li>
+        {% endif %}
 
+        <li><span class="current">
+            {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span></li>
 
+        {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}" class="next"> Next <i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+            <li><a href="?page={{ page_obj.paginator.num_pages }}" class="next">Last &raquo;</a></li>
+        {% endif %}
+        </ul>
+    </div>
+</div>
+
+</div>
 
 
 <script>

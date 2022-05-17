@@ -10,6 +10,8 @@ from django.contrib import messages
 # SEARCHING
 from django.db.models import Q
 
+#PAGINATION
+from django.core.paginator import Paginator
 
 
 
@@ -37,6 +39,9 @@ def demo_site_detail(request, pk):
     vote_form = VoteForm()
     vote_form.calculate_averages(teacher)
     comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
+    paginator = Paginator(comments, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     comment_answers = CommentAnswer.objects.filter(teacher=teacher)
     if request.user.is_authenticated:
         votes = Vote.objects.filter(teacher=teacher, user=request.user)
@@ -99,6 +104,7 @@ def demo_site_detail(request, pk):
         "vote_count": vote_count,
         "comment_answers": comment_answers,
         "votes": votes,
+        "page_obj": page_obj,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 

@@ -64,7 +64,8 @@ body {
   padding: 20px 10px 0 10px;
   margin: 0;
   height: 347px;
-  overflow: scroll;
+  overflow: hidden;
+  scroll;
 }
 .messages .message {
   clear: both;
@@ -139,8 +140,8 @@ body {
   margin-top: -2px;
 }
 .messages .message .text_wrapper .text {
-  font-size: 18px;
-  font-weight: 300;
+  font-size: 19px;
+  font-weight: 400;
 }
 
 .bottom_wrapper {

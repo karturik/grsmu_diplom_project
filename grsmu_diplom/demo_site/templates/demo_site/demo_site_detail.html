@@ -161,21 +161,7 @@
         </div>
     </div>
     {% endfor %}
-
-<!--COMMENT ANSWER-->
-    {% elif group == 'Not_student' %}
-    <div class="card">
-        <div class="card-header">
-            Комментарии
-        </div>
-        <div class="card-body">
-            <p class="card-text">Чтобы просматривать комментарии необходимо подтвердить аккаунт!</p>
-            <a href="/user/profile" class="btn btn-primary">Подтвердить</a>
-        </div>
-    {% endif %}
-    </div>
-<!--    PAGINATION-->
-    <div class="pagination_rounded">
+        <div class="pagination_rounded">
         <div class="step-links">
             <ul>
                 {% if page_obj.has_previous %}
@@ -194,6 +180,21 @@
             </ul>
         </div>
     </div>
+
+<!--COMMENT ANSWER-->
+    {% elif group == 'Not_student' %}
+    <div class="card">
+        <div class="card-header">
+            Комментарии
+        </div>
+        <div class="card-body">
+            <p class="card-text">Чтобы просматривать комментарии необходимо подтвердить аккаунт!</p>
+            <a href="/user/profile" class="btn btn-primary">Подтвердить</a>
+        </div>
+    {% endif %}
+    </div>
+<!--    PAGINATION-->
+
 </div>
 
 

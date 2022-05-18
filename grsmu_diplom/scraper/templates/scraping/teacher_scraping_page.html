@@ -4,7 +4,7 @@
 
 
 <div class="col-md-8 offset-md-2">
-    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 220 / 50%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px;">
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; padding-bottom: 10px; border-radius: 30px;">
         <form method = "POST">
             <button type="submit" name="data-get" class="btn btn-primary">Получить данные</button>
             {% csrf_token %}
@@ -68,6 +68,7 @@
         </div>
     </div>
 </div>
-
+<!--{% if all_info %}-->
 <!--{{ all_info }}-->
+<!--{% endif %}-->
 {% endblock %}

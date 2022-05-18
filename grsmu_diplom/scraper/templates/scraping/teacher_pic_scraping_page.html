@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 {% block page_content %}
 <div class="col-md-8 offset-md-2">
-    <h1>Обновление картинок сайта</h1>
-    <form method = "POST">
-        <button type="submit" name="data-get" class="btn btn-primary">Получить фото и добавить в базу</button>
-        {% csrf_token %}
-<!--        <button type="submit" name="data-save" class="btn btn-primary">Добавить фото в базу</button>-->
-    </form>
-    {{ a }}
-    {{ teach_link_list }}
-    {{ pictures }}
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
+        <h1>Обновление картинок сайта</h1>
+        <form method = "POST">
+            <button type="submit" name="data-get" class="btn btn-primary">Получить фото и добавить в базу</button>
+            {% csrf_token %}
+    <!--        <button type="submit" name="data-save" class="btn btn-primary">Добавить фото в базу</button>-->
+        </form>
+        {% if a %}
+            {{ a }}
+            {{ teach_link_list }}
+            {{ pictures }}
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

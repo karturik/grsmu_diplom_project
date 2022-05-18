@@ -43,15 +43,19 @@ def demo_site_detail(request, pk):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     comment_answers = CommentAnswer.objects.filter(teacher=teacher)
+    #если юзер авторизован - получаем инфу о его оценке, если нет - оценки всех остальных
     if request.user.is_authenticated:
         votes = Vote.objects.filter(teacher=teacher, user=request.user)
     else:
         votes = Vote.objects.filter(teacher=teacher)
+    #если юзер не авторизован, то его группы нет
     if not request.user.is_authenticated:
         group = 0
     else:
         group = str(request.user.groups.get())
+    #после нажатия на кнопку
     if request.method == "POST":
+        #кнопка "оставить комментарий"
         if "comment_left" in request.POST:
             comment_form = CommentForm(request.POST)
             if comment_form.is_valid():
@@ -61,8 +65,10 @@ def demo_site_detail(request, pk):
                     teacher = teacher
                 )
                 comment.save()
+        #кнопка "оценить"
         elif "score_submit" in request.POST:
             vote_form = VoteForm(request.POST)
+            #если юзер уже оценивал - меняем его имеющуюся оценку
             if vote_form.is_valid():
                 if votes:
                     for vote in votes:
@@ -76,6 +82,7 @@ def demo_site_detail(request, pk):
                 messages.success(request, (f'{form.teacher.name}, оценка сохранена'))
             else:
                 messages.error(request,('Ошибка при сохранении оценки'))
+        #кнопка "ответить на комментарий"
         elif "comment_answer" in request.POST:
             answer_form = CommentAnswerForm(request.POST)
             if answer_form.is_valid():
@@ -85,10 +92,12 @@ def demo_site_detail(request, pk):
                     comment = Comment.objects.get(pk=comment_pk),
                     teacher=teacher)
                 answer.save()
+        #кнопка "удалить ответ"
         elif "answer_delete" in request.POST:
             answer_pk = request.POST.get('answer_pk')
             answer = CommentAnswer.objects.filter(pk=answer_pk)
             answer.delete()
+        #кнопка "удалить комментарий"
         elif "comment_delete" in request.POST:
             comment_pk = request.POST.get('comment_pk')
             comment = Comment.objects.filter(pk=comment_pk)

@@ -67,8 +67,10 @@ def teacher_scraping(request):
     teacher_count = Teacher.objects.all().count()
     base_department_count = Department.objects.all().count()
     grsmu_dep_count = 0
+    #после нажатия на кнопку
     if request.method == "POST":
         if "data-get" in request.POST:
+            #получаем ссылки на страницы кафедр и список кафедр
             url = "http://www.grsmu.by/ru/university/structure/chairs/"
             response = requests.get(url)
             soup = BeautifulSoup(response.content, "html.parser")
@@ -106,7 +108,7 @@ def teacher_scraping(request):
                     link_list.append('http://www.grsmu.by' + links + 'ophtalmology/sostav_eyes/')
                 if 'ru/university/' in links:
                     link_list.append('http://www.grsmu.by' + links + 'sostav/')
-
+            #из каждой кафедры вытягиваем информацию про преподавателей
             for link in link_list:
                 department_info = {}
                 url = link
@@ -133,6 +135,7 @@ def teacher_scraping(request):
         # ДОБАВЛЕНИЕ В БАЗУ ПО КНОПКЕ
         form = TeacherAddForm(request.POST)
         if "data-save" in request.POST:
+            #если есть кэш - вытягиваем информацию оттуда
             try:
                 dep_list = cache.get('dep_list')
                 all_info = cache.get('all_info')
@@ -183,6 +186,7 @@ def teacher_pic_scraping(request):
             soup = BeautifulSoup(response.content, "html.parser")
             departments = soup.find_all("div", class_="category-item")
             # ФОРМИРУЕМ ССЫЛКИ НА ПРОФ.СОСТАВ
+            #исключаем нестандратные ссылки
             for dep in departments:
                 links = dep.find('a')['href']
                 if '/chairs/cafedry_4' in links:
@@ -206,6 +210,7 @@ def teacher_pic_scraping(request):
                     link_list.append('http://www.grsmu.by' + links + 'ophtalmology/sostav_eyes/')
                 if 'ru/university/' in links:
                     link_list.append('http://www.grsmu.by' + links + 'sostav/')
+            #из этих ссылок вытягиваем информацию про преподавателей
             for link in link_list:
                 url = link
                 response = requests.get(url)
@@ -216,6 +221,7 @@ def teacher_pic_scraping(request):
                     a += 1
                     teach_link_list.append("http://www.grsmu.by"+teach_link)
             pictures = {}
+            #формируем словарь имя:ссылка на фото
             for item in teach_link_list:
                 url = item
                 response = requests.get(url)
@@ -223,6 +229,7 @@ def teacher_pic_scraping(request):
                 name = soup.h1.string
                 img_link = "http://www.grsmu.by" + soup.find(class_="img")['href']
                 pictures[name] = img_link
+            #по каждой ссылке скачиваем фото, если его нет. Если есть - замещаем старое.
             for key, value in pictures.items():
                 img_url = value
                 teacher_name = key

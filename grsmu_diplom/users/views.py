@@ -76,6 +76,7 @@ def profile_page(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     if request.method == "POST":
+        #кнопка "изменить данные профиля"
         if "user_change" in request.POST:
             user_form = UserForm(request.POST, instance=request.user)
             profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -89,6 +90,7 @@ def profile_page(request):
             else:
                 messages.error(request, ('Не удалось сохранить изменения'))
             return redirect ('/user/profile')
+        #кнопка "удалить комментарий"
         elif "comment_delete" in request.POST:
             comment_pk = request.POST.get('comment_pk')
             comment = Comment.objects.filter(pk=comment_pk)
@@ -97,18 +99,21 @@ def profile_page(request):
         if "acc_verification" in request.POST:
             Student_group = Group.objects.get(name='Student')
             moodle_form = StudentVerificationForm(request.POST)
+            #вытягиваем логин и пароль из формы
             if moodle_form.is_valid():
                 moodle_username = moodle_form.cleaned_data['username']
                 moodle_password = moodle_form.cleaned_data['password']
                 login_data = {
                         'username': moodle_username,
                         'password': moodle_password}
+                #делаем гет и пост запросы, возвращаем результат
                 with requests.Session() as s:
                       url = "http://edu.grsmu.by/login/index.php"
                       r = s.get(url)
                       soup = BeautifulSoup(r.content)
                       login_data['form-control'] = soup.find('input', attrs={'class':'form-control'})['value']
                       r = s.post(url, data=login_data)
+                      #если запрос прошел - переводим в новую группу
                       if "http://edu.grsmu.by/user/profile.php?id" in str(r.content):
                           request.user.groups.clear()
                           request.user.groups.add(Student_group)

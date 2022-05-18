@@ -3,9 +3,9 @@
 <div class="col-md-8 offset-md-2">
     <h1>Обновление картинок сайта</h1>
     <form method = "POST">
-        <button type="submit" name="data-get" class="btn btn-primary">Получить список фото</button>
+        <button type="submit" name="data-get" class="btn btn-primary">Получить фото и добавить в базу</button>
         {% csrf_token %}
-        <button type="submit" name="data-save" class="btn btn-primary">Добавить фото в базу</button>
+<!--        <button type="submit" name="data-save" class="btn btn-primary">Добавить фото в базу</button>-->
     </form>
     {{ a }}
     {{ teach_link_list }}

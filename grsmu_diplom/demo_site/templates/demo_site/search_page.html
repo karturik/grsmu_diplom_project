@@ -2,6 +2,8 @@
 {% block page_content %}
 {% load static %}
 <div class="col-md-8 offset-md-2">
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
+
     {% if searched %}
         <h1>Поиск по сайту: {{ searched }}</h1>
         {% for result in results %}
@@ -35,5 +37,6 @@
         <hr>
         {% endfor %}
     {% endif %}
+</div>
 </div>
 {% endblock %}

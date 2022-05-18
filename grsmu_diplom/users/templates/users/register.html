@@ -3,18 +3,20 @@
 {% block page_content %}
 
 <div class="col-md-8 offset-md-2">
-    <h1>Регистрация</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <p>Логин: {{ register_form.username }}</p>
-        <p>{{ register_form.email.label }}: {{ register_form.email }}</p>
-        <p>Пароль: {{ register_form.password1 }}</p>
-        <p>Подтверждение пароля: {{ register_form.password2 }}</p>
-        {% for message in messages %}
-                <p style="color: turquoise">{{ message }}</p>
-        {% endfor %}
-        <button class="btn btn-primary" type="submit">Готово</button>
-    </form>
-    <p class="text-center">Если у Вас уже есть аккаунт, <a href="/user/login">Войти</a></p>
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
+        <h1>Регистрация</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Логин: {{ register_form.username }}</p>
+            <p>{{ register_form.email.label }}: {{ register_form.email }}</p>
+            <p>Пароль: {{ register_form.password1 }}</p>
+            <p>Подтверждение пароля: {{ register_form.password2 }}</p>
+            {% for message in messages %}
+                    <p style="color: turquoise">{{ message }}</p>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Готово</button>
+        </form>
+        <p class="text-center">Если у Вас уже есть аккаунт, <a href="/user/login">Войти</a></p>
+    </div>
 </div>
 {% endblock %}

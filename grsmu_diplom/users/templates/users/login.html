@@ -3,6 +3,7 @@
 {% block page_content %}
 
 <div class="col-md-8 offset-md-2">
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
     <h1>Войти</h1>
     <form method="POST">
         {% csrf_token %}
@@ -15,5 +16,6 @@
     </form>
     <p class="text-center">Забыли пароль?<a href="/user/password_reset">Восстановить</a></p>
     <p class="text-center">Если у Вас еще нет аккаунта, <a href="/user/register">Регистрация</a></p>
+</div>
 </div>
 {% endblock %}

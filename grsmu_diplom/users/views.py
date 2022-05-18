@@ -23,6 +23,8 @@ from django.utils.encoding import force_bytes
 #MOODLE check
 from bs4 import BeautifulSoup
 
+#PAGINATION
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -69,6 +71,10 @@ def logout_request(request):
 
 def profile_page(request):
     comments = Comment.objects.filter(author=request.user).order_by('-created_on')
+    comment_list = Comment.objects.filter(author=request.user).order_by('-created_on')
+    paginator = Paginator(comment_list, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     if request.method == "POST":
         if "user_change" in request.POST:
             user_form = UserForm(request.POST, instance=request.user)
@@ -123,6 +129,7 @@ def profile_page(request):
         "comments": comments,
         "group": group,
         "moodle_form": moodle_form,
+        "page_obj": page_obj,
     }
 
     return render(request=request, template_name='users/profile_page.html', context=context, )

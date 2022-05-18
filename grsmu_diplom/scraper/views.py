@@ -66,6 +66,7 @@ def teacher_scraping(request):
     new_names = []
     teacher_count = Teacher.objects.all().count()
     base_department_count = Department.objects.all().count()
+    grsmu_dep_count = 0
     if request.method == "POST":
         if "data-get" in request.POST:
             url = "http://www.grsmu.by/ru/university/structure/chairs/"
@@ -123,6 +124,7 @@ def teacher_scraping(request):
                     department_info[name] = position
                     if not department_info in all_info:
                         all_info.append(department_info)
+            grsmu_dep_count = len(dep_list)
             cache.delete_many(['dep_list', 'all_info'])
             cache.set('dep_list', dep_list, 1800)
             cache.set('all_info', all_info, 1800)
@@ -149,7 +151,6 @@ def teacher_scraping(request):
                 grsmu_dep_count = len(dep_list)
             except:
                 messages.error(request, ('Кэша не осталось, надо сначала получить данные'))
-    grsmu_dep_count = 2
     context = {
         'a': a,
         'dep_list': dep_list,

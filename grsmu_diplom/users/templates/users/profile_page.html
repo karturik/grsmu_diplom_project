@@ -3,7 +3,7 @@
 {% block page_content %}
 
 	<br><br>
-	<div class="container mx-auto">
+	<div class="container mx-auto" style="max-width: 1200px; background-color: rgb(255 255 220 / 50%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px;">
 	    <div class="row">
 	    	<div class="col-md-3">
 		    	<div class="card p-4">
@@ -38,7 +38,7 @@
 <!--			Табличка с отзывами-->
 		    <div class="col-sm">
 				<h4 class="card-title font-weight-bold text-left">Ваши отзывы</h4>
-				{% for comment in comments %}
+				{% for comment in page_obj %}
 					<div class="row">
 		    			<div class="card p-5">
 		    	    		<hr>
@@ -56,6 +56,25 @@
                 		</div>
 					</div>
 				{% endfor %}
+				    <div class="pagination_rounded">
+						<div class="step-links">
+							<ul>
+								{% if page_obj.has_previous %}
+									<li><a href="?page=1" class="prev">&laquo; First</a></li>
+									<li><a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i>Prev</a></li>
+								{% endif %}
+
+								<li><span class="current">
+									стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+								</span></li>
+
+								{% if page_obj.has_next %}
+									<li><a href="?page={{ page_obj.next_page_number }}" class="next"> Next <i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+									<li><a href="?page={{ page_obj.paginator.num_pages }}" class="next">Last &raquo;</a></li>
+								{% endif %}
+							</ul>
+						</div>
+					</div>
 			</div>
 <!--ФОРМА ПРОВЕРКИ MOODLE-->
 		<div class="modal fade" tabindex="-1" id="VerificationModal" role="dialog">

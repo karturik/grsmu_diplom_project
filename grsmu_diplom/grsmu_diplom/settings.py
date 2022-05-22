@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 
+# HEROKU
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,11 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-942d!krf#ih2rr9jyime%6k#@-h4!*etdg#n%ctltayf2vna%-')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG', '1')))
+DEBUG = bool(int(os.environ.get('DEBUG', '0')))
 
 ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0'] #
 
-ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost')
+ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost,grsmu-check.herokuapp.com')
 if ALLOWED_HOSTS_ENV:
     ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 
@@ -42,8 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #HEROKU
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'demo_site',
     'users',
     'scraper',
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,19 +88,23 @@ WSGI_APPLICATION = 'grsmu_diplom.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
     # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': os.environ.get('DB_NAME', 'demo'),
-    #     'USER': os.environ.get('DB_USER', 'postgres'),
-    #     'PASSWORD': os.environ.get('DB_PASSWORD', '141928'),
-    #     'HOST': os.environ.get('DB_HOST', 'localhost'),
-    #     'PORT': os.environ.get('DB_PORT', '5432'),
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'demo'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', '141928'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+    }
 }
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
+db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=500, ssl_require=True)
+DATABASES['default'].update(db_from_env)
 
 CACHES = {
     'default': {
@@ -151,7 +157,9 @@ MEDIAFILES_DIRS = [
     BASE_DIR / 'media',
 ]
 
-STATIC_ROOT = os.environ.get('BASE_DIR', '/vol/web/static')
+# STATIC_ROOT = os.environ.get('BASE_DIR', '/vol/web/static')
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/static/media/'
 MEDIA_ROOT = '/vol/web/media/'

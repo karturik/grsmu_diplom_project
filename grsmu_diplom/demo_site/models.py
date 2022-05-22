@@ -12,10 +12,10 @@ class Department(models.Model):
 
 
 class Teacher(models.Model):
-    name = models.CharField(max_length=50)
-    position = models.CharField(max_length=40)
+    name = models.CharField(max_length=70)
+    position = models.CharField(max_length=70)
     department = models.ForeignKey('Department', on_delete=models.CASCADE)
-    teacher_img = models.ImageField(null=True, blank=True, upload_to='teacher_pics', default='teacher.jpg')
+    teacher_img = models.ImageField(null=True, blank=True, upload_to='teacher_pics')
     image_src = models.CharField(max_length=100, default="0")
     communication_average = models.FloatField(default=0.0)
     teaching_average = models.FloatField(default=0.0)

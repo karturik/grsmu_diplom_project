@@ -178,3 +178,6 @@ EMAIL_USE_TLS = True
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_HOST_USER = 'grsmu.check@gmail.com'
 EMAIL_HOST_PASSWORD = 'fc6-5KJ-sT8-KK7'
+
+
+CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com', 'https://*127.0.0.1']

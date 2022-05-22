@@ -245,6 +245,7 @@ def teacher_pic_scraping(request):
                     img_temp = NamedTemporaryFile(delete=True)
                     img_temp.write(urlopen(img_url).read())
                     img_temp.flush()
+                    img_temp.close()
                     teacher.teacher_img.save(name, File(img_temp))
                     teacher.save()
 

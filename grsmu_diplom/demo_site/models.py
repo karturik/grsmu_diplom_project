@@ -1,5 +1,4 @@
 from django.db import models
-from users.models import Profile
 from django.contrib.auth.models import User
 
 
@@ -10,6 +9,7 @@ class Department(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class Teacher(models.Model):
     name = models.CharField(max_length=50)
@@ -24,11 +24,13 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
 
+
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
+
 
 class CommentAnswer(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -36,6 +38,7 @@ class CommentAnswer(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     comment = models.ForeignKey('Comment', on_delete=models.CASCADE)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
+
 
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

@@ -48,11 +48,6 @@ Stop the service for the version you don't want (You can stop it permanentally f
 Start the service for the version you want.
 
 
-ЕМАИЛ СЕРВИС
-GMAIL login grsmu.check
-password: fc6-5KJ-sT8-KK7
-
-
 t = TemperatureData.objects.get(id=1)
 t.value = 999  # change field
 t.save() # this will update only

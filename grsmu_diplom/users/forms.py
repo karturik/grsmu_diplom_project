@@ -25,7 +25,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('profile_pic', 'course')
+        fields = ('course',)
 
 class StudentVerificationForm(forms.Form):
     username = forms.CharField(max_length=30)

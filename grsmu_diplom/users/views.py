@@ -75,15 +75,16 @@ def profile_page(request):
     paginator = Paginator(comment_list, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    profile_pics_list = ['images/teacher.jpg', 'images/van.jpg', 'images/1.jpg']
     if request.method == "POST":
         #кнопка "изменить данные профиля"
         if "user_change" in request.POST:
             user_form = UserForm(request.POST, instance=request.user)
-            profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+            profile_form = ProfileForm(request.POST, instance=request.user.profile)
             #обновление картинки профиля
             if user_form.is_valid() and profile_form.is_valid():
+                request.user.profile.profile_pic = request.POST.get('picture-name')
                 profile_form.save()
-                request.user.profile_pic = profile_form.cleaned_data.get('profile_pic')
                 user_form.save()
                 #обновляет логин в "автор комментариев"
                 messages.success(request, ('Изменения сохранены!'))
@@ -135,6 +136,7 @@ def profile_page(request):
         "group": group,
         "moodle_form": moodle_form,
         "page_obj": page_obj,
+        "profile_pics_list": profile_pics_list,
     }
 
     return render(request=request, template_name='users/profile_page.html', context=context, )

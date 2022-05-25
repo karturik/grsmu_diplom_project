@@ -94,7 +94,7 @@
     {% for comment in page_obj %}
         <div class="media g-mb-30 media-comment">
             {% if comment.author.profile.profile_pic %}
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-img" src="{{ comment.author.profile.profile_pic.url }}" alt="Image Description">
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-img" src="{% static comment.author.profile.profile_pic %}" alt="Image Description">
                 {% else %}
                 <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-img" src="{% static 'images/user.jpg' %}" alt="Image Description">
                 {% endif %}
@@ -114,6 +114,9 @@
             <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{comment.pk}}">Ответить</a>
                 </form>
             </div>
+            <div id="like-section">
+            {% include 'demo_site/like_section.html' %}
+            </div>
         </div>
 <!--ANSWERS-->
     <details>
@@ -123,7 +126,7 @@
 
                 <div class="media g-mb-30 media-comment-answer">
                     {% if answer.author.profile.profile_pic %}
-                        <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{{ answer.author.profile.profile_pic.url }}" alt="Image Description">
+                        <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static answer.author.profile.profile_pic %}" alt="Image Description">
                         {% else %}
                         <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static 'images/user.jpg' %}" alt="Image Description">
                     {% endif %}

@@ -131,9 +131,7 @@
         				<p>Email: {{ user_form.email }}</p>
         				<p>Курс: {{ profile_form.course }}</p>
 						<a href="/user/password_reset">Сменить пароль</a>
-		        </div>
-
-				<p>Фото профиля:</p>
+						<p>Фото профиля:</p>
 				  <div>
 					{% for ph in profile_pics_list %}
 					{% if ph == user.profile.profile_pic %}
@@ -145,9 +143,9 @@
 				  	{% endfor %}
 				  </div>
 					<input type="hidden" id="picture-name" name="picture-name" value="0">
+		        </div>
 		      		<div class="modal-footer">
 		        	<button type="submit" name = "user_change" class="btn btn-primary">Сохранить</button>
-		        	<button type="button">Check</button>
 		        	</form>
 
 		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>

@@ -29,6 +29,8 @@ class Comment(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
+
 
 class CommentAnswer(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)

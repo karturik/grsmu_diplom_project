@@ -75,7 +75,7 @@ def profile_page(request):
     paginator = Paginator(comment_list, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    profile_pics_list = ['images/teacher.jpg', 'images/van.jpg', 'images/1.jpg']
+    profile_pics_list = ['images/teacher.jpg', 'images/van.jpg', 'images/1.jpg', 'images/user.jpg']
     if request.method == "POST":
         #кнопка "изменить данные профиля"
         if "user_change" in request.POST:

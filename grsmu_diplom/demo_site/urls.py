@@ -1,4 +1,5 @@
 from django.urls import path
+from django.urls import re_path as url
 from . import views
 from .views import CommentEditView\
     # , CommentDeleteView
@@ -14,4 +15,5 @@ urlpatterns = [
     # path("comment/<int:pk>/deletion/", view=login_required(CommentDeleteView.as_view(), login_url=reverse_lazy('users:login')), name="comment_deletion"),
     path("comment/<int:pk>/edit/", CommentEditView.as_view(), name="comment_edit"),
     path("search/", views.searching, name="searching"),
+    path('likes/', views.likes, name='likes'),
 ]

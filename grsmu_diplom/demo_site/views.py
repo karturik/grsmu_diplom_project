@@ -7,11 +7,20 @@ from django.urls import reverse_lazy, reverse
 from .forms import CommentForm, VoteForm, CommentAnswerForm
 from django.contrib import messages
 
-# SEARCHING
-from django.db.models import Q
-
 #PAGINATION
 from django.core.paginator import Paginator
+
+#Liks
+from django.http import HttpResponse
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
+from django.contrib import messages
+from django.views.decorators.http import require_POST
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
 
 
 
@@ -117,15 +126,6 @@ def demo_site_detail(request, pk):
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 
-# class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
-#     model = Comment
-#     template_name = 'demo_site/comment_deletion.html'
-#     def get_success_url(self):
-#         return reverse_lazy("demo_site_index")
-#
-#     def test_func(self):
-#         comment = self.get_object()
-#         return str(self.request.user) == str(comment.author) or self.request.user.is_superuser
 
 class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Comment
@@ -145,5 +145,31 @@ def searching(request):
         return render(request, "demo_site/search_page.html", {'searched':searched, "results":results})
     else:
         return render(request, "demo_site/search_page.html")
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+@require_POST
+def likes(request):
+    user = request.user
+    pk = request.POST.get('pk')
+    comment = Comment.objects.get(pk=pk)
+    is_liked = True
+    if comment.likes.filter(id=request.user.id).exists():
+        comment.likes.remove(request.user)
+        is_liked = False
+    else:
+        comment.likes.add(request.user)
+        is_liked = True
+
+    context = {
+    "comment": comment,
+    'is_liked': is_liked,
+    'total_likes': comment.likes.count(),
+    }
+    if is_ajax(request=request):
+        html = render_to_string('demo_site/like_section.html', context, request=request)
+        return JsonResponse({'form': html})
+
 
 

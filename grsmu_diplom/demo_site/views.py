@@ -149,18 +149,17 @@ def searching(request):
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
-@require_POST
 def likes(request):
     user = request.user
     pk = request.POST.get('pk')
     comment = Comment.objects.get(pk=pk)
-    is_liked = True
-    if comment.likes.filter(id=request.user.id).exists():
-        comment.likes.remove(request.user)
-        is_liked = False
-    else:
-        comment.likes.add(request.user)
-        is_liked = True
+    if request.method == "POST":
+        if comment.likes.filter(id=request.user.id).exists():
+            comment.likes.remove(request.user)
+            is_liked = False
+        else:
+            comment.likes.add(request.user)
+            is_liked = True
 
     context = {
     "comment": comment,

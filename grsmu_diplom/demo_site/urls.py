@@ -16,4 +16,5 @@ urlpatterns = [
     path("comment/<int:pk>/edit/", CommentEditView.as_view(), name="comment_edit"),
     path("search/", views.searching, name="searching"),
     path('likes/', views.likes, name='likes'),
+    path('dislikes/', views.dislikes, name='dislikes'),
 ]

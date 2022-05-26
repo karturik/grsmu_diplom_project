@@ -30,6 +30,7 @@ class Comment(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
 
 
 class CommentAnswer(models.Model):

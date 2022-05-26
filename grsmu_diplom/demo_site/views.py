@@ -159,12 +159,35 @@ def likes(request):
             is_liked = False
         else:
             comment.likes.add(request.user)
+            comment.dislikes.remove(request.user)
             is_liked = True
 
     context = {
     "comment": comment,
     'is_liked': is_liked,
     'total_likes': comment.likes.count(),
+    }
+    if is_ajax(request=request):
+        html = render_to_string('demo_site/like_section.html', context, request=request)
+        return JsonResponse({'form': html})
+
+def dislikes(request):
+    user = request.user
+    pk = request.POST.get('pk')
+    comment = Comment.objects.get(pk=pk)
+    if request.method == "POST":
+        if comment.dislikes.filter(id=request.user.id).exists():
+            comment.dislikes.remove(request.user)
+            is_disliked = False
+        else:
+            comment.dislikes.add(request.user)
+            comment.likes.remove(request.user)
+            is_disliked = True
+
+    context = {
+    "comment": comment,
+    'is_disliked': is_disliked,
+    'total_likes': comment.dislikes.count(),
     }
     if is_ajax(request=request):
         html = render_to_string('demo_site/like_section.html', context, request=request)

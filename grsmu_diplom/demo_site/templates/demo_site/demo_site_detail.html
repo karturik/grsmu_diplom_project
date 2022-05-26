@@ -28,6 +28,31 @@
 })
 </script>
 
+<script>
+  $(document).ready(function(){console.log("a votututututut");})
+  $(document).on('click', '#dislike', function(event){
+    event.preventDefault();
+    var pk = $(this).attr('value');
+    console.log(pk);
+    $.ajax({
+      type: 'POST',
+      url: '{% url "dislikes" %}',
+      data: {
+            'pk': pk,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+      dataType: 'json',
+            success: function(response){
+              $('#like-section'+pk).html(response['form'])
+              console.log($('#like-section'+pk).html(response['form']));
+            },
+            error: function(rs, e){
+              console.log(rs.responseText);
+            },
+          });
+})
+</script>
+
 
 <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
    <div class="top">
@@ -143,7 +168,9 @@
 
             <div id="like-section{{comment.pk}}">
                 {% if request.user in comment.likes.all %}
-                    {% include 'demo_site/like_section.html' with is_liked=True %}
+                    {% include 'demo_site/like_section.html' with is_liked=True is_disliked=False %}
+                {% elif request.user in comment.dislikes.all %}
+                    {% include 'demo_site/like_section.html' with is_liked=False is_disliked=True %}
                 {% else %}
                     {% include 'demo_site/like_section.html' with is_liked=False %}
                 {% endif %}
@@ -227,8 +254,6 @@
         </div>
     {% endif %}
     </div>
-<!--    PAGINATION-->
-
 </div>
 
 

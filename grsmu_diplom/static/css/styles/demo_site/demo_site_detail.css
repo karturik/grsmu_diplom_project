@@ -198,3 +198,9 @@ a:link {
 .step-links {
 margin-right: 50%;
 }
+
+
+BUTTONS
+.btn-check:focus + .btn, .btn:focus {
+    box-shadow: none;
+}

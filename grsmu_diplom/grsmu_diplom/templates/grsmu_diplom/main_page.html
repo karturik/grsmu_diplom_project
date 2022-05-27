@@ -4,42 +4,116 @@
 <link href="{% static 'css/styles/grsmu_diplom/main_page.css' %}" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{% static 'js/main_page.js' %}"> </script>
 
-<body background="{% static '/images/E0dsHx_WYAEiVk4.jpg' %}">
-    <div class="container">
-        <div class="col-md-8 offset-md-2">
 
-            <div class="chat_window">
-                <div class="top_menu">
-                    <div class="buttons">
-                        <div class="button close"></div>
-                        <div class="button minimize"></div>
-                        <div class="button maximize"></div>
-                    </div>
-                    <div class="title">Диалоги ГрГМУ</div>
-                </div>
-            <ul class="messages"></ul>
-                <div class="bottom_wrapper clearfix">
-                    <div class="message_input_wrapper">
-                        <input class="message_input" placeholder="Ваше сообщение..." />
-                    </div>
-                    <div class="send_message">
-                        <div class="icon"></div>
-                        <div class="text">Отправить</div>
-                    </div>
-                </div>
-            </div>
-            <div class="message_template">
-                <li class="message">
-                    <div class="avatar"></div>
-                    <div class="text_wrapper">
-                        <div class="text">
-                        </div>
-                    </div>
-                </li>
-            </div>
-        </div>
-    </div>
-</body>
+<div class="container" style=>
+<div class="col-md-8 offset-md-2">
+
+  <div class="row">
+<div class="container" style="margin-top: 15px;
+    text-align: center;
+    max-width: 1200px;
+    background-color: rgb(255 255 255 / 75%);
+    backdrop-filter: blur(100px);
+    padding-top: 20px;
+    border-radius: 30px;
+    padding-bottom: 1px;">
+  <img src="{% static '/images/grsmu-logo.png' %}" alt="Profile Picture" width="150" height="150">
+  <b style="color: #f2f2f2;
+  background: #be0040;
+  color: white;
+  font-size: 35px;
+  line-height: 60px;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: 'Libre Baskerville', serif;">GRSMU_CHECK</b>
+</div>
+</div>
+
+
+<div class="row">
+  <div class="container" style="margin-top: 50px;
+    text-align: center;
+    max-width: 1200px;
+    background-color: rgb(255 255 255 / 75%);
+    backdrop-filter: blur(100px);
+    padding-top: 20px;
+    border-radius: 30px;
+    padding-bottom: 1px;">
+  <div class="row"><h1>О проекте</h1>
+    <div class="messages-row">
+      <div class="chat_window">
+                  <div class="top_menu">
+                      <div class="buttons">
+                          <div class="button close"></div>
+                          <div class="button minimize"></div>
+                          <div class="button maximize"></div>
+                      </div>
+                      <div class="title">Диалоги ГрГМУ</div>
+                  </div>
+              <ul class="messages"></ul>
+                  <div class="bottom_wrapper clearfix">
+                      <div class="message_input_wrapper">
+                          <input class="message_input" placeholder="Ваше сообщение..." />
+                      </div>
+                      <div class="send_message">
+                          <div class="icon"></div>
+                          <div class="text">Отправить</div>
+                      </div>
+                  </div>
+              </div>
+              <div class="message_template">
+                  <li class="message">
+                      <div class="avatar"></div>
+                      <div class="text_wrapper">
+                          <div class="text">
+                          </div>
+                      </div>
+                  </li>
+              </div>
+      </div>
+
+  <div class="col-md-6">
+    <ul>
+      <li>1Вот так вот вот так вот тако в таокк твакот аакот ватоакок катков таока в вы ыа ка к</li>
+      <li>2Вот так вот вот так вот тако в таокк твакот аакот ватоакок катков таока в вы ыа ка к</li>
+      <li>3Вот так вот вот так вот тако в таокк твакот аакот ватоакок катков таока в вы ыа ка к</li>
+      <li>4Вот так вот вот так вот тако в таокк твакот аакот ватоакок катков таока в вы ыа ка к</li>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <ul>
+      <li>5Вот так вот вот так вот тако в таокк твакот аакот ватоакок катков таока в вы ыа ка к</li>
+      <li>6Вот так вот вот так вот тако в таокк твакот аакот ватоакок катков таока в вы ыа ка к</li>
+      <li>7Вот так вот вот так вот тако в таокк твакот аакот ватоакок катков таока в вы ыа ка к</li>
+      <li>8Вот так вот вот так вот тако в таокк твакот аакот ватоакок катков таока в вы ыа ка к</li>
+    </ul>
+  </div>
+  </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="container" style="margin-top: 50px;
+    text-align: center;
+    max-width: 1200px;
+    background-color: rgb(255 255 255 / 75%);
+    backdrop-filter: blur(100px);
+    padding-top: 20px;
+    border-radius: 30px;
+    padding-bottom: 1px;">
+  <h1>Найти преподавателя:</h1>
+  <form class="top-search" method=POST action="{% url 'searching' %}">
+  {% csrf_token %}
+  <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="searched" style="max-width: 80%; display: inline;">
+  <button class="btn btn-primary" type="submit">ИЩЕМ!</button>
+  </form>
+
+</div>
+</div>
+</div>
+</div>
+
 {% endblock %}
-
-

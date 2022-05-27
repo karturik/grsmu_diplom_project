@@ -11,16 +11,16 @@ body {
 }
 
 .chat_window {
-  position: absolute;
-  width: calc(100% - 20px);
+  aaa1position: absolute;
+  aaa1width: calc(100% - 20px);
   max-width: 800px;
   height: 500px;
   border-radius: 10px;
   background-color: #fff;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  aaa1left: 50%;
+  aaa1top: 50%;
+  aaa1transform: translateX(-50%) translateY(-50%);
+  aaa1box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   background-color: #f8f8f8;
   overflow: hidden;
 }
@@ -145,15 +145,15 @@ body {
 }
 
 .bottom_wrapper {
-  position: relative;
+  aaa1position: relative;
   width: 100%;
   background-color: #fff;
   padding: 20px 20px;
-  position: absolute;
+  aaa1position: absolute;
   bottom: 0;
 }
 .bottom_wrapper .message_input_wrapper {
-  display: inline-block;
+  display: inline-flex;
   height: 50px;
   border-radius: 25px;
   border: 1px solid #bcbdc0;

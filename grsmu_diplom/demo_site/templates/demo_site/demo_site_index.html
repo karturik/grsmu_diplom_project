@@ -12,7 +12,7 @@
         <h1>Кафедры</h1>
         <hr>
         {% for department in departments %}
-            <h2><a href="{% url 'demo_site_department' department.title %}">{{ department.title }}</a></h2>
+            <h2><a href="{% url 'demo_site_department' department.pk %}">{{ department.title }}</a></h2>
         {% endfor %}
     </div>
 </div>

@@ -21,7 +21,8 @@ from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
-
+#SORTING
+from django.db.models import Count
 
 
 # Create your views here.
@@ -32,8 +33,9 @@ def demo_site_index(request):
     }
     return render(request, "demo_site/demo_site_index.html", context)
 
-def demo_site_department(request, department):
-    teachers = Teacher.objects.filter(department__title__contains=department)
+def demo_site_department(request, pk):
+    teachers = Teacher.objects.filter(department__pk=pk)
+    department = Department.objects.get(pk=pk)
     context = {
         "department": department,
         "teachers": teachers
@@ -52,6 +54,7 @@ def demo_site_detail(request, pk):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     comment_answers = CommentAnswer.objects.filter(teacher=teacher)
+    sorting = 0
     #если юзер авторизован - получаем инфу о его оценке, если нет - оценки всех остальных
     if request.user.is_authenticated:
         votes = Vote.objects.filter(teacher=teacher, user=request.user)
@@ -74,6 +77,9 @@ def demo_site_detail(request, pk):
                     teacher = teacher
                 )
                 comment.save()
+        elif "sortirovka" in request.POST:
+            sorting = 2
+            comments = Comment.objects.filter(teacher=teacher).annotate(cnt=Count('likes')).order_by('-cnt')
         #кнопка "оценить"
         elif "score_submit" in request.POST:
             vote_form = VoteForm(request.POST)
@@ -111,6 +117,7 @@ def demo_site_detail(request, pk):
             comment_pk = request.POST.get('comment_pk')
             comment = Comment.objects.filter(pk=comment_pk)
             comment.delete()
+
         return redirect ('demo_site_detail', pk)
     context = {
         "teacher": teacher,
@@ -123,6 +130,7 @@ def demo_site_detail(request, pk):
         "comment_answers": comment_answers,
         "votes": votes,
         "page_obj": page_obj,
+        "sorting": sorting,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 

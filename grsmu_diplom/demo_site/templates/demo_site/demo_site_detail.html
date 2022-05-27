@@ -111,7 +111,7 @@
                 {% csrf_token %}
                 {% for field in vote_form %}
                     <div class="row">
-                        <div class="col-10" id="slider_{{field.name}}_{{teacher.pk}}" onclick="sliderUpdate('{{field.name}}', {{teacher.pk}})">
+                        <div class="col-10" id="slider_{{field.name}}_{{teacher.pk}}" onchange="sliderUpdate('{{field.name}}', {{teacher.pk}})">
                             {{field.label}}
                             <p>{{field}}</p>
                         </div>
@@ -141,6 +141,16 @@
 
 <!--COMMENTS-->
     {% if group == 'Student' %}
+        {{ sorting }}
+        <form method="post">
+        {% csrf_token %}
+        <select name='sorting' onchange='{ this.form.submit(); }'>
+             <option value='date-sorting'>По дате добавления</option>
+             <option value='likes-sorting'>Популярность</option>
+        </select>
+            <button type="submit" id="sortirovka" name="sortirovka"></button>
+            <input type="hidden" id="sorting-select1" value="30">
+        </form>
     <h3>Комментарии:</h3>
     {% for comment in page_obj %}
         <div class="media g-mb-30 media-comment">
@@ -183,35 +193,40 @@
 
         </div>
 <!--ANSWERS-->
-    <details>
-    <summary style="text-align: center;">ответы <i class="fa fa-comments-o" aria-hidden="true"></i></summary>
     {% for answer in comment_answers %}
-    {% if answer.comment == comment %}
+        {% if answer.comment == comment %}
+        <details>
+            <summary style="text-align: center;">ответы <i class="fa fa-comments-o" aria-hidden="true"></i></summary>
+            {% for answer in comment_answers %}
+                {% if answer.comment == comment %}
 
-                <div class="media g-mb-30 media-comment-answer">
-                    {% if answer.author.profile.profile_pic %}
-                        <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static answer.author.profile.profile_pic %}" alt="Image Description">
-                        {% else %}
-                        <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static 'images/user.jpg' %}" alt="Image Description">
-                    {% endif %}
-                    <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
-                        <div class="g-mb-15">
-                            <h5 class="h5 g-color-gray-dark-v1 mb-0">{{ answer.author }}</h5>
-                            <span class="g-color-gray-dark-v4 g-font-size-12">{{answer.created_on.date }}</span>
-                            <p>{{ answer.body }}</p>
-                        </div>
-                    {% if answer.author == request.user or request.user.is_superuser %}
-                        <form method="post" style="margin-bottom: -25px;">
-                            {% csrf_token %}
-                            <button type="submit" name="answer_delete" class="btn btn-danger" style="max-width: 43px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            <input type="hidden" name="answer_pk" value="{{ answer.pk }}">
-                        </form>
-                    {% endif %}
-                    </div>
-                </div>
-    {% endif %}
+                            <div class="media g-mb-30 media-comment-answer">
+                                {% if answer.author.profile.profile_pic %}
+                                    <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static answer.author.profile.profile_pic %}" alt="Image Description">
+                                    {% else %}
+                                    <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static 'images/user.jpg' %}" alt="Image Description">
+                                {% endif %}
+                                <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+                                    <div class="g-mb-15">
+                                        <h5 class="h5 g-color-gray-dark-v1 mb-0">{{ answer.author }}</h5>
+                                        <span class="g-color-gray-dark-v4 g-font-size-12">{{answer.created_on.date }}</span>
+                                        <p>{{ answer.body }}</p>
+                                    </div>
+                                {% if answer.author == request.user or request.user.is_superuser %}
+                                    <form method="post" style="margin-bottom: -25px;">
+                                        {% csrf_token %}
+                                        <button type="submit" name="answer_delete" class="btn btn-danger" style="max-width: 43px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                        <input type="hidden" name="answer_pk" value="{{ answer.pk }}">
+                                    </form>
+                                {% endif %}
+                                </div>
+                            </div>
+                {% endif %}
+            {% endfor %}
+        </details>
+        {% else %}
+        {% endif %}
     {% endfor %}
-                </details>
 
 
     <!--COMMENT ANSWER-->
@@ -228,26 +243,25 @@
         </div>
     </div>
     {% endfor %}
+    <div class="container" style="display:inline;" >
         <div class="pagination_rounded">
-        <div class="step-links">
-            <ul>
-                {% if page_obj.has_previous %}
-                    <li><a href="?page=1" class="prev">&laquo; First</a></li>
-                    <li><a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i>Prev</a></li>
-                {% endif %}
+            <div class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1" class="prev">&laquo;</a>
+                        <a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                    {% endif %}
 
-                <li><span class="current">
-                    {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
-                </span></li>
+                    <span class="current">
+                        {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                    </span>
 
-                {% if page_obj.has_next %}
-                    <li><a href="?page={{ page_obj.next_page_number }}" class="next"> Next <i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                    <li><a href="?page={{ page_obj.paginator.num_pages }}" class="next">Last &raquo;</a></li>
-                {% endif %}
-            </ul>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}" class="next">&raquo;</a>
+                    {% endif %}
+            </div>
         </div>
     </div>
-
 <!--COMMENT ANSWER-->
     {% elif group == 'Not_student' %}
     <div class="card">

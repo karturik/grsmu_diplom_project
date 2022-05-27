@@ -203,7 +203,7 @@
                     {% if answer.author == request.user or request.user.is_superuser %}
                         <form method="post" style="margin-bottom: -25px;">
                             {% csrf_token %}
-                            <button type="submit" name="answer_delete" class="btn btn-danger">Удалить</button>
+                            <button type="submit" name="answer_delete" class="btn btn-danger" style="max-width: 43px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             <input type="hidden" name="answer_pk" value="{{ answer.pk }}">
                         </form>
                     {% endif %}

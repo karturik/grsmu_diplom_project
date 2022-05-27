@@ -54,18 +54,22 @@
 				{% for comment in page_obj %}
 					<div class="row">
 		    			<div class="card p-5">
-		    	    		<hr>
                    			<div class="card-text">
-                        		<p class="text-muted mb-0" style="font-size: 12px">{{ comment.teacher.name }}</p>
+								<a href="{% url 'demo_site_detail' comment.teacher.pk %}">
+                        		<p style="font-size: 20px">{{ comment.teacher.name }}</p></a>
+								<hr>
                         		<p>{{ comment.body }}</p>
 								<p class="text-muted mb-0" style="font-size: 12px">{{ comment.created_on }}</p>
                     		</div>
 							<form method="post" style="margin-bottom: -25px;">
             					{% csrf_token %}
-            					<button type="submit" name="comment_delete" class="btn btn-danger">Удалить</button>
+            					<button type="submit" name="comment_delete" class="btn btn-danger" style="max-width: 43px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
             					<input type="hidden" name="comment_pk" value="{{ comment.pk }}">
-            					<a href="{% url 'comment_edit' comment.pk %}">Изменить</a>
-            				</form>
+            					<a href="{% url 'comment_edit' comment.pk %}" type="button" class="btn btn-secondary" style="max-width: 43px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+            					<i class="fa fa-thumbs-up fa-lg" aria-hidden="true"  style="color: #AAA; float:right; margin-left: 5px;">{{ comment.likes.count }}</i>
+            					<i class="fa fa-thumbs-down fa-lg" aria-hidden="true"  style="color: #AAA; float:right;">{{ comment.dislikes.count }}</i>
+
+							</form>
                 		</div>
 					</div>
 				{% endfor %}

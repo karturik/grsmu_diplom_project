@@ -151,7 +151,7 @@
             <button type="submit" id="sortirovka" name="sortirovka"></button>
             <input type="hidden" id="sorting-select1" value="30">
         </form>
-    <h3>Комментарии:</h3>
+    <h3>Комментарии({{ comments.count }}):</h3>
     {% for comment in page_obj %}
         <div class="media g-mb-30 media-comment">
             {% if comment.author.profile.profile_pic %}
@@ -243,6 +243,7 @@
         </div>
     </div>
     {% endfor %}
+<!--    PAGINATION-->
     <div class="container" style="display:inline;" >
         <div class="pagination_rounded">
             <div class="step-links">

@@ -5,7 +5,7 @@
 {% if request.user.is_authenticated %}
 <div class="container" style="margin-left: 30px;">
 
-<form action="{% url 'dislikes' is_disliked %" method="POST" style="ax-width:20px;">
+<form action="{% url 'dislikes' %}" method="POST" style="ax-width:20px;">
     {% csrf_token %}
     {% if is_disliked %}
 <!--        <button type="submit" id="like" name="post_id" value="{{ comment.pk }}" class="btn btn-danger">Dislike</button>-->
@@ -16,7 +16,7 @@
     {% endif %}
 </form>
 
-<form action="{% url 'likes' is_liked %" method="POST" style="ax-width:20px;">
+<form action="{% url 'likes' %}" method="POST" style="ax-width:20px;">
     {% csrf_token %}
     {% if is_liked %}
 <!--        <button type="submit" id="like" name="post_id" value="{{ comment.pk }}" class="btn btn-danger">Dislike</button>-->

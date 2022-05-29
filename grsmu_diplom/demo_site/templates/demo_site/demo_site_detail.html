@@ -2,9 +2,8 @@
 {% block page_content %}
 {% load static %}
 
-
+<!--LIKES_SCRIPT-->
 <script>
-  $(document).ready(function(){console.log("a vot");})
   $(document).on('click', '#like', function(event){
     event.preventDefault();
     var pk = $(this).attr('value');
@@ -28,8 +27,8 @@
 })
 </script>
 
+<!--DISLIKES_SCRIPT-->
 <script>
-  $(document).ready(function(){console.log("a votututututut");})
   $(document).on('click', '#dislike', function(event){
     event.preventDefault();
     var pk = $(this).attr('value');
@@ -45,6 +44,34 @@
             success: function(response){
               $('#like-section'+pk).html(response['form'])
               console.log($('#like-section'+pk).html(response['form']));
+            },
+            error: function(rs, e){
+              console.log(rs.responseText);
+            },
+          });
+})
+</script>
+
+<!--COMMENTS_SCRIPT-->
+<script>
+  $(document).ready(function(){console.log("a tut comment");})
+  $(document).on('submit', '#sorting', function(event){
+    event.preventDefault();
+    var sort = $(this).selectedIndex;
+    var teacher_pk = document.getElementById('teacher_pk').attr('value');
+    console.log(sort);
+    $.ajax({
+      type: 'POST',
+      url: '{% url "comments" %}',
+      data: {
+            'teacher_pk': teacher_pk,
+            'sort': sort,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+      dataType: 'json',
+            success: function(response){
+              $('#comment-section').html(response['form'])
+              console.log($('#comment-section').html(response['form']));
             },
             error: function(rs, e){
               console.log(rs.responseText);
@@ -139,142 +166,10 @@
     </div>
     {% endif %}
 
-<!--COMMENTS-->
-    {% if group == 'Student' %}
-        {{ sorting }}
-        <form method="post">
-        {% csrf_token %}
-        <select name='sorting' onchange='{ this.form.submit(); }'>
-             <option value='date-sorting'>По дате добавления</option>
-             <option value='likes-sorting'>Популярность</option>
-        </select>
-            <button type="submit" id="sortirovka" name="sortirovka"></button>
-            <input type="hidden" id="sorting-select1" value="30">
-        </form>
-    <h3>Комментарии({{ comments.count }}):</h3>
-    {% for comment in page_obj %}
-        <div class="media g-mb-30 media-comment">
-            {% if comment.author.profile.profile_pic %}
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-img" src="{% static comment.author.profile.profile_pic %}" alt="Image Description">
-                {% else %}
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-img" src="{% static 'images/user.jpg' %}" alt="Image Description">
-                {% endif %}
-            <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
-                <div class="g-mb-15">
-                    <h5 class="h5 g-color-gray-dark-v1 mb-0">{{ comment.author }}</h5>
-                    <span class="g-color-gray-dark-v4 g-font-size-12">{{ comment.author.profile.course }} курс {{comment.created_on.date }}</span>
-                    <p>{{ comment.body }}</p>
-                </div>
-            {% if comment.author == request.user or request.user.is_superuser %}
-                <form method="post" style="margin-bottom: -25px;">
-                {% csrf_token %}
+<div id="comment-section">
+    {% include 'demo_site/comment_section.html' %}
+</div>
 
-                <button type="submit" name="comment_delete" class="btn btn-danger" style="max-width: 43px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                <input type="hidden" name="comment_pk" value="{{ comment.pk }}">
-                <a href="{% url 'comment_edit' comment.pk %}" type="button" class="btn btn-secondary" style="max-width: 43px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" type="button" class="btn btn-primary" aria-expanded="false" aria-controls="collapse{{comment.pk}}" style="max-width: 43px; "><i class="fa fa-reply" aria-hidden="true"></i></a>
-            {% else %}
-                <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" type="button" class="btn btn-primary" aria-expanded="false" aria-controls="collapse{{comment.pk}}" style="max-width: 43px; margin-bottom: -25px;"><i class="fa fa-reply" aria-hidden="true"></i></a>
-            {% endif %}
-                </form>
-
-            <div id="like-section{{comment.pk}}">
-                {% if request.user in comment.likes.all %}
-                    {% include 'demo_site/like_section.html' with is_liked=True is_disliked=False %}
-                {% elif request.user in comment.dislikes.all %}
-                    {% include 'demo_site/like_section.html' with is_liked=False is_disliked=True %}
-                {% else %}
-                    {% include 'demo_site/like_section.html' with is_liked=False %}
-                {% endif %}
-            </div>
-
-            </div>
-
-
-        </div>
-<!--ANSWERS-->
-    {% for answer in comment_answers %}
-        {% if answer.comment == comment %}
-        <details>
-            <summary style="text-align: center;">ответы <i class="fa fa-comments-o" aria-hidden="true"></i></summary>
-            {% for answer in comment_answers %}
-                {% if answer.comment == comment %}
-
-                            <div class="media g-mb-30 media-comment-answer">
-                                {% if answer.author.profile.profile_pic %}
-                                    <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static answer.author.profile.profile_pic %}" alt="Image Description">
-                                    {% else %}
-                                    <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static 'images/user.jpg' %}" alt="Image Description">
-                                {% endif %}
-                                <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
-                                    <div class="g-mb-15">
-                                        <h5 class="h5 g-color-gray-dark-v1 mb-0">{{ answer.author }}</h5>
-                                        <span class="g-color-gray-dark-v4 g-font-size-12">{{answer.created_on.date }}</span>
-                                        <p>{{ answer.body }}</p>
-                                    </div>
-                                {% if answer.author == request.user or request.user.is_superuser %}
-                                    <form method="post" style="margin-bottom: -25px;">
-                                        {% csrf_token %}
-                                        <button type="submit" name="answer_delete" class="btn btn-danger" style="max-width: 43px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                        <input type="hidden" name="answer_pk" value="{{ answer.pk }}">
-                                    </form>
-                                {% endif %}
-                                </div>
-                            </div>
-                {% endif %}
-            {% endfor %}
-        </details>
-        {% else %}
-        {% endif %}
-    {% endfor %}
-
-
-    <!--COMMENT ANSWER-->
-    <div class = "collapse" id = "collapse{{comment.pk}}">
-        <div class="vote-card shadow">
-            <form method="post">
-                {% csrf_token %}
-                <p>{{answer_form.body}}</p>
-                <div class="text-right">
-                    <input type="hidden" name="comment_pk" value="{{ comment.pk }}">
-                    <button type="submit" name="comment_answer" class="btn btn-outline-primary">Ответить</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    {% endfor %}
-<!--    PAGINATION-->
-    <div class="container" style="display:inline;" >
-        <div class="pagination_rounded">
-            <div class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?page=1" class="prev">&laquo;</a>
-                        <a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                    {% endif %}
-
-                    <span class="current">
-                        {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
-                    </span>
-
-                    {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                        <a href="?page={{ page_obj.paginator.num_pages }}" class="next">&raquo;</a>
-                    {% endif %}
-            </div>
-        </div>
-    </div>
-<!--COMMENT ANSWER-->
-    {% elif group == 'Not_student' %}
-    <div class="card">
-        <div class="card-header">
-            Комментарии
-        </div>
-        <div class="card-body">
-            <p class="card-text">Чтобы просматривать комментарии необходимо подтвердить аккаунт!</p>
-            <a href="/user/profile" class="btn btn-primary">Подтвердить</a>
-        </div>
-    {% endif %}
-    </div>
 </div>
 
 

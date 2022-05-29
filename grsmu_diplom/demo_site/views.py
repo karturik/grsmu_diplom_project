@@ -50,11 +50,7 @@ def demo_site_detail(request, pk):
     vote_form = VoteForm()
     vote_form.calculate_averages(teacher)
     comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
-    paginator = Paginator(comments, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
     comment_answers = CommentAnswer.objects.filter(teacher=teacher)
-    sorting = 0
     #если юзер авторизован - получаем инфу о его оценке, если нет - оценки всех остальных
     if request.user.is_authenticated:
         votes = Vote.objects.filter(teacher=teacher, user=request.user)
@@ -119,6 +115,16 @@ def demo_site_detail(request, pk):
             comment.delete()
 
         return redirect ('demo_site_detail', pk)
+    sort_by = request.GET.get("sort")
+    if sort_by == "likes":
+        comments = Comment.objects.filter(teacher=teacher).annotate(cnt=Count('likes')).order_by('-cnt')
+
+    elif sort_by == "date":
+        comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
+
+    paginator = Paginator(comments, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
         "teacher": teacher,
         "comments": comments,
@@ -130,7 +136,8 @@ def demo_site_detail(request, pk):
         "comment_answers": comment_answers,
         "votes": votes,
         "page_obj": page_obj,
-        "sorting": sorting,
+        "page_number": page_number,
+        "sort_by": sort_by,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 
@@ -201,5 +208,31 @@ def dislikes(request):
         html = render_to_string('demo_site/like_section.html', context, request=request)
         return JsonResponse({'form': html})
 
-
+def comments(request):
+    pk = request.POST.get('teacher_pk')
+    teacher = Teacher.objects.get(pk=pk)
+    answer_form = CommentAnswerForm()
+    comments = Comment.objects.filter(teacher=teacher).annotate(cnt=Count('likes')).order_by('-cnt')
+    paginator = Paginator(comments, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    comment_answers = CommentAnswer.objects.filter(teacher=teacher)
+    #если юзер не авторизован, то его группы нет
+    if not request.user.is_authenticated:
+        group = 0
+    else:
+        group = str(request.user.groups.get())
+    context = {
+        "teacher": teacher,
+        "comments": comments,
+        "answer_form": answer_form,
+        "group": group,
+        "comment_answers": comment_answers,
+        "page_obj": page_obj,
+    }
+    if request.method == "POST":
+        if is_ajax(request=request):
+            html = render_to_string('demo_site/comment_section.html', context, request=request)
+            return JsonResponse({'form': html})
+    return redirect('demo_site_detail', pk=1)
 

@@ -1,18 +1,21 @@
 from django import forms
 
 # voting
-from .models import Vote, Teacher, CommentAnswer
+from .models import Vote, Comment
 from django.forms.widgets import NumberInput
 from django.db.models import Sum
 
 
-class CommentForm(forms.Form):
+class CommentForm(forms.ModelForm):
     body = forms.CharField(widget=forms.Textarea(
         attrs = {
             "class": "form-control",
             "placeholder": "Оставьте комментарий!"
         })
     )
+    class Meta:
+        model = Comment
+        fields = ('body', 'category',)
 
 class CommentAnswerForm(forms.Form):
     body = forms.CharField(widget=forms.Textarea(

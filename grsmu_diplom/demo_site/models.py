@@ -31,6 +31,13 @@ class Comment(models.Model):
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
     dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
+    CATEGORY_CHOICES = (
+        ('lesson', 'Занятия'),
+        ('lection', 'Лекции'),
+        ('exam', 'Экзамены'),
+        ('other', 'Остальное'),
+    )
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default='other')
 
 
 class CommentAnswer(models.Model):

@@ -70,12 +70,10 @@ def demo_site_detail(request, pk):
                 comment = Comment(
                     author = request.user,
                     body = comment_form.cleaned_data['body'],
-                    teacher = teacher
+                    teacher = teacher,
+                    category = comment_form.cleaned_data['category'],
                 )
                 comment.save()
-        elif "sortirovka" in request.POST:
-            sorting = 2
-            comments = Comment.objects.filter(teacher=teacher).annotate(cnt=Count('likes')).order_by('-cnt')
         #кнопка "оценить"
         elif "score_submit" in request.POST:
             vote_form = VoteForm(request.POST)
@@ -115,12 +113,29 @@ def demo_site_detail(request, pk):
             comment.delete()
 
         return redirect ('demo_site_detail', pk)
+
+    # ФИЛЬТРЫ
+    filter = request.GET.get("filter")
+    if filter:
+        if filter == "all":
+            comments = Comment.objects.filter(teacher=teacher)
+        else:
+            comments = Comment.objects.filter(category=filter)
+
+    # СОРТИРОВКА
     sort_by = request.GET.get("sort")
     if sort_by == "likes":
-        comments = Comment.objects.filter(teacher=teacher).annotate(cnt=Count('likes')).order_by('-cnt')
+        comments = comments.annotate(cnt=Count('likes')).order_by('cnt')
 
     elif sort_by == "date":
-        comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
+        comments = comments.order_by('created_on')
+
+    elif sort_by == "-likes":
+        comments = comments.annotate(cnt=Count('likes')).order_by('-cnt')
+
+    elif sort_by == "-date":
+        comments = comments.order_by('-created_on')
+
 
     paginator = Paginator(comments, 3)
     page_number = request.GET.get('page')
@@ -138,6 +153,7 @@ def demo_site_detail(request, pk):
         "page_obj": page_obj,
         "page_number": page_number,
         "sort_by": sort_by,
+        "filter": filter,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 

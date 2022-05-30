@@ -2,36 +2,80 @@
 
 <!--COMMENTS-->
 
-    {% if sort_by %}
-        {% if 'likes' in sort_by  %}
-        <li class="filters"><a class="filter_by" href="?page={{ page_number }}&sort=likes">Сортировка:--лайки вниз</a></li>
-        <li class="filters"><a class="filter_by" href="?page={{ page_number }}&sort=date">Сортировка:--дата добавления вверх</a></li>
-        {% elif 'date' in sort_by  %}
-        <li class="filters"><a class="filter_by" href="?page={{ page_number }}&sort=likes">Сортировка:--лайки вверх</a></li>
-        <li class="filters"><a class="filter_by" href="?page={{ page_number }}&sort=date">Сортировка:--дата добавления вниз</a></li>
-        {% endif %}
-    {% else %}
-        {% if page_number %}
-        <li class="filters"><a class="filter_by" href="?page={{ page_number }}&sort=likes">Сортировка:--лайки вверх</a></li>
-        <li class="filters"><a class="filter_by" href="?page={{ page_number }}&sort=date">Сортировка:--дата добавления вверх</a></li>
-        {% else %}
-        <li class="filters"><a class="filter_by" href="?sort=likes">Сортировка:--лайки</a></li>
-        <li class="filters"><a class="filter_by" href="?sort=date">Сортировка:--дата добавления</a></li>
-        {% endif %}
-    {% endif %}
+
+
+
+
 
     {% if group == 'Student' %}
-        {{ sorting }}
-        <form action="{% url 'comments' %}" method="POST">
-        {% csrf_token %}
-        <select name='sorting' id="sorting" onchange='{ this.form.submit(); }'>
-             <option value='date-sorting' selected>По дате добавления</option>
-             <option value='likes-sorting'>Популярность</option>
-        </select>
-            <input  type = "hidden" id="teacher_pk" name="teacher_pk" value="{{ teacher.pk }}">
-        </form>
-
     <h3>Комментарии({{ comments.count }}):</h3>
+<!--    SORTING-->
+        {% if page_number and filter %}
+            Сортировка:
+            <li class="filters">лайки <a class="filter_by" href="?page={{ page_number }}&filter={{ filter }}&sort=likes"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?page={{ page_number }}&filter={{ filter }}&sort=-likes"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+            <li class="filters">дата <a class="filter_by" href="?page={{ page_number }}&filter={{ filter }}&sort=date"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?page={{ page_number }}&filter={{ filter }}&sort=-date"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+
+        {% elif page_number and not filter %}
+            Сортировка:
+            <li class="filters">лайки <a class="filter_by" href="?page={{ page_number }}&sort=likes"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?page={{ page_number }}&sort=-likes"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+            <li class="filters">дата <a class="filter_by" href="?page={{ page_number }}&sort=date"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?page={{ page_number }}&sort=-date"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+
+        {% elif not page_number and filter %}
+            Сортировка:
+            <li class="filters">лайки <a class="filter_by" href="?filter={{ filter }}&sort=likes"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?filter={{ filter }}&sort=-likes"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+            <li class="filters">дата <a class="filter_by" href="?filter={{ filter }}&sort=date"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?filter={{ filter }}&sort=-date"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+
+        {% else %}
+            Сортировка:
+            <li class="filters">лайки <a class="filter_by" href="?sort=likes"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?sort=-likes"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+            <li class="filters">дата <a class="filter_by" href="?sort=date"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?sort=-date"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+        {% endif %}
+
+
+
+<!--CATEGORY-FILTER-->
+    {% if page_number and sort_by %}
+        <select name="formal" onchange="javascript:handleSelect(this)">
+        <option value="">--Категория--</option>
+        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=all">Все</option>
+        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=lesson">Занятия</option>
+        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=lecture">Лекции</option>
+        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=exam">Экзамен</option>
+        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=other">Остальное</option>
+        </select>
+
+    {% elif page_number and not sort_by %}
+        <select name="formal" onchange="javascript:handleSelect(this)">
+        <option value="">--Категория--</option>
+        <option value="?page={{ page_number }}&filter=all">Все</option>
+        <option value="?page={{ page_number }}&filter=lesson">Занятия</option>
+        <option value="?page={{ page_number }}&filter=lecture">Лекции</option>
+        <option value="?page={{ page_number }}&filter=exam">Экзамен</option>
+        <option value="?page={{ page_number }}&filter=other">Остальное</option>
+        </select>
+
+    {% elif not page_number and sort_by %}
+        <select name="formal" onchange="javascript:handleSelect(this)">
+        <option value="">--Категория--</option>
+        <option value="?sort={{ sort_by }}&filter=all">Все</option>
+        <option value="?sort={{ sort_by }}&filter=lesson">Занятия</option>
+        <option value="?sort={{ sort_by }}&filter=lecture">Лекции</option>
+        <option value="?sort={{ sort_by }}&filter=exam">Экзамен</option>
+        <option value="?sort={{ sort_by }}&filter=other">Остальное</option>
+        </select>
+
+    {% else %}
+        <select name="formal" onchange="javascript:handleSelect(this)">
+        <option value="">--Категория--</option>
+        <option value="?filter=all">Все</option>
+        <option value="?filter=lesson">Занятия</option>
+        <option value="?filter=lecture">Лекции</option>
+        <option value="?filter=exam">Экзамен</option>
+        <option value="?filter=other">Остальное</option>
+        </select>
+    {% endif %}
+
+
     {% for comment in page_obj %}
         <div class="media g-mb-30 media-comment">
             {% if comment.author.profile.profile_pic %}
@@ -127,37 +171,72 @@
     <div class="container" style="display:inline;" >
         <div class="pagination_rounded">
             <div class="step-links">
-                    {% if sort_by %}
-                        {% if page_obj.has_previous %}
-                            <a href="?page=1&sort={{ sort_by }}" class="prev">&laquo;</a>
-                            <a href="?page={{ page_obj.previous_page_number }}&sort={{ sort_by }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                        {% endif %}
 
-                        <span class="current">
-                            {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
-                        </span>
+<!--                ССЫЛКИ ПАГИНАЦИИ-->
+                    {% if sort_by and filter %}
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1&filter={{ filter }}&sort={{ sort_by }}" class="prev">&laquo;</a>
+                                <a href="?page={{ page_obj.previous_page_number }}&filter={{ filter }}&sort={{ sort_by }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                            {% endif %}
 
-                        {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}&sort={{ sort_by }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                            <a href="?page={{ page_obj.paginator.num_pages }}&sort={{ sort_by }}" class="next">&raquo;</a>
-                        {% endif %}
+                            <span class="current">
+                                {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}&filter={{ filter }}&sort={{ sort_by }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}&filter={{ filter }}&sort={{ sort_by }}" class="next">&raquo;</a>
+                            {% endif %}
+
+
+                    {% elif not sort_by and filter %}
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1&filter={{ filter }}" class="prev">&laquo;</a>
+                                <a href="?page={{ page_obj.previous_page_number }}&filter={{ filter }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                            {% endif %}
+
+                            <span class="current">
+                                {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}&filter={{ filter }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}&filter={{ filter }}" class="next">&raquo;</a>
+                            {% endif %}
+
+
+                    {% elif sort_by and not filter %}
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1&sort={{ sort_by }}" class="prev">&laquo;</a>
+                                <a href="?page={{ page_obj.previous_page_number }}&sort={{ sort_by }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                            {% endif %}
+
+                            <span class="current">
+                                {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}&sort={{ sort_by }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}&sort={{ sort_by }}" class="next">&raquo;</a>
+                            {% endif %}
 
 
                     {% else %}
-                        {% if page_obj.has_previous %}
-                            <a href="?page=1" class="prev">&laquo;</a>
-                            <a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                        {% endif %}
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1" class="prev">&laquo;</a>
+                                <a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                            {% endif %}
 
-                        <span class="current">
-                            {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
-                        </span>
+                            <span class="current">
+                                {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                            </span>
 
-                        {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                            <a href="?page={{ page_obj.paginator.num_pages }}" class="next">&raquo;</a>
-                        {% endif %}
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}" class="next">&raquo;</a>
+                            {% endif %}
                     {% endif %}
+
             </div>
         </div>
     </div>

@@ -80,6 +80,13 @@
 })
 </script>
 
+    <script type="text/javascript">
+      function handleSelect(elm)
+      {
+         window.location = elm.value;
+      }
+    </script>
+
 
 <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
    <div class="top">
@@ -123,8 +130,10 @@
     <h3>Оставьте комментарий:</h3>
     <form action="/demo_site/teacher/{{ teacher.pk }}/" method="post">
         {% csrf_token %}
-        <div class="form-group">
-            {{ comment_form.body }}
+        <div class="form-group" style="margin:10 0 10 0;">
+                <div class="form-element" style="margin:10 0 10 0;"> {{ comment_form.body }}</div>
+                Категория:
+                <div class="form-element" style="margin:0 0 0 0;"> {{ comment_form.category }}</div>
         </div>
         <a class="btn btn-secondary" data-toggle="collapse" href="#collapse{{teacher.pk}}" role="button" aria-expanded="false" aria-controls="collapse{{teacher.pk}}">Оценка</a>
         <button type="submit" name="comment_left" class="btn btn-primary">Отправить</button>

@@ -50,7 +50,6 @@ def demo_site_detail(request, pk):
     vote_form = VoteForm()
     vote_form.calculate_averages(teacher)
     comments = Comment.objects.filter(teacher=teacher).order_by('-created_on')
-    comment_answers = CommentAnswer.objects.filter(teacher=teacher)
     #если юзер авторизован - получаем инфу о его оценке, если нет - оценки всех остальных
     if request.user.is_authenticated:
         votes = Vote.objects.filter(teacher=teacher, user=request.user)
@@ -125,21 +124,26 @@ def demo_site_detail(request, pk):
     # СОРТИРОВКА
     sort_by = request.GET.get("sort")
     if sort_by == "likes":
-        comments = comments.annotate(cnt=Count('likes')).order_by('cnt')
+        comments = comments.annotate(cnt=Count('likes')).order_by('-cnt')
 
     elif sort_by == "date":
         comments = comments.order_by('created_on')
 
     elif sort_by == "-likes":
-        comments = comments.annotate(cnt=Count('likes')).order_by('-cnt')
+        comments = comments.annotate(cnt=Count('likes')).order_by('cnt')
 
     elif sort_by == "-date":
         comments = comments.order_by('-created_on')
 
 
-    paginator = Paginator(comments, 3)
+    paginator = Paginator(comments, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    comment_answers = CommentAnswer.objects.filter(teacher=teacher)
+    test = []
+    for comment in comments:
+        a = comment.AnswerFor.all()
+        test.append(a)
     context = {
         "teacher": teacher,
         "comments": comments,
@@ -154,6 +158,7 @@ def demo_site_detail(request, pk):
         "page_number": page_number,
         "sort_by": sort_by,
         "filter": filter,
+        "test": test,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 

@@ -177,3 +177,13 @@ BUTTONS
 .btn-check:focus + .btn, .btn:focus {
     box-shadow: none;
 }
+
+@media screen and (max-width: 600px) {
+  #marks {
+    font-size: 60%;
+  }
+
+  #marks small {
+    font-size: 20px;
+  }
+}

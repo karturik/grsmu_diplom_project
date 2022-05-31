@@ -1,3 +1,21 @@
-{% for message in messages %}
-        <p style="color: red">{{ message }}</p>
-{% endfor %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <p{% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }}
+    {% endfor %}
+</ul>
+{% endif %}
+
+<style>
+        .messages {
+                color: green;
+                text-align: center;
+                position: sticky;
+                display: flex;
+                flex-wrap: wrap;
+                top: 90%;
+                min-height: 2em;
+                background: lightpink;
+                z-index: 1000;
+        }
+</style>

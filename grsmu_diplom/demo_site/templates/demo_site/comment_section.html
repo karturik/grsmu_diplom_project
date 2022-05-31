@@ -6,55 +6,26 @@
 
 
 
-
+    <hr>
     {% if group == 'Student' %}
     <h3>Комментарии({{ comments.count }}):</h3>
 <!--    SORTING-->
-        {% if page_number and filter %}
-            Сортировка:
-            <li class="filters">лайки <a class="filter_by" href="?page={{ page_number }}&filter={{ filter }}&sort=likes"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?page={{ page_number }}&filter={{ filter }}&sort=-likes"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
-            <li class="filters">дата <a class="filter_by" href="?page={{ page_number }}&filter={{ filter }}&sort=date"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?page={{ page_number }}&filter={{ filter }}&sort=-date"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
 
-        {% elif page_number and not filter %}
+        {% if filter %}
             Сортировка:
-            <li class="filters">лайки <a class="filter_by" href="?page={{ page_number }}&sort=likes"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?page={{ page_number }}&sort=-likes"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
-            <li class="filters">дата <a class="filter_by" href="?page={{ page_number }}&sort=date"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?page={{ page_number }}&sort=-date"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
-
-        {% elif not page_number and filter %}
-            Сортировка:
-            <li class="filters">лайки <a class="filter_by" href="?filter={{ filter }}&sort=likes"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?filter={{ filter }}&sort=-likes"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
-            <li class="filters">дата <a class="filter_by" href="?filter={{ filter }}&sort=date"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?filter={{ filter }}&sort=-date"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+            <li class="filters">лайки <a class="filter_by" href="?filter={{ filter }}&sort=likes"> <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a> | <a class="filter_by" href="?filter={{ filter }}&sort=-likes"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a></li>
+            <li class="filters">дата, сначала <a class="filter_by" href="?filter={{ filter }}&sort=-date"> новые</a> | <a class="filter_by" href="?filter={{ filter }}&sort=date">старые</a></li>
 
         {% else %}
             Сортировка:
-            <li class="filters">лайки <a class="filter_by" href="?sort=likes"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?sort=-likes"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
-            <li class="filters">дата <a class="filter_by" href="?sort=date"> <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a> | <a class="filter_by" href="?sort=-date"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a></li>
+            <li class="filters">лайки <a class="filter_by" href="?sort=likes"> <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></a> | <a class="filter_by" href="?sort=-likes"><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></a></li>
+            <li class="filters">дата, сначала <a class="filter_by" href="?sort=-date"> новые</a> | <a class="filter_by" href="?sort=date">старые</a></li>
         {% endif %}
 
 
 
 <!--CATEGORY-FILTER-->
-    {% if page_number and sort_by %}
-        <select name="formal" onchange="javascript:handleSelect(this)">
-        <option value="">--Категория--</option>
-        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=all">Все</option>
-        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=lesson">Занятия</option>
-        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=lecture">Лекции</option>
-        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=exam">Экзамен</option>
-        <option value="?page={{ page_number }}&sort={{ sort_by }}&filter=other">Остальное</option>
-        </select>
-
-    {% elif page_number and not sort_by %}
-        <select name="formal" onchange="javascript:handleSelect(this)">
-        <option value="">--Категория--</option>
-        <option value="?page={{ page_number }}&filter=all">Все</option>
-        <option value="?page={{ page_number }}&filter=lesson">Занятия</option>
-        <option value="?page={{ page_number }}&filter=lecture">Лекции</option>
-        <option value="?page={{ page_number }}&filter=exam">Экзамен</option>
-        <option value="?page={{ page_number }}&filter=other">Остальное</option>
-        </select>
-
-    {% elif not page_number and sort_by %}
+    {% if sort_by %}
         <select name="formal" onchange="javascript:handleSelect(this)">
         <option value="">--Категория--</option>
         <option value="?sort={{ sort_by }}&filter=all">Все</option>
@@ -113,17 +84,14 @@
             </div>
 
             </div>
-
-
         </div>
-<!--ANSWERS-->
-    {% for answer in comment_answers %}
-        {% if answer.comment == comment %}
-        <details>
-            <summary style="text-align: center;">ответы <i class="fa fa-comments-o" aria-hidden="true"></i></summary>
-            {% for answer in comment_answers %}
-                {% if answer.comment == comment %}
 
+<!--ANSWERS-->
+            {% if comment.AnswerFor.all %}
+            <details>
+                <summary style="text-align: center;">ответы <i class="fa fa-comments-o" aria-hidden="true"></i></summary>
+                {% for answer in comment_answers %}
+                    {% if answer.comment == comment %}
                             <div class="media g-mb-30 media-comment-answer">
                                 {% if answer.author.profile.profile_pic %}
                                     <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15 comment-answer-img" src="{% static answer.author.profile.profile_pic %}" alt="Image Description">
@@ -145,12 +113,12 @@
                                 {% endif %}
                                 </div>
                             </div>
-                {% endif %}
-            {% endfor %}
-        </details>
-        {% else %}
+                    {% endif %}
+                {% endfor %}
+            </details>
         {% endif %}
-    {% endfor %}
+
+
 
 
     <!--COMMENT ANSWER-->

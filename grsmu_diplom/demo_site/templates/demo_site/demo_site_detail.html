@@ -109,23 +109,25 @@
                </small>
                <p class="text-muted" style="font-size:12px">Коммуникабельность: {{ teacher.communication_average }} | Обучение: {{ teacher.teaching_average }} | Требовательность: {{ teacher.demanding_average }}</p>
            </div>
-           <div class="row">
-               <div class="col-md"> Коммуникабельность
-                   <div class="pie" style="--p:{{ teacher.communication_average }};--c:#0d6efd;--b:8px"> {{ teacher.communication_average }}</div>
+           <div class="row" id="marks">
+               <hr>
+               <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Коммуникабельность</p>
+                   <p><div class="pie" style="--p:{{ teacher.communication_average }};--c:#0d6efd;--b:8px"> {{ teacher.communication_average }}</div></p>
                </div>
-               <div class="col-md"> Обучение
-                   <div class="pie" style="--p:{{ teacher.teaching_average }};--c:#0d6efd;--b:8px"> {{ teacher.teaching_average }}</div>
+               <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Обучение</p>
+                   <p><div class="pie" style="--p:{{ teacher.teaching_average }};--c:#0d6efd;--b:8px"> {{ teacher.teaching_average }}</div></p>
                </div>
-               <div class="col-md"> Требовательность
-                   <div class="pie" style="--p:{{ teacher.demanding_average }};--c:#0d6efd;--b:8px"> {{ teacher.demanding_average }}</div>
+               <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Требовательность</p>
+                   <p><div class="pie" style="--p:{{ teacher.demanding_average }};--c:#0d6efd;--b:8px"> {{ teacher.demanding_average }}</div></p>
                </div>
-           <small>Количество голосов: {{ vote_count }}</small>
+           <small style="text-align: center;">Количество голосов: {{ vote_count }}</small>
            </div>
        </div>
        </div>
    </div>
 
 <!--    ОСТАВИТЬ КОММЕНТАРИЙ-->
+    <hr>
     {% if user.is_authenticated %}
     <h3>Оставьте комментарий:</h3>
     <form action="/demo_site/teacher/{{ teacher.pk }}/" method="post">

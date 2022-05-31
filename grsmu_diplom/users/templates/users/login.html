@@ -9,9 +9,6 @@
         {% csrf_token %}
         <p>Логин: {{ login_form.username }}</p>
         <p>Пароль: {{ login_form.password }}</p>
-        {% for message in messages %}
-            <p style="color: turquoise">{{ message }}</p>
-        {% endfor %}
         <button class="btn btn-primary" type="submit">Войти</button>
     </form>
     <p class="text-center">Забыли пароль?<a href="/user/password_reset">Восстановить</a></p>

@@ -16,7 +16,6 @@ try:
     from django.utils import simplejson as json
 except ImportError:
     import json
-from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -73,6 +72,7 @@ def demo_site_detail(request, pk):
                     category = comment_form.cleaned_data['category'],
                 )
                 comment.save()
+                messages.success(request, ('Комментарий сохранен'))
         #кнопка "оценить"
         elif "score_submit" in request.POST:
             vote_form = VoteForm(request.POST)
@@ -105,11 +105,13 @@ def demo_site_detail(request, pk):
             answer_pk = request.POST.get('answer_pk')
             answer = CommentAnswer.objects.filter(pk=answer_pk)
             answer.delete()
+            messages.error(request, ('Ответ удален'))
         #кнопка "удалить комментарий"
         elif "comment_delete" in request.POST:
             comment_pk = request.POST.get('comment_pk')
             comment = Comment.objects.filter(pk=comment_pk)
             comment.delete()
+            messages.error(request, ('Комментарий удален'))
 
         return redirect ('demo_site_detail', pk)
 
@@ -140,10 +142,6 @@ def demo_site_detail(request, pk):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     comment_answers = CommentAnswer.objects.filter(teacher=teacher)
-    test = []
-    for comment in comments:
-        a = comment.AnswerFor.all()
-        test.append(a)
     context = {
         "teacher": teacher,
         "comments": comments,
@@ -158,7 +156,6 @@ def demo_site_detail(request, pk):
         "page_number": page_number,
         "sort_by": sort_by,
         "filter": filter,
-        "test": test,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
 
@@ -229,31 +226,4 @@ def dislikes(request):
         html = render_to_string('demo_site/like_section.html', context, request=request)
         return JsonResponse({'form': html})
 
-def comments(request):
-    pk = request.POST.get('teacher_pk')
-    teacher = Teacher.objects.get(pk=pk)
-    answer_form = CommentAnswerForm()
-    comments = Comment.objects.filter(teacher=teacher).annotate(cnt=Count('likes')).order_by('-cnt')
-    paginator = Paginator(comments, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    comment_answers = CommentAnswer.objects.filter(teacher=teacher)
-    #если юзер не авторизован, то его группы нет
-    if not request.user.is_authenticated:
-        group = 0
-    else:
-        group = str(request.user.groups.get())
-    context = {
-        "teacher": teacher,
-        "comments": comments,
-        "answer_form": answer_form,
-        "group": group,
-        "comment_answers": comment_answers,
-        "page_obj": page_obj,
-    }
-    if request.method == "POST":
-        if is_ajax(request=request):
-            html = render_to_string('demo_site/comment_section.html', context, request=request)
-            return JsonResponse({'form': html})
-    return redirect('demo_site_detail', pk=1)
 

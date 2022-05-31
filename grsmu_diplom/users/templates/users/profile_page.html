@@ -137,15 +137,15 @@
 						<p>Фото профиля:</p>
 				  <div>
 					{% for ph in profile_pics_list %}
-					{% if ph == user.profile.profile_pic %}
-					<input type="radio" id="pictureChoice1" name="profile_picture" value="{{ ph }}" checked>
-					{% else %}
-					<input type="radio" id="pictureChoice1" name="profile_picture" value="{{ ph }}">
-					{% endif %}
-					<label for="pictureChoice1"><img src="{% static ph %}" style="max-height: 100px;"></label>
+						{% if ph == user.profile.profile_pic %}
+						<input type="radio" id="pictureChoice1" name="profile_picture" value="{{ ph }}" checked>
+						{% else %}
+						<input type="radio" id="pictureChoice1" name="profile_picture" value="{{ ph }}">
+						{% endif %}
+						<label for="pictureChoice1"><img src="{% static ph %}" style="max-height: 100px;"></label>
 				  	{% endfor %}
 				  </div>
-					<input type="hidden" id="picture-name" name="picture-name" value="0">
+					<input type="hidden" id="picture-name" name="picture-name" value="{{ user.profile.profile_pic }}">
 		        </div>
 		      		<div class="modal-footer">
 		        	<button type="submit" name = "user_change" class="btn btn-primary">Сохранить</button>

@@ -71,12 +71,24 @@ padding: 1;
 margin: 10;
 }
 
-ОЦЕНКИ
+###########ОЦЕНКИ#################
 @property --p{
   syntax: '<number>';
   inherits: true;
   initial-value: 0;
 }
+
+
+@media screen and (max-width: 600px) {
+  #marks {
+    font-size: 60%;
+  }
+
+  #marks small {
+    font-size: 20px;
+  }
+}
+
 
 .pie {
   --w:80px;
@@ -120,7 +132,7 @@ margin: 10;
 
 
 
-PAGINATION
+##############PAGINATION#################
 .pagination_rounded ul .prev li a:hover {
     background: #4285f4;
     color: #fff;
@@ -173,17 +185,54 @@ text-align: center;
 }
 
 
-BUTTONS
+#################BUTTONS######################
 .btn-check:focus + .btn, .btn:focus {
     box-shadow: none;
 }
 
-@media screen and (max-width: 600px) {
-  #marks {
-    font-size: 60%;
-  }
 
-  #marks small {
-    font-size: 20px;
-  }
+{#############ВСПЛЫВАЮЩИЕ_ПОДСКАЗКИ############}
+
+   [data-tooltip] {
+    position: relative; /* Относительное позиционирование */
+   }
+   [data-tooltip]::after {
+    content: attr(data-tooltip); /* Выводим текст */
+    position: absolute; /* Абсолютное позиционирование */
+    width: 300px; /* Ширина подсказки */
+    left: 0; top: 0; /* Положение подсказки */
+    background: #3989c9; /* Синий цвет фона */
+    color: #fff; /* Цвет текста */
+    padding: 0.5em; /* Поля вокруг текста */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Параметры тени */
+    pointer-events: none; /* Подсказка */
+    opacity: 0; /* Подсказка невидима */
+    transition: 1s; /* Время появления подсказки */
+   }
+   [data-tooltip]:hover::after {
+    opacity: 1; /* Показываем подсказку */
+    top: 2em; /* Положение подсказки */
+   }
+
+@media screen and (max-width: 600px) {
+     [data-tooltip] {
+    position: relative; /* Относительное позиционирование */
+   }
+   [data-tooltip]::after {
+    content: attr(data-tooltip); /* Выводим текст */
+    position: absolute; /* Абсолютное позиционирование */
+    width: 300px; /* Ширина подсказки */
+    left: 0; top: 0; /* Положение подсказки */
+    background: #3989c9; /* Синий цвет фона */
+    color: #fff; /* Цвет текста */
+    padding: 0.5em; /* Поля вокруг текста */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Параметры тени */
+    pointer-events: none; /* Подсказка */
+    opacity: 0; /* Подсказка невидима */
+    transition: 1s; /* Время появления подсказки */
+   }
+   [data-tooltip]:hover::after {
+    opacity: 1; /* Показываем подсказку */
+    top: 2em; /* Положение подсказки */
+   }
 }

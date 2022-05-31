@@ -17,5 +17,4 @@ urlpatterns = [
     path("search/", views.searching, name="searching"),
     path('likes/', views.likes, name='likes'),
     path('dislikes/', views.dislikes, name='dislikes'),
-    path('comments/', views.comments, name='comments'),
 ]

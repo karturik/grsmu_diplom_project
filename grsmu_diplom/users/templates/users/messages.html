@@ -1,21 +1,15 @@
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <p{% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }}
-    {% endfor %}
-</ul>
-{% endif %}
+{% load static %}
+<link href="{% static 'css/styles/grsmu_diplom/messages.css' %}" rel="stylesheet" type="text/css" />
 
-<style>
-        .messages {
-                color: green;
-                text-align: center;
-                position: sticky;
-                display: flex;
-                flex-wrap: wrap;
-                top: 90%;
-                min-height: 2em;
-                background: lightpink;
-                z-index: 1000;
-        }
-</style>
+
+{% if messages %}
+<div class="container" id="message-container" >
+    <div class="row" id="message-row">
+        <ul class="messages">
+            {% for message in messages %}
+            <p {% if message.tags %} class="msg msg-{{ message.tags }} msg-{{ message.tags }}-text"{% endif %}> {{ message }}</p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}

@@ -52,34 +52,7 @@
 })
 </script>
 
-<!--COMMENTS_SCRIPT-->
-<script>
-  $(document).ready(function(){console.log("a tut comment");})
-  $(document).on('submit', '#sorting', function(event){
-    event.preventDefault();
-    var sort = $(this).selectedIndex;
-    var teacher_pk = document.getElementById('teacher_pk').attr('value');
-    console.log(sort);
-    $.ajax({
-      type: 'POST',
-      url: '{% url "comments" %}',
-      data: {
-            'teacher_pk': teacher_pk,
-            'sort': sort,
-            'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-      dataType: 'json',
-            success: function(response){
-              $('#comment-section').html(response['form'])
-              console.log($('#comment-section').html(response['form']));
-            },
-            error: function(rs, e){
-              console.log(rs.responseText);
-            },
-          });
-})
-</script>
-
+<!--FILTRATION_SCRIPT-->
     <script type="text/javascript">
       function handleSelect(elm)
       {
@@ -113,12 +86,15 @@
                <hr>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Коммуникабельность</p>
                    <p><div class="pie" style="--p:{{ teacher.communication_average }};--c:#0d6efd;--b:8px"> {{ teacher.communication_average }}</div></p>
+                   <p data-tooltip="А здесь мы рассказываем о коммуникабельности преподавателя, как ее оценивать"><i class="fa fa-question-circle" aria-hidden="true"></i></p>
                </div>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Обучение</p>
                    <p><div class="pie" style="--p:{{ teacher.teaching_average }};--c:#0d6efd;--b:8px"> {{ teacher.teaching_average }}</div></p>
+                   <p data-tooltip="А здесь мы рассказываем об обучении преподавателя, как ее оценивать"><i class="fa fa-question-circle" aria-hidden="true"></i></p>
                </div>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Требовательность</p>
                    <p><div class="pie" style="--p:{{ teacher.demanding_average }};--c:#0d6efd;--b:8px"> {{ teacher.demanding_average }}</div></p>
+                   <p data-tooltip="А здесь мы рассказываем о требовательности преподавателя, как ее оценивать"><i class="fa fa-question-circle" aria-hidden="true"></i></p>
                </div>
            <small style="text-align: center;">Количество голосов: {{ vote_count }}</small>
            </div>

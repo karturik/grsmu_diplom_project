@@ -1,0 +1,74 @@
+#message-container {
+        position: sticky;
+        top: 90%;
+        z-index: 10;
+        max-width: 360px;
+        float: right;
+        overflow: hidden;
+}
+
+.msg {
+    background: #fefefe;
+    color: #666666;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 12px;
+    padding-left: 16px;
+    border-top: solid 3px #CCCCCC;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    -webkit-box-shadow: 0 10px 10px -5px rgba(0,0,0,.08);
+    -moz-box-shadow: 0 10px 10px -5px rgba(0,0,0,.08);
+    box-shadow: 0 10px 10px -5px rgba(0,0,0,.08);
+}
+
+.msg-success {
+    border-color: #cef2b8;
+}
+
+.msg-error {
+    border-color: #ec8282;
+}
+
+.msg-success-text {
+    color: #80d651;
+}
+
+.msg-error-text {
+    color: #c9302c;
+}
+
+.msg-info {
+    border-color: #b8dbf2;
+}
+
+.msg-info-text {
+    color: #39b3d7;
+}
+
+
+
+.messages {
+    margin-left: 100%;
+    animation-duration: 7s;
+    animation-name: slidein;
+    animation-iteration-count: 1;
+    animation-direction: alternate;
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 100%;
+  }
+
+  to {
+    margin-left: 100%;
+    width: 100%;
+  }
+
+  50% {
+    margin-left: 0%;
+    width: 100%;
+  }
+}

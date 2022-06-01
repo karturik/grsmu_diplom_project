@@ -5,7 +5,7 @@
 {% if messages %}
 <div class="container" id="message-container" >
     <div class="row" id="message-row">
-        <ul class="messages">
+        <ul class="notification-messages">
             {% for message in messages %}
             <p {% if message.tags %} class="msg msg-{{ message.tags }} msg-{{ message.tags }}-text"{% endif %}> {{ message }}</p>
             {% endfor %}

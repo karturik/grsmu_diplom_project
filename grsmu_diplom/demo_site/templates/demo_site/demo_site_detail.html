@@ -86,15 +86,15 @@
                <hr>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Коммуникабельность</p>
                    <p><div class="pie" style="--p:{{ teacher.communication_average }};--c:#0d6efd;--b:8px"> {{ teacher.communication_average }}</div></p>
-                   <p data-tooltip="А здесь мы рассказываем о коммуникабельности преподавателя, как ее оценивать"><i class="fa fa-question-circle" aria-hidden="true"></i></p>
+                   <div class="tooltip-box"><i class="fa fa-question-circle" aria-hidden="true"></i><p class="tooltiptext11" id="tooltiptext-1">Метод ajax запускается функцией keyup. Он принимает на вход объект с параметрами запроса. После успешного завершения запросов запускается одна из колбэк-функций success или error. При успешном вызове мы используем условный оператор для добавления и удаления классов is-valid/is-invalid поля ввода. А return false в конце скрипта предотвращает отправку форм, таким образом останавливая перезагрузку страницы.</p></div>
                </div>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Обучение</p>
                    <p><div class="pie" style="--p:{{ teacher.teaching_average }};--c:#0d6efd;--b:8px"> {{ teacher.teaching_average }}</div></p>
-                   <p data-tooltip="А здесь мы рассказываем об обучении преподавателя, как ее оценивать"><i class="fa fa-question-circle" aria-hidden="true"></i></p>
+                   <div class="tooltip-box"><i class="fa fa-question-circle" aria-hidden="true"></i><p class="tooltiptext11" id="tooltiptext-2">Метод ajax запускается функцией keyup. Он принимает на вход объект с параметрами запроса. После успешного завершения запросов запускается одна из колбэк-функций success или error. При успешном вызове мы используем условный оператор для добавления и удаления классов is-valid/is-invalid поля ввода. А return false в конце скрипта предотвращает отправку форм, таким образом останавливая перезагрузку страницы.</p></div>
                </div>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Требовательность</p>
                    <p><div class="pie" style="--p:{{ teacher.demanding_average }};--c:#0d6efd;--b:8px"> {{ teacher.demanding_average }}</div></p>
-                   <p data-tooltip="А здесь мы рассказываем о требовательности преподавателя, как ее оценивать"><i class="fa fa-question-circle" aria-hidden="true"></i></p>
+                   <div class="tooltip-box"><i class="fa fa-question-circle" aria-hidden="true"></i><p class="tooltiptext11" id="tooltiptext-3">Метод ajax запускается функцией keyup. Он принимает на вход объект с параметрами запроса. После успешного завершения запросов запускается одна из колбэк-функций success или error. При успешном вызове мы используем условный оператор для добавления и удаления классов is-valid/is-invalid поля ввода. А return false в конце скрипта предотвращает отправку форм, таким образом останавливая перезагрузку страницы.</p></div>
                </div>
            <small style="text-align: center;">Количество голосов: {{ vote_count }}</small>
            </div>

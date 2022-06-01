@@ -193,46 +193,55 @@ text-align: center;
 
 {#############ВСПЛЫВАЮЩИЕ_ПОДСКАЗКИ############}
 
-   [data-tooltip] {
-    position: relative; /* Относительное позиционирование */
-   }
-   [data-tooltip]::after {
-    content: attr(data-tooltip); /* Выводим текст */
-    position: absolute; /* Абсолютное позиционирование */
-    width: 300px; /* Ширина подсказки */
-    left: 0; top: 0; /* Положение подсказки */
-    background: #3989c9; /* Синий цвет фона */
-    color: #fff; /* Цвет текста */
-    padding: 0.5em; /* Поля вокруг текста */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Параметры тени */
-    pointer-events: none; /* Подсказка */
-    opacity: 0; /* Подсказка невидима */
-    transition: 1s; /* Время появления подсказки */
-   }
-   [data-tooltip]:hover::after {
-    opacity: 1; /* Показываем подсказку */
-    top: 2em; /* Положение подсказки */
-   }
+.tooltip-box {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip-box .tooltiptext11 {
+    visibility: hidden;
+    width: 300px;
+    background-color: #0d6efd;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+    opacity: 0;
+    transition: opacity 1s, 1s;
+}
+
+
+#tooltiptext-1 {
+    top: 100%;
+    left: 105%;
+}
+
+#tooltiptext-2 {
+    top: 100%;
+    left: 50%;
+    margin-left: -150px;
+}
+
+#tooltiptext-3 {
+    top: 100%;
+    right: 105%;
+}
+
+.tooltip-box:hover .tooltiptext11 {
+    visibility: visible;
+    opacity: 1;
+}
 
 @media screen and (max-width: 600px) {
-     [data-tooltip] {
-    position: relative; /* Относительное позиционирование */
+   .tooltip-box .tooltiptext11 {
+        width: 250px;
    }
-   [data-tooltip]::after {
-    content: attr(data-tooltip); /* Выводим текст */
-    position: absolute; /* Абсолютное позиционирование */
-    width: 300px; /* Ширина подсказки */
-    left: 0; top: 0; /* Положение подсказки */
-    background: #3989c9; /* Синий цвет фона */
-    color: #fff; /* Цвет текста */
-    padding: 0.5em; /* Поля вокруг текста */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Параметры тени */
-    pointer-events: none; /* Подсказка */
-    opacity: 0; /* Подсказка невидима */
-    transition: 1s; /* Время появления подсказки */
-   }
-   [data-tooltip]:hover::after {
-    opacity: 1; /* Показываем подсказку */
-    top: 2em; /* Положение подсказки */
-   }
+   #tooltiptext-2 {
+    margin-left: -125px;
+}
 }

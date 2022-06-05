@@ -2,14 +2,6 @@
   box-sizing: border-box;
 }
 
-body {
-  background-color: #edeff2;
-  font-family: "Calibri", "Roboto", sans-serif;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center 0;
-}
-
 .chat_window {
   aaa1position: absolute;
   aaa1width: calc(100% - 20px);
@@ -198,6 +190,25 @@ body {
   display: none;
 }
 
+
+
+body {
+        background-color: #edeff2;
+        font-family: "Calibri", "Roboto", sans-serif;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: left;
+        background-repeat: no-repeat;
+
+@media screen and (max-width: 600px) {
+body{
+        background-color: #edeff2;
+        font-family: "Calibri", "Roboto", sans-serif;
+        background-size:cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+   }
+}
 
 
 

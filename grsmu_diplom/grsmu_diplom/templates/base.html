@@ -39,6 +39,12 @@
                                 <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="searched">
                                 <button class="btn btn-primary" type="submit">Искать</button>
                             </form>
+                        {% else %}
+                            <form class="top-search d-flex" method=POST action="{% url 'searching' %}">
+                                {% csrf_token %}
+                                <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="searched">
+                                <button class="btn btn-primary" type="submit">Искать</button>
+                            </form>
                         {% endif %}
                         {% if user.is_authenticated %}
                             <a class="nav-link">Вы вошли как {{ user.username }}</a>
@@ -67,7 +73,7 @@
 {% include 'users/messages.html' %}
 <div class="content-main-block">
 <div class="col-md-8 offset-md-2">
-    <body background="{% static '/images/E0dsHx_WYAEiVk4.jpg' %}" style="background-size:cover; background-position: left; background-repeat: no-repeat; background-attachment: fixed;">
+    <body style="background-image: url({% static '/images/E0dsHx_WYAEiVk4.jpg' %});">
     {% block page_content %}{% endblock %}
     </body>
 </div>

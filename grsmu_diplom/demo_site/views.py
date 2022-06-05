@@ -121,7 +121,7 @@ def demo_site_detail(request, pk):
         if filter == "all":
             comments = Comment.objects.filter(teacher=teacher)
         else:
-            comments = Comment.objects.filter(category=filter)
+            comments = Comment.objects.filter(teacher=teacher, category=filter)
 
     # СОРТИРОВКА
     sort_by = request.GET.get("sort")

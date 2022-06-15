@@ -72,6 +72,7 @@ def logout_request(request):
     messages.info(request, "Вы вышли из аккаунта")
     return redirect("demo_site_index")
 
+@login_required(login_url='/user/login/')
 def profile_page(request):
     comments = Comment.objects.filter(author=request.user).order_by('-created_on')
     comment_list = Comment.objects.filter(author=request.user).order_by('-created_on')

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+<div class="col-md-8 offset-md-2">
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
+
+    <form action="{% url 'message' %}"  id="form_message{{ user.id }}" method="post">
+                {% csrf_token %}
+      <p>Тема:</p>
+        <textarea name="verb"></textarea>
+      <p>Текст:<textarea name="message" style="height: 40%; width: 100%;"></textarea></p>
+      <p>Никнейм:
+        <input type="text" name="send_to_user"></p>
+
+       <p><input type="checkbox" name="send_to_all">отправить всем</p>
+    <p><button type="submit" value="Submit" class="btn btn-primary">Send message</button></p>
+    </form>
+    </div>
+</div>
+{% endblock %}

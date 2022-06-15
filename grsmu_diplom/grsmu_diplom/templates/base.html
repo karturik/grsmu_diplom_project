@@ -39,6 +39,15 @@ documentHeight()
             <nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
                 <div class="container-fluid px-0">
                     <a class="navbar-brand" href="/">Главная</a>
+                    {% if  request.get_full_path != '/' %}
+                    {% with count=user.notifications.unread.count  %}
+                    {% if count %}
+                    <div class="notifications_count" style="position: absolute; top: -10px; left: -10px; padding: 3px 12px; border-radius: 50%; background: red; color: white;">
+                        {{ count }}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    {% endif %}
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                     </button>

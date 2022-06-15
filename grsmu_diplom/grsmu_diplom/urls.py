@@ -4,11 +4,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from . import views
+import notifications.urls
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main_page, name="main_page"),
+    path('message/', views.message, name='message'),
+    path('staff/', views.staff, name='staff'),
+    path('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
     path('demo_site/', include("demo_site.urls")),
     path('user/', include("users.urls")),
     path('scraper/', include("scraper.urls")),

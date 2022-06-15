@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'users',
     'scraper',
     # 3-d side apps
+    'notifications',
 
 ]
 

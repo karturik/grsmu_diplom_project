@@ -200,12 +200,13 @@ body {
         background-position: left;
         background-repeat: no-repeat;
 
-@media screen and (max-width: 600px) {
+@media screen and (min-width: 600px) {
 body{
         background-color: #edeff2;
         font-family: "Calibri", "Roboto", sans-serif;
-        background-size:cover;
-        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: left;
         background-repeat: no-repeat;
    }
 }

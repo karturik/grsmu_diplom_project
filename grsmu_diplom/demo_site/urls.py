@@ -17,4 +17,5 @@ urlpatterns = [
     path("search/", views.searching, name="searching"),
     path('likes/', views.likes, name='likes'),
     path('dislikes/', views.dislikes, name='dislikes'),
+    path('vote/', views.voting, name='voting'),
 ]

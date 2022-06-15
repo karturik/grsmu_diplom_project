@@ -26,9 +26,9 @@ class CommentAnswerForm(forms.Form):
     )
 
 class VoteForm(forms.ModelForm):
-    communication = forms.IntegerField(label='Коммуникация', widget=NumberInput(attrs={'placeholder': ('5'), 'type':'range', 'min':'1', 'max':'10', 'class':'communication'}))
-    teaching = forms.IntegerField(label='Обучение', widget=NumberInput(attrs={'placeholder': ('5'), 'type':'range', 'min':'1', 'max':'10', 'class':'teaching'}))
-    demanding = forms.IntegerField(label='Требовательность', widget=NumberInput(attrs={'placeholder': ('5'), 'type':'range', 'min':'1', 'max':'10', 'class':'demanding'}))
+    communication = forms.IntegerField(label='Коммуникация (1-плохая, 10-отличная)', widget=NumberInput(attrs={'placeholder': ('5'), 'type':'range', 'min':'1', 'max':'10', 'class':'communication'}))
+    teaching = forms.IntegerField(label='Обучение (1-плохое, 10-отличное)', widget=NumberInput(attrs={'placeholder': ('5'), 'type':'range', 'min':'1', 'max':'10', 'class':'teaching'}))
+    demanding = forms.IntegerField(label='Требовательность (1-высокая, 10-низкая)', widget=NumberInput(attrs={'placeholder': ('5'), 'type':'range', 'min':'1', 'max':'10', 'class':'demanding'}))
 
     class Meta:
         model = Vote

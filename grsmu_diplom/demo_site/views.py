@@ -22,6 +22,7 @@ from django.http import JsonResponse
 
 #SORTING
 from django.db.models import Count
+import os
 
 
 # Create your views here.
@@ -74,22 +75,22 @@ def demo_site_detail(request, pk):
                 comment.save()
                 messages.success(request, ('Комментарий сохранен'))
         #кнопка "оценить"
-        elif "score_submit" in request.POST:
-            vote_form = VoteForm(request.POST)
-            #если юзер уже оценивал - меняем его имеющуюся оценку
-            if vote_form.is_valid():
-                if votes:
-                    for vote in votes:
-                        vote_form = VoteForm(request.POST, instance=vote)
-                else:
-                    vote_form = VoteForm(request.POST)
-                form = vote_form.save(commit=False)
-                form.user = request.user
-                form.teacher = teacher
-                form.save()
-                messages.success(request, (f'{form.teacher.name}, оценка сохранена'))
-            else:
-                messages.error(request,('Ошибка при сохранении оценки'))
+        # elif "score_submit" in request.POST:
+        #     vote_form = VoteForm(request.POST)
+        #     #если юзер уже оценивал - меняем его имеющуюся оценку
+        #     if vote_form.is_valid():
+        #         if votes:
+        #             for vote in votes:
+        #                 vote_form = VoteForm(request.POST, instance=vote)
+        #         else:
+        #             vote_form = VoteForm(request.POST)
+        #         form = vote_form.save(commit=False)
+        #         form.user = request.user
+        #         form.teacher = teacher
+        #         form.save()
+        #         messages.success(request, (f'{form.teacher.name}, оценка сохранена'))
+        #     else:
+        #         messages.error(request,('Ошибка при сохранении оценки'))
         #кнопка "ответить на комментарий"
         elif "comment_answer" in request.POST:
             answer_form = CommentAnswerForm(request.POST)
@@ -226,4 +227,33 @@ def dislikes(request):
         html = render_to_string('demo_site/like_section.html', context, request=request)
         return JsonResponse({'form': html})
 
-
+def voting(request):
+    pk = request.POST.get("pk")
+    teacher = Teacher.objects.get(pk=pk)
+    vote_form = VoteForm(request.POST)
+    vote_count = Vote.objects.filter(teacher=teacher).count()
+    vote_form.calculate_averages(teacher)
+    communication = request.POST.get("communication")
+    teaching = request.POST.get("teaching")
+    demanding = request.POST.get("demanding")
+    # если юзер авторизован - ищем его голос
+    if request.user.is_authenticated:
+        votes = Vote.objects.filter(teacher=teacher, user=request.user)
+    # если юзер не авторизован - беремен все голоса
+    else:
+        votes = Vote.objects.filter(teacher=teacher)
+    if votes:
+        for vote in votes:
+            vote_form = VoteForm(instance=vote)
+    else:
+        vote_form = VoteForm(request.POST)
+    form = vote_form.save(commit=False)
+    form.user = request.user
+    form.teacher = teacher
+    form.communication = communication
+    form.teaching = teaching
+    form.demanding = demanding
+    form.save()
+    messages.success(request, (f'{form.teacher.name}, оценка сохранена'))
+    # если юзер уже оценивал - меняем его имеющуюся оценку
+    return HttpResponse("Оценка сохранена, обновится после перезагрузки страницы")

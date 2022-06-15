@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
 import requests
-
+from django.contrib.auth.decorators import login_required
 
 #password reset
 from django.core.mail import send_mail, BadHeaderError
@@ -25,6 +25,9 @@ from bs4 import BeautifulSoup
 
 #PAGINATION
 from django.core.paginator import Paginator
+
+#SORTING
+from django.db.models import Count
 
 
 # Create your views here.
@@ -72,6 +75,13 @@ def logout_request(request):
 def profile_page(request):
     comments = Comment.objects.filter(author=request.user).order_by('-created_on')
     comment_list = Comment.objects.filter(author=request.user).order_by('-created_on')
+
+    sort_by = request.GET.get("sort")
+    if sort_by == "likes":
+        comment_list = Comment.objects.filter(author=request.user).annotate(cnt=Count('likes')).order_by('-cnt')
+    elif sort_by == "date":
+        comment_list = Comment.objects.filter(author=request.user).order_by('created_on')
+
     paginator = Paginator(comment_list, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -124,6 +134,9 @@ def profile_page(request):
                           messages.error(request, "Логин или пароль неверный.")
             else:
                 messages.error(request, "Логин или пароль неверный.")
+
+
+
     user_form = UserForm(instance = request.user)
     profile_form = ProfileForm(instance = request.user.profile)
     moodle_form = StudentVerificationForm(request.POST)
@@ -137,6 +150,7 @@ def profile_page(request):
         "moodle_form": moodle_form,
         "page_obj": page_obj,
         "profile_pics_list": profile_pics_list,
+        "sort_by": sort_by,
     }
 
     return render(request=request, template_name='users/profile_page.html', context=context, )
@@ -150,7 +164,7 @@ def password_reset_request(request):
             associated_users = User.objects.filter(Q(email=data))
             if associated_users.exists():
                 for user in associated_users:
-                    subject = "Password Reset Requested"
+                    subject = "Восстановление пароля"
                     email_template_name = "password/password_reset_email.txt"
                     c = {
                         "email":user.email,
@@ -163,28 +177,19 @@ def password_reset_request(request):
                     }
                     email = render_to_string(email_template_name, c)
                     try:
-                        send_mail(subject, email, 'grsmu.check@gmail.com', [user.email], fail_silently=False)
+                        send_mail(subject, email, 'grsmu.check@mail.ru', [user.email], fail_silently=False)
                     except BadHeaderError:
-                        return HttpResponse('Invalid header found.')
+                        return HttpResponse('Произошла ошибка.')
                     return redirect ("/password_reset/done/")
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="password/password_reset.html", context={"password_reset_form":password_reset_form})
 
-# import requests
-# from bs4 import BeautifulSoup
-#
-# login_data= {
-#     'username': 'kazukevichartur',
-#     'password': 'Karturik141928/'
-# }
-#
-# with requests.Session() as s:
-#   url = "http://edu.grsmu.by/login/index.php"
-#   r = s.get(url)
-#   soup = BeautifulSoup(r.content, 'html5lib')
-#   login_data['form-control'] = soup.find('input', attrs={'class':'form-control'})['value']
-#   r = s.post(url, data=login_data)
-#   if "http://edu.grsmu.by/user/profile.php?id" in str(r.content):
-#     print('Proshlo')
-#   else:
-#     print("Ne proshlo")
+@login_required(login_url='/user/login/')
+def profile_delete(request):
+    user = request.user
+    if request.method == "POST":
+        user = User.objects.get(id = user.id)
+        user.delete()
+        messages.error(request, "Аккаунт удален")
+        return redirect ("/")
+    return render(request=request, template_name="users/profile_delete.html")

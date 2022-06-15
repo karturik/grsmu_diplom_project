@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -158,12 +160,17 @@ MEDIA_ROOT = '/vol/web/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+dotenv_path = os.path.join(BASE_DIR/'template', 'template.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
 # stmp email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 # EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = 'grsmu.check@gmail.com'
-EMAIL_HOST_PASSWORD = 'fc6-5KJ-sT8-KK7'
+EMAIL_HOST_USER = 'grsmu.check@mail.ru'
+EMAIL_HOST_PASSWORD = 'ZVn4ubezEruL02eH2ccm'

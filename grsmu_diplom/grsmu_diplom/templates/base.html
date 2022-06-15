@@ -17,9 +17,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>GRSMU</title>
+        <title>Grsmucheck</title>
+        <link rel="shortcut icon" href="{% static '/images/favicon.ico' %}" type="image/x-icon">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
+
+<script>
+    const documentHeight = () => {
+    const doc = document.documentElement
+ doc.style.setProperty('--doc-height', `${window.innerHeight}px`)
+}
+console.log(doc)
+window.addEventListener("resize", documentHeight)
+documentHeight()
+</script>
 
 <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
@@ -71,9 +83,9 @@
 
 <!--КОНЕЦ-->
 {% include 'users/messages.html' %}
-<div class="content-main-block">
+<div class="content-main-block" style="background-image: url({% static '/images/E0dsHx_WYAEiVk4.jpg' %});">
 <div class="col-md-8 offset-md-2">
-    <body style="background-image: url({% static '/images/E0dsHx_WYAEiVk4.jpg' %});">
+    <body >
     {% block page_content %}{% endblock %}
     </body>
 </div>

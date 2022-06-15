@@ -40,17 +40,22 @@
                     </div>
                 </div>
 				{% if group == 'Not_student' %}
-			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#VerificationModal">Подтвердить аккаунт</button>
+			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#VerificationModal" style="margin-bottom: 8px;">Подтвердить аккаунт</button>
 				{% elif group == 'Student' %}
-			<button type="button" class="btn btn-success">Аккаунт подтвержден!</button>
+			<button type="button" class="btn btn-success" style="margin-bottom: 8px;">Аккаунт подтвержден!</button>
 				{% endif %}
+			<a href='{% url "users:profile_delete" %}' class="btn btn-danger">Удалить аккаунт</a>
 				{% if user.is_superuser %}
 			<a href="/scraper/" class="btn btn-warning">Обновить базу данных</a>
 				{% endif %}
 		</div>
+
 <!--			Табличка с отзывами-->
 		    <div class="col-sm">
 				<h4 class="card-title font-weight-bold text-left">Ваши отзывы</h4>
+				Сортировка:
+				<li class="filters"><a class="filter_by" href="?sort=likes">лайки </a></li>
+				<li class="filters"><a class="filter_by" href="?sort=-date">дата</a></li>
 				{% for comment in page_obj %}
 					<div class="row">
 		    			<div class="card p-5">
@@ -76,6 +81,23 @@
 				<div class="container" style="display:inline;" >
 					<div class="pagination_rounded">
 						<div class="step-links">
+							{% if sort_by %}
+								{% if page_obj.has_previous %}
+									<a href="?page=1&sort={{ sort_by }}" class="prev">&laquo;</a>
+									<a href="?page={{ page_obj.previous_page_number }}&sort={{ sort_by }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+								{% endif %}
+
+								<span class="current">
+									{{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+								</span>
+
+								{% if page_obj.has_next %}
+									<a href="?page={{ page_obj.next_page_number }}&sort={{ sort_by }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+									<a href="?page={{ page_obj.paginator.num_pages }}&sort={{ sort_by }}" class="next">&raquo;</a>
+								{% endif %}
+
+
+							{% else %}
 								{% if page_obj.has_previous %}
 									<a href="?page=1" class="prev">&laquo;</a>
 									<a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
@@ -89,9 +111,11 @@
 									<a href="?page={{ page_obj.next_page_number }}" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
 									<a href="?page={{ page_obj.paginator.num_pages }}" class="next">&raquo;</a>
 								{% endif %}
+							{% endif %}
 						</div>
 					</div>
 				</div>
+
 <!--ФОРМА ПРОВЕРКИ MOODLE-->
 		<div class="modal fade" tabindex="-1" id="VerificationModal" role="dialog">
 	  		<div class="modal-dialog" role="document" >
@@ -116,6 +140,7 @@
 		    	</div>
 	  		</div>
 		</div>
+
 <!--Форма для изменения данных профиля-->
 	<div class="modal fade" tabindex="-1" id="profileModal" role="dialog">
 	  	<div class="modal-dialog" role="document">
@@ -150,7 +175,6 @@
 		      		<div class="modal-footer">
 		        	<button type="submit" name = "user_change" class="btn btn-primary">Сохранить</button>
 		        	</form>
-
 		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
 		        </div>
 		    </div>
@@ -158,5 +182,8 @@
 	</div>
   	</div>
   	</div>
+
+
+
 {% endblock %}
 

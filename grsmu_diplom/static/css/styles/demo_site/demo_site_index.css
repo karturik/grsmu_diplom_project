@@ -1,6 +1,12 @@
 .content-main-block {
     flex: 1 1 auto;
     padding: 6rem 1rem;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: left;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
 }
 
 .vote-card {

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+<div class="col-md-8 offset-md-2">
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
+    <h1>Удалить аккаунт?</h1>
+    <p>При удалении аккаунта стираются все комментарии и оценки</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Да</button>
+        <a href="{% url 'users:profile' %}" class="btn btn-success" style="height: 100px; width: 200px; font-size: 50px;">Отмена</a>
+    </form>
+
+</div>
+</div>
+{% endblock %}

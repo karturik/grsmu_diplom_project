@@ -46,7 +46,8 @@
 				{% endif %}
 			<a href='{% url "users:profile_delete" %}' class="btn btn-danger">Удалить аккаунт</a>
 				{% if user.is_superuser %}
-			<a href="/scraper/" class="btn btn-warning">Обновить базу данных</a>
+			<a href="/scraper/" class="btn btn-secondary" style="margin-top: 10px; margin-bottom: 10px;">Обновить базу данных</a>
+			<a href="/staff/" class="btn btn-warning">Админ-панель</a>
 				{% endif %}
 		</div>
 
@@ -70,7 +71,6 @@
             					{% csrf_token %}
             					<button type="submit" name="comment_delete" class="btn btn-danger" style="max-width: 43px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
             					<input type="hidden" name="comment_pk" value="{{ comment.pk }}">
-            					<a href="{% url 'comment_edit' comment.pk %}" type="button" class="btn btn-secondary" style="max-width: 43px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
             					<i class="fa fa-thumbs-up fa-lg" aria-hidden="true"  style="color: #AAA; float:right; margin-left: 5px;">{{ comment.likes.count }}</i>
             					<i class="fa fa-thumbs-down fa-lg" aria-hidden="true"  style="color: #AAA; float:right;">{{ comment.dislikes.count }}</i>
 

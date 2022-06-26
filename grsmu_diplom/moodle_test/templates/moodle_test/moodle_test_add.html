@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block page_content %}
+{% load static %}
+
+<script type='text/javascript'>
+        function addFields(){
+            var container = document.getElementById("test_urls");
+            var container_length = (container.getElementsByTagName('*').length)/2
+            var number = 10;
+            console.log(container_length)
+            if (container_length < 10) {
+            container.appendChild(document.createTextNode("Ссылка на тест: "));
+            var input = document.createElement("input");
+            input.type = "url";
+            input.placeholder = "https://example.com"
+            input.name = "test_url";
+            container.appendChild(input);
+            container.appendChild(document.createElement("hr"));
+            }
+        }
+</script>
+
+<div class="col-md-8 offset-md-2" style="height: 100%;">
+    <div class="container" style="max-width: 1200px;
+    background-color: rgb(255 255 255 / 75%);
+    backdrop-filter: blur(100px);
+    padding-top: 20px;
+    border-radius: 30px; padding-bottom: 10px;">
+<form method="POST">
+    {% csrf_token %}
+    <div class="moodle_user_info" style="text-align: center;">
+    <p>Логин Moodle</p>
+    <input type="text" name="moodle_username" id="moodle_username">
+    <p>Пароль Moodle</p>
+    <input type="text" name="moodle_password" id="moodle_password">
+    <p>Тесты:</p>
+    </div>
+
+<p><div id="test_urls"></div></p>
+    <p><a href="#" id="filldetails" onclick="addFields()">Добавить ссылку</a></p>
+    <p><button class="btn btn-success" type="submit">Отправить</button></p>
+</form>
+{% endblock %}
+</div>
+</div>

@@ -1,0 +1,120 @@
+.teacher-rating-card {
+    max-width: 300px;
+    background-color: #FFF;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
+    background-position: center;
+    overflow: hidden;
+    position: relative;
+    margin: 10px auto;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.teacher-rating-card img {
+    transition: all linear 0.25s;
+    display: block;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0%);
+}
+
+.teacher-rating-name {
+    text-align: center;
+    color: #000;
+    font-weight: bold;
+    background: linear-gradient(to right, #4d4d4d 0, white 10%, #4d4d4d 20%);
+    background-position: 0;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 5s infinite linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes shine{
+  0%{
+    background-position: 0}
+  60%{
+    background-position: 180px}
+  100%{
+    background-position: 180px}
+}
+
+################MEDALS#####################
+.medal {
+  width: 100px;
+  height: 120px;
+
+  top: -35%;
+}
+.ribbon {
+  width: 80px;
+  height: 70px;
+  margin: 0 auto;
+  position: relative;
+}
+.ribbon:before,
+.ribbon:after {
+  content: '';
+  position: absolute;
+  width: 35px;
+  height: 100%;
+  top: 0;
+}
+.ribbon:before {
+  right: 0;
+  background: #30110E;
+  transform: skew(-28deg);
+}
+.ribbon:after {
+  background: #EF7E76;
+  transform: skew(28deg);
+}
+.coin {
+  border: 1px solid #CA5D3E;
+  border-radius: 50%;
+  background: #F0CD73;
+  width: 70px;
+  height: 70px;
+  position: relative;
+  margin: -15px auto 0 auto;
+  box-shadow: 0px 0px 3px 0px #989898;
+}
+.coin:after {
+  content: '';
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 35px;
+  height: 35px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 9px #D9B867;
+}
+
+#coin-gold {
+    background: #F0CD73;
+}
+
+#coin-gold:after {
+    box-shadow: 0 0 0 9px #d9b867 !important;
+}
+
+#coin-silver {
+    border: 1px solid #706d6c !important;
+    background: #a7b2b8;
+}
+
+#coin-silver:after {
+    box-shadow: 0 0 0 9px #98a6ad !important;
+}
+
+#coin-bronze {
+    border: 1px solid #c93d15 !important;
+    background: #df7e08;
+}
+
+#coin-bronze:after {
+    box-shadow: 0 0 0 9px #955e1d61 !important;
+}

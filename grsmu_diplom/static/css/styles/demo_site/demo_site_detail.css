@@ -184,6 +184,19 @@ margin-top: 0%;
 text-align: center;
 }
 
+@media screen and (max-width: 600px) {
+.pagination_rounded .prev {
+       padding: 6px 15px !important;
+  }
+  
+.pagination_rounded .next {
+        padding: 6px 15px !important;
+  }
+  
+.current {
+        padding: 6px 15px !important;
+  }
+}
 
 #################BUTTONS######################
 .btn-check:focus + .btn, .btn:focus {

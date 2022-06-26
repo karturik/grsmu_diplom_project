@@ -24,9 +24,11 @@
 .teacher-card img {
     transition: all linear 0.25s;
     display: block;
-    max-width: 100%;
-    height: auto;
-    margin: auto;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0%);
 }
 
 .teacher-card-body {
@@ -39,23 +41,18 @@
 .teacher-name {
     position: absolute;
     text-align: center;
-    bottom: 30px;
+    bottom: 0px;
     font-size: inherit;
     color: #FFF;
     text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
     font-weight: bold;
     transition: all linear 0.25s;
+    transition: all linear 0.25s;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0%);
 }
 
-.teacher-position {
-    display: inline-block;
-    position: absolute;
-    bottom: 10px;
-    text-align: center;
-    color: #FFF;
-    font-size: 13px;
-    transition: all linear 0.25s;
-}
 
 .teacher-card-body .background-image {
     filter: blur(5px);

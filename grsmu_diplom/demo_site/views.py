@@ -3,7 +3,7 @@ from .models import Teacher, Department, Comment, Vote, CommentAnswer
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views import generic
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from .forms import CommentForm, VoteForm, CommentAnswerForm
 from django.contrib import messages
 
@@ -16,13 +16,14 @@ try:
     from django.utils import simplejson as json
 except ImportError:
     import json
-from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
 #SORTING
 from django.db.models import Count
-import os
+
+#notifications
+from notifications.signals import notify
 
 
 # Create your views here.
@@ -43,6 +44,7 @@ def demo_site_department(request, pk):
     return render(request, "demo_site/demo_site_department.html", context)
 
 def demo_site_detail(request, pk):
+    badwords = ['мразь', 'хуесос', 'урод', 'скотина', 'козел', 'сосёт', 'залупа', 'шлюх', 'http', 'www']
     teacher = Teacher.objects.get(pk=pk)
     comment_form = CommentForm()
     answer_form = CommentAnswerForm()
@@ -66,35 +68,40 @@ def demo_site_detail(request, pk):
         if "comment_left" in request.POST:
             comment_form = CommentForm(request.POST)
             if comment_form.is_valid():
+                for x in badwords:
+                    if x in comment_form.cleaned_data['body'].lower():
+                        user = request.user
+                        user.profile.warnings += 1
+                        user.save()
+                        user.profile.warnings_delete(user.profile)
+                        if x == 'http' or x == 'www':
+                            notify.send(sender=User.objects.get(id=user.id), recipient=User.objects.get(id=user.id), verb='Предупреждение', description=f'На сайте запрещено размещение ссылок! Предупреждений:{request.user.profile.warnings}/3')
+                            messages.error(request, (f'Ссылки запрещены:{x}\nпредупреждений:{request.user.profile.warnings}/3'))
+                        else:
+                            notify.send(sender=User.objects.get(id=user.id), recipient=User.objects.get(id=user.id), verb='Предупреждение', description=f'На сайте запрещены оскорбления! Предупреждений:{request.user.profile.warnings}/3')
+                            messages.error(request, (f'Оскорбления запрещены:{x}\nпредупреждений:{request.user.profile.warnings}/3'))
+                        return redirect('demo_site_detail', pk)
                 comment = Comment(
                     author = request.user,
                     body = comment_form.cleaned_data['body'],
                     teacher = teacher,
-                    category = comment_form.cleaned_data['category'],
-                )
+                    category = comment_form.cleaned_data['category'])
                 comment.save()
                 messages.success(request, ('Комментарий сохранен'))
-        #кнопка "оценить"
-        # elif "score_submit" in request.POST:
-        #     vote_form = VoteForm(request.POST)
-        #     #если юзер уже оценивал - меняем его имеющуюся оценку
-        #     if vote_form.is_valid():
-        #         if votes:
-        #             for vote in votes:
-        #                 vote_form = VoteForm(request.POST, instance=vote)
-        #         else:
-        #             vote_form = VoteForm(request.POST)
-        #         form = vote_form.save(commit=False)
-        #         form.user = request.user
-        #         form.teacher = teacher
-        #         form.save()
-        #         messages.success(request, (f'{form.teacher.name}, оценка сохранена'))
-        #     else:
-        #         messages.error(request,('Ошибка при сохранении оценки'))
-        #кнопка "ответить на комментарий"
         elif "comment_answer" in request.POST:
             answer_form = CommentAnswerForm(request.POST)
             if answer_form.is_valid():
+                for x in badwords:
+                    if x in answer_form.cleaned_data['body']:
+                        user = request.user
+                        user.profile.warnings += 1
+                        user.save()
+                        user.profile.warnings_delete(user.profile)
+                        notify.send(sender=User.objects.get(id=user.id), recipient=User.objects.get(id=user.id),
+                                    verb='Предупреждение',
+                                    description=f'На сайте запрещены прямые оскорбления! Предупреждений:{request.user.profile.warnings}/3')
+                        messages.error(request, (f'Запрещены оскорбления:{x}\nпредупреждений:{request.user.profile.warnings}/3'))
+                        return redirect('demo_site_detail', pk)
                 comment_pk = int(request.POST.get('comment_pk'))
                 answer = CommentAnswer(author = request.user,
                     body = answer_form.cleaned_data['body'],
@@ -159,18 +166,6 @@ def demo_site_detail(request, pk):
         "filter": filter,
     }
     return render(request, "demo_site/demo_site_detail.html", context)
-
-
-class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
-    model = Comment
-    fields = ['body']
-    template_name = 'demo_site/comment_edit.html'
-    def get_success_url(self):
-        return reverse_lazy("demo_site_index")
-
-    def test_func(self):
-        comment = self.get_object()
-        return str(self.request.user) == str(comment.author)
 
 def searching(request):
     if request.method == "POST":

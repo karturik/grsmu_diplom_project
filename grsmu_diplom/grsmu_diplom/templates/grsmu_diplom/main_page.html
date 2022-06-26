@@ -3,7 +3,8 @@
 {% load static %}
 <link href="{% static 'css/styles/grsmu_diplom/main_page.css' %}" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{% static 'js/main_page.js' %}"> </script>
-
+<head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5883857021799883"
+     crossorigin="anonymous"></script></head>
 
 <div class="container" style=>
 <div class="col-md-8 offset-md-2">
@@ -29,15 +30,26 @@
   font-family: 'Libre Baskerville', serif;">GRSMU_CHECK</b>
 </div>
 </div>
-    {% if user.is_authenticated %}
-    {% with count=user.notifications.unread.count  %}
+
+{% if user.is_authenticated %}
+{% with count=user.notifications.unread.count  %}
     {% if count %}
     <div class="row">
       <div class="container" style="margin-top: 50px; text-align: center; max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom:  20px;">
       <h1>Уведомления</h1>
 
-          <div class="notifications_count" style="position: absolute; top: -10px; left: -10px; padding: 3px 12px; border-radius: 50%; background: red; color: white;">
-          {{ count }}
+          <div class="notifications_count" style="position: relative;
+                top: -83px;
+                left: -5%;
+">
+              <div class="count" style="border-radius: 50%;
+                background: red;
+                color: white;
+                width: 40px;
+                height: 40px;
+                padding: 7px;">
+                {{ count }}
+              </div>
           </div>
 
             {% for notification in user.notifications.unread %}
@@ -54,8 +66,7 @@
   </div>
     {% endif %}
     {% endwith %}
-        {% endif %}
-
+    {% endif %}
 
 <div class="row">
   <div class="container" style="margin-top: 50px;
@@ -75,23 +86,32 @@
         <ul style="list-style-type: none; padding-left: 0;">Особенности:
         <li>✍ Отзывы и комментарии к преподавателю. Нет необходимости спрашивать в беседах "как принимает?", "как ведет?", "отмечает?" и пр.</li>
           <li>👍 Оценки основных параметров. Можно быстро узнать мнение большого количества людей, о том, что из себя представляет преподаватель.</li>
-          <li>❗ Весь список преподавателей разделен на кафедры. Вся информация взята с сайта ГрГМУ.</li>
+          <li>📋 Весь список преподавателей разделен на кафедры. Вся информация взята с сайта ГрГМУ.</li>
           <li>🔒 Отзывы доступны только после регистрации и подтверждения аккаунта через MOODLE. Сделано это для того, чтобы удостовериться, что пользователь является студентом ГрГМУ и не подставлять ни авторов, ни преподавателей.</li>
         </ul>
+          <div class="rules" style="text-align: center; background-color: rgb(255 230 233); border-radius: 30px;">
+          <b><p>❗На сайте запрещены прямые оскорбления и распространение личных данных, а также любая деятельность, противоречащая законодательству!❗</p>
+          <p>❗Администрация сайта не несет ответственность за содержимое размещенных пользователями отзывов!❗</p>
+          <p>❗Вся информация взята из открытых источников❗</p>
+          <p>❗За нарушение правил - удаление аккаунта!❗</p></b>
+          </div>
       </div>
   </div>
 </div>
 
-
-    <div class="row">
+  <div class="row">
       <div class="container" style="margin-top: 50px; text-align: center; max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom:  20px;">
-      <h1>Зарегистрироваться/Войти в аккаунт</h1>
+      {% if not user.is_authenticated %}
+      <h1>Регистрация/Войти в аккаунт</h1>
       <a href="/user/register" class="btn btn-primary">РЕГИСТРАЦИЯ</a>
       <a href="/user/login" class="btn btn-primary">ВОЙТИ</a>
       </div>
+      {% else %}
+      <h1>Открыть список кафедр</h1>
+      <a href="/demo_site" class="btn btn-primary">ОТКРЫТЬ</a>
+      </div>
   </div>
-
-
+     {% endif %}
 
 <div class="row">
   <div class="container" style="margin-top: 50px;
@@ -102,7 +122,7 @@
     padding-top: 20px;
     border-radius: 30px;
     padding-bottom: 1px;">
-  <h1>Найти преподавателя:</h1>
+  <h1>Найти:</h1>
   <form class="top-search" method=POST action="{% url 'searching' %}">
   {% csrf_token %}
   <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="searched" style="max-width: 80%; display: inline;">
@@ -111,6 +131,8 @@
 
 </div>
 </div>
+
+ 
 </div>
 </div>
 

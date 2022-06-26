@@ -6,15 +6,14 @@ from django.db.models.signals import post_save
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # profile_pic = models.ImageField(null=True, blank=True, upload_to='profile_pics')
-    # BILLI = 'images/teacher.jpg'
-    # VAN = 'images/van.jpg'
-    # AVATAR_CHOICES = (
-    #     (BILLI, 'Billi'),
-    #     (VAN, 'Van'),)
     profile_pic = models.CharField(max_length=255, default='images/user.jpg')
-
     course = models.IntegerField(default=0)
+    warnings = models.IntegerField(default=0)
+
+    def warnings_delete(self, request):
+        if self.warnings == 3:
+            user = User.objects.get(id = request.user.id)
+            user.delete()
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwagrs):

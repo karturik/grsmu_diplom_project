@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+<div class="col-md-8 offset-md-2"  style="height: 100%;">
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
+        <h1 style="text-align: center;">Admin panel</h1>
+            <a href="notification/"><h2>Notifications</h2></a>
+            <a href="comments/"><h2>Comments moderation({{ comment_count }})</h2></a>
+    </div>
+</div>
+{% endblock %}

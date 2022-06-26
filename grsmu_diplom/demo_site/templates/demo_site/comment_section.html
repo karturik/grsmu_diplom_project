@@ -59,10 +59,8 @@
             {% if comment.author == request.user or request.user.is_superuser %}
                 <form method="post" style="margin-bottom: -25px;">
                 {% csrf_token %}
-
                 <button type="submit" name="comment_delete" class="btn btn-danger" style="max-width: 43px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 <input type="hidden" name="comment_pk" value="{{ comment.pk }}">
-                <a href="{% url 'comment_edit' comment.pk %}" type="button" class="btn btn-secondary" style="max-width: 43px;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" type="button" class="btn btn-primary" aria-expanded="false" aria-controls="collapse{{comment.pk}}" style="max-width: 43px; "><i class="fa fa-reply" aria-hidden="true"></i></a>
             {% else %}
                 <a data-toggle="collapse" href="#collapse{{comment.pk}}" role="button" type="button" class="btn btn-primary" aria-expanded="false" aria-controls="collapse{{comment.pk}}" style="max-width: 43px; margin-bottom: -25px;"><i class="fa fa-reply" aria-hidden="true"></i></a>

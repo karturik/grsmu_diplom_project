@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block page_content %}
 {% load static %}
+<head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5883857021799883"
+     crossorigin="anonymous"></script></head>
 
 <!--LIKES_SCRIPT-->
 <script>
@@ -79,7 +81,7 @@
                <h1>{{ teacher.name }}</h1>
                <small>
                    {{ teacher.position }} |&nbsp;
-                   Кафедра: <a href="{% url 'demo_site_department' teacher.department.title %}">
+                   Кафедра: <a href="{% url 'demo_site_department' teacher.department.id %}">
                    {{ teacher.department.title }}</a>
                </small>
                <p class="text-muted" style="font-size:12px">Коммуникабельность: {{ teacher.communication_average }} | Обучение: {{ teacher.teaching_average }} | Требовательность: {{ teacher.demanding_average }}</p>
@@ -88,15 +90,15 @@
                <hr>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Коммуникабельность</p>
                    <p><div class="pie" style="--p:{{ teacher.communication_average }};--c:#0d6efd;--b:8px"> {{ teacher.communication_average }}</div></p>
-                    1-плохая, 10-отличная
+                   1-плохая, 10-отличная
                </div>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Обучение</p>
                    <p><div class="pie" style="--p:{{ teacher.teaching_average }};--c:#0d6efd;--b:8px"> {{ teacher.teaching_average }}</div></p>
-                    1-плохое, 10-отличное
+                   1-плохое, 10-отличное
                </div>
                <div class="col-md-4" style="text-align: center; max-width: 33%;"> <p>Требовательность</p>
                    <p><div class="pie" style="--p:{{ teacher.demanding_average }};--c:#0d6efd;--b:8px"> {{ teacher.demanding_average }}</div></p>
-                    1-высокая, 10-низкая
+                   1-высокая, 10-низкая
                </div>
            <small style="text-align: center;">Количество голосов: {{ vote_count }}</small>
            </div>
@@ -112,6 +114,7 @@
         {% csrf_token %}
         <div class="form-group" style="margin:10 0 10 0;">
                 <div class="form-element" style="margin:10 0 10 0;"> {{ comment_form.body }}</div>
+                <p style="text-align: center; font-size: 15px"><small>Оставляя комментарий пользователь подтверждает, что он ознакомлен и согласен с правилами</small></p>
                 Категория:
                 <div class="form-element" style="margin:0 0 0 0;"> {{ comment_form.category }}</div>
         </div>

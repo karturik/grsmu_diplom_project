@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+<script>
+  $(document).on('click', '#comment_delete', function () {
+  var comment_pk = $(this).attr('value');
+  var action = "delete_only";
+  console.log(comment_pk)
+    $.ajax({
+      url: "{% url 'comment_delete' %}",
+      type: "POST",
+      data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'comment_pk': comment_pk, 'action': action},
+      success: function (data) {
+        alert(data)
+      },
+      error: function(rs, e){
+              console.log(rs.responseText);
+      },
+    })
+  })
+</script>
+
+<script>
+  $(document).on('click', '#comment_delete_and_warning', function () {
+  var comment_pk = $(this).attr('value');
+  var action = "delete_and_warning";
+  console.log(comment_pk)
+    $.ajax({
+      url: "{% url 'comment_delete' %}",
+      type: "POST",
+      data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'comment_pk': comment_pk, 'action': action},
+      success: function (data) {
+        alert(data);
+      },
+      error: function(rs, e){
+              console.log(rs.responseText);
+      },
+    })
+  })
+</script>
+
+<script>
+  $(document).on('click', '#comment_checked', function () {
+  var comment_pk = $(this).attr('value');
+  var action = "checked";
+  console.log(comment_pk)
+    $.ajax({
+      url: "{% url 'comment_delete' %}",
+      type: "POST",
+      data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'comment_pk': comment_pk, 'action': action},
+      success: function (data) {
+        alert(data);
+      },
+      error: function(rs, e){
+              console.log(rs.responseText);
+      },
+    })
+  })
+</script>
+
+<div class="col-md-8 offset-md-2">
+    <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px">
+        <h1 style="text-align: center;">Comments moderation</h1>
+        {% for comment in comments %}
+        <p>{{ comment.author }}, id: {{ comment.id }}</p>
+        {{ comment.body }}
+        <p><button id="comment_delete_and_warning" value="{{ comment.pk }}" class="btn btn-danger" style="float: right;"><i class="fa fa-exclamation" aria-hidden="true"></i></button>
+        <button id="comment_delete" value="{{ comment.pk }}" class="btn btn-warning" style="float: right; margin-left: 7px; margin-right: 7px; "><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button id="comment_checked" value="{{ comment.pk }}" class="btn btn-success" style="float: right; width: 100px;"><i class="fa fa-exclamation" aria-hidden="true"></i></button></p>
+        <hr>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

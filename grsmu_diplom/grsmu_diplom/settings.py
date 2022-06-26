@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'demo_site',
     'users',
     'scraper',
+    'staff_only',
+    'moodle_test',
+    'rating',
     # 3-d side apps
     'notifications',
 

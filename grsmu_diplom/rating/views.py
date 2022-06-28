@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import requests
-from demo_site.models import Department, Teacher, Comment
+from demo_site.models import Department, Teacher, Comment, Vote
 from django.contrib.auth.models import User
 from django.db.models import Avg, Min, Max, Count, Q, Sum
 
@@ -33,6 +33,9 @@ def rating_main_page(request):
     for user in liked_users:
         liked_user = User.objects.get(id=user["author"])
         most_liked_users[liked_user] = user["count"]
+    users_count = User.objects.all().count()
+    comments_count = Comment.objects.all().count()
+    votes_count = Vote.objects.all().count() * 3
 
     context ={
         "most_comment_teachers":most_comment_teachers,
@@ -43,6 +46,9 @@ def rating_main_page(request):
         "most_comment_departments":most_comment_departments,
         "most_votes_departments":most_votes_departments,
         "most_liked_users":most_liked_users,
+        "users_count":users_count,
+        "comments_count":comments_count,
+        "votes_count":votes_count,
     }
     return render(request, 'rating/rating_main_page.html', context)
 

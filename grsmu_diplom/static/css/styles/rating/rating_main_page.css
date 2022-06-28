@@ -1,3 +1,8 @@
+.site-static{
+    font-size: 20px;
+}
+
+
 .teacher-rating-card {
     max-width: 300px;
     background-color: #FFF;
@@ -28,26 +33,20 @@
     background-position: 0;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shine 5s infinite linear;
+    animation: shine 35s infinite linear;
     animation-fill-mode: forwards;
 }
 
 @keyframes shine{
   0%{
     background-position: 0}
-  60%{
-    background-position: 180px}
+  50%{
+    background-position: 1550px}
   100%{
-    background-position: 180px}
+    background-position: 3100px}
 }
 
-################MEDALS#####################
-.medal {
-  width: 100px;
-  height: 120px;
 
-  top: -35%;
-}
 .ribbon {
   width: 80px;
   height: 70px;

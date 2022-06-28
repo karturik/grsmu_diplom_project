@@ -13,6 +13,15 @@
     padding-top: 20px;
     border-radius: 30px; padding-bottom: 10px;">
         <h1 style="text-align: center;">РЕЙТИНГИ</h1>
+        <hr>
+
+        <h2 style="text-align: center;">Всего на сайте</h2>
+        <div class="row">
+        <div class="teacher-rating-card" style="font-size: 20px; text-align: center; cursor: default;">Оставлено комментариев: <p style="margin-bottom: 0px;"><b>{{ comments_count }}</b></p></div>
+        <div class="teacher-rating-card" style="font-size: 20px; text-align: center; cursor: default;">Поставлено оценок: <p style="margin-bottom: 0px;"><b>{{ votes_count }}</b></p></div>
+        <div class="teacher-rating-card" style="font-size: 20px; text-align: center; cursor: default;">Зарегистрировано пользователей: <p style="margin-bottom: 0px;"><b>{{ users_count }}</b></p></div>
+        </div>
+        <hr>
 
         <h2 style="text-align: center;">Самые комментируемые преподаватели</h2>
         <div class="row">
@@ -25,9 +34,9 @@
                 <div class="medal" style="position: absolute; z-index: 10;">
                 <div class="ribbon"></div>
                 {% if most_comment_teacher.count < 100 %}
-                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="font-size: 20px; z-index: 100; margin-top: 25%;">{{ most_comment_teacher.count }}</p></div>
+                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="animation: none; font-size: 20px; z-index: 100; margin-top: 25%;">{{ most_comment_teacher.count }}</p></div>
                 {% else %}
-                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="font-size: 20px; z-index: 100; margin-top: 25%;">{{ most_comment_teacher.count }}</p></div>
+                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="animation: none; font-size: 20px; z-index: 100; margin-top: 25%;">{{ most_comment_teacher.count }}</p></div>
                 {% endif %}
                 </div>
             </div>
@@ -51,9 +60,9 @@
                 <div class="medal" style="position: absolute; z-index: 10;">
                 <div class="ribbon"></div>
                 {% if most_votes_teacher.count < 100 %}
-                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="font-size: 20px; z-index: 100; margin-top: 25%;">{{ most_votes_teacher.count }}</p></div>
+                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="animation: none; font-size: 20px; z-index: 100; margin-top: 25%;">{{ most_votes_teacher.count }}</p></div>
                 {% else %}
-                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="font-size: 20px; z-index: 100; margin-top: 25%;">{{ most_votes_teacher.count }}</p></div>
+                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="animation: none; font-size: 20px; z-index: 100; margin-top: 25%;">{{ most_votes_teacher.count }}</p></div>
                 {% endif %}
                 </div>
             </div>
@@ -73,7 +82,7 @@
         {% cycle '#c7cdcd' '#c7cdcd6b' '#c7cdcd' as row_color silent  %}
         <div class="row" style="text-align: center; background: {{ row_color }}">
             <div class="col-md-3" style=" margin-bottom: 10px"><img class = "img" src="{% static 'images/' %}trophy-{{ trophy }}.png" alt="Cup Pic" style="padding-top: 10%;"></div>
-            <div class="col-md-6"><p><h3 style="font-size: x-large;">{{ user.username }}</h3></p><p><small>{{ user.profile.course }} курс</small></p></div>
+            <div class="col-md-6"><p><h3 class="teacher-rating-name" style="font-size: x-large;">{{ user.username }}</h3></p><p><small>{{ user.profile.course }} курс</small></p></div>
             <div class="col-md-3"><p style="margin-bottom: 0px;"><small>комментариев</small></p><p><h3 style="font-size: x-large; margin-bottom: 0px;">{{ user.count }}</h3></p></div>
         </div>
         {% endfor %}
@@ -86,19 +95,42 @@
         {% cycle '#c7cdcd' '#c7cdcd6b' '#c7cdcd' as row_color silent  %}
         <div class="row" style="text-align: center; background: {{ row_color }}">
             <div class="col-md-3" style=" margin-bottom: 10px"><img class = "img" src="{% static 'images/' %}trophy-{{ trophy }}.png" alt="Cup Pic" style="padding-top: 10%;"></div>
-            <div class="col-md-6"><p><h3 style="font-size: x-large;">{{ user.username }}</h3></p><p><small>{{ user.profile.course }} курс</small></p></div>
+            <div class="col-md-6"><p><h3 class="teacher-rating-name" style="font-size: x-large;">{{ user.username }}</h3></p><p><small>{{ user.profile.course }} курс</small></p></div>
             <div class="col-md-3"><p style="margin-bottom: 0px;"><small>оцениваний</small></p><p><h3 style="font-size: x-large; margin-bottom: 0px;">{{ user.count }}</h3></p></div>
         </div>
         {% endfor %}
         <hr>
 
-        <h2>Cамые залайканные комментарии:</h2>
+        <h2 style="text-align: center;">Cамые залайканные комментарии</h2>
         {% for comment in most_liked_comment %}
-            {{ comment.body }}
+        {% cycle 'gold' 'silver' 'bronze' as like silent  %}
+        {% cycle '#c7cdcd' '#c7cdcd6b' '#c7cdcd' as row_color silent  %}
+        <div class="row" style="text-align: center; background: {{ row_color }}">
+            <div class="col-md-2" style=" margin-bottom: 10px"><img class = "img" src="{% static 'images/' %}like-{{ like }}.png" alt="Like Pic" style="padding-top: 10%;"></div>
+            <div class="col-md-8" style="text-align: left;"><p><h3 class="teacher-rating-name" style="font-size: x-large; ">{{ comment.author }} <small>{{ comment.author.profile.course }} курс</small></h3></p>
+                <a href="{% url 'demo_site_detail' comment.teacher.pk %}">{{ comment.teacher }}</a>
+            <p>{{ comment.body }}</p>
+            </div>
+            <div class="col-md-2"><p style="margin-bottom: 0px;"><small>лайков</small></p><p><h3 style="font-size: x-large; margin-bottom: 0px;">{{ comment.count }}</h3></p></div>
+        </div>
         {% endfor %}
         <hr>
 
-        <h2>Cамые комментрируемые кафедры:</h2>
+
+        <h2 style="text-align: center;">Больше всего лайков собрали<br>(самые популярные пользователи)</h2>
+        {% for user, count in most_liked_users.items %}
+        {% cycle 'gold' 'silver' 'bronze' as like silent  %}
+        {% cycle '#c7cdcd' '#c7cdcd6b' '#c7cdcd' as row_color silent  %}
+        <div class="row" style="text-align: center; background: {{ row_color }}">
+            <div class="col-md-3" style=" margin-bottom: 10px"><img class = "img" src="{% static 'images/' %}like-{{ like }}.png" alt="Cup Pic" style="padding-top: 10%;"></div>
+            <div class="col-md-6"><p><h3 class="teacher-rating-name" style="font-size: x-large;">{{ user.username }}</h3></p><p><small>{{ user.profile.course }} курс</small></p></div>
+            <div class="col-md-3"><p style="margin-bottom: 0px;"><small>всего лайков</small></p><p><h3 style="font-size: x-large; margin-bottom: 0px;">{{ count }}</h3></p></div>
+        </div>
+        {% endfor %}
+        <hr>
+
+
+        <h2 style="text-align: center;">Cамые комментрируемые кафедры</h2>
         {% for key, value in most_comment_departments.items %}
             {{ key.title }}: {{ value }}
         {% endfor %}
@@ -110,10 +142,6 @@
         {% endfor %}
         <hr>
 
-        <h2>Больше всего лайков собрали(самые популярные пользователи):</h2>
-        {% for key, value in most_liked_users.items %}
-            {{ key.username }}: {{ value }}
-        {% endfor %}
 
 </div>
 </div>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block page_content %}
+{% load static %}
+<!--<script>-->
+<!--$(document).ready(function(){-->
+
+<!--  $(".department_title").click(function(){-->
+<!--  var department_id = this.id;-->
+<!--    $('#department_data_' + department_id).slideToggle();-->
+<!--  });-->
+<!--});-->
+<!--</script>-->
+
+
+<div class="col-md-8 offset-md-2">
+    <div class="container" style="max-width: 1200px;
+    background-color: rgb(255 255 255 / 75%);
+    backdrop-filter: blur(100px);
+    padding-top: 20px;
+    border-radius: 30px; padding-bottom: 10px;">
+        <h1 style="text-align: center;">СТАТИСТИКА КАФЕДР</h1>
+        <hr>
+
+        <h2 style="text-align: center;">Cамые комментрируемые кафедры:</h2>
+        {% for key, value in most_comment_departments.items %}
+            {{ key.title }}: {{ value }}
+        {% endfor %}
+        <hr>
+
+        <h2 style="text-align: center;">Cамые оцененные кафедры:</h2>
+        {% for key, value in most_votes_departments.items %}
+            {{ key.title }}: {{ value }}
+        {% endfor %}
+        <hr>
+
+
+        {% for department in departments %}
+            <a href="{% url 'rating_department_detail_page' department.pk %}"><h4 class="department_title" id="{{ department.id }}" style="text-align: center;">{{ department.title }}</h4></a>
+            <hr>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

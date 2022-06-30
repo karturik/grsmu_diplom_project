@@ -10,6 +10,7 @@
 
 <div class="container" style="max-width: 1200px; background-color: rgb(255 255 255 / 75%); backdrop-filter: blur(100px); padding-top: 20px; border-radius: 30px; padding-bottom: 1px;">
     <h1>{{ department | title }}</h1>
+    <a href="/rating/departments/{{ department.pk }}"><h4>Статистика кафедры</h4></a>
     <hr>
     <div class="row">
        {% for teacher in teachers %}

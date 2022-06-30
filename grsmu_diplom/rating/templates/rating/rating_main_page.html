@@ -15,6 +15,9 @@
         <h1 style="text-align: center;">РЕЙТИНГИ</h1>
         <hr>
 
+        <a href="departments/"><h2 style="text-align: center;">Статистика по кафедрам</h2></a>
+        <hr>
+
         <h2 style="text-align: center;">Всего на сайте</h2>
         <div class="row">
         <div class="teacher-rating-card" style="font-size: 20px; text-align: center; cursor: default;">Оставлено комментариев: <p style="margin-bottom: 0px;"><b>{{ comments_count }}</b></p></div>
@@ -129,18 +132,6 @@
         {% endfor %}
         <hr>
 
-
-        <h2 style="text-align: center;">Cамые комментрируемые кафедры</h2>
-        {% for key, value in most_comment_departments.items %}
-            {{ key.title }}: {{ value }}
-        {% endfor %}
-        <hr>
-
-        <h2>Cамые оцененные кафедры:</h2>
-        {% for key, value in most_votes_departments.items %}
-            {{ key.title }}: {{ value }}
-        {% endfor %}
-        <hr>
 
 
 </div>

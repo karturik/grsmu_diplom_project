@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block page_content %}
+{% load static %}
+<link href="{% static 'css/styles/rating/rating_main_page.css' %}" rel="stylesheet" type="text/css" />
+
+<script>
+$(document).ready(function(){
+  $("#comment_another_title").click(function(){
+    $("#comment_another_data").slideToggle();
+  });
+});
+</script>
+
+<script>
+$(document).ready(function(){
+  $("#votes_another_title").click(function(){
+    $("#votes_another_data").slideToggle();
+  });
+});
+</script>
+
+
+<div class="col-md-8 offset-md-2">
+    <div class="container" style="max-width: 1200px;
+    background-color: rgb(255 255 255 / 75%);
+    backdrop-filter: blur(100px);
+    padding-top: 20px;
+    border-radius: 30px; padding-bottom: 10px;">
+        <a href="/demo_site/department/{{ department.pk }}"><h1 style="text-align: center;">{{ department.title }}</h1></a>
+
+        <h4 style="text-align: center;">По количеству комментариев</h4>
+        {% if top_comment_teachers %}
+        <div class="row">
+        {% for teacher in top_comment_teachers %}
+            {% cycle 'coin-gold' 'coin-silver' 'coin-bronze' as color silent  %}
+            <div class="col-md-4">
+            <a href="{% url 'demo_site_detail' teacher.pk %}">
+            <div class="teacher-rating-card" style = "min-height: 300px; background-image: url({{ teacher.teacher_img.url }});">
+                <img class = "img" src="{{ teacher.teacher_img.url }}" alt="Teacher Picture" >
+                <div class="medal" style="position: absolute; z-index: 10;">
+                <div class="ribbon"></div>
+                {% if teacher.count < 100 %}
+                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="animation: none; font-size: 20px; z-index: 100; margin-top: 25%;">{{ teacher.count }}</p></div>
+                {% else %}
+                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="animation: none; font-size: 20px; z-index: 100; margin-top: 25%;">{{ teacher.count }}</p></div>
+                {% endif %}
+                </div>
+            </div>
+            <p class="teacher-rating-name">{{ teacher.name|title }}</p>
+           </a>
+            </div>
+        {% endfor %}
+        </div>
+
+        <hr>
+
+        <h5 id="comment_another_title" style="text-align: center; cursor: pointer;  margin-bottom: 0px;">Остальные <i class="fa fa-arrow-down" aria-hidden="true"></i></h5>
+        <div id="comment_another_data" style="display:none;">
+            {% for teacher in comment_teachers %}
+            {% cycle '#c7cdcd' '#c7cdcd6b' '#c7cdcd' '#c7cdcd6b' as row_color silent  %}
+            <div class="row" style="min-width:15px; text-align: left; background: {{ row_color }}">
+                <p style="font-size: larger;">{{ teacher.name }}: {{ teacher.count }}</p>
+            </div>
+            {% endfor %}
+                <p style="font-size: larger; text-align: center;">Остальные: 0</p>
+        </div>
+        {% else %}
+        <div class="row"><h5 style="text-align: center;">Комментариев пока нет 🙂</h5></div>
+        {% endif %}
+        <hr style="height: 3px; margin-top: 1rem;">
+
+
+
+        <h4 style="text-align: center;">По количеству оценок</h4>
+        {% if top_votes_teachers %}
+        <div class="row">
+        <div class="row">
+        {% for teacher in top_votes_teachers %}
+            {% cycle 'coin-gold' 'coin-silver' 'coin-bronze' as color silent  %}
+            <div class="col-md-4">
+            <a href="{% url 'demo_site_detail' teacher.pk %}">
+            <div class="teacher-rating-card" style = "min-height: 300px; background-image: url({{ teacher.teacher_img.url }});">
+                <img class = "img" src="{{ teacher.teacher_img.url }}" alt="Teacher Picture" >
+                <div class="medal" style="position: absolute; z-index: 10;">
+                <div class="ribbon"></div>
+                {% if teacher.count < 100 %}
+                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="animation: none; font-size: 20px; z-index: 100; margin-top: 25%;">{{ teacher.count }}</p></div>
+                {% else %}
+                <div class="coin" id="{{ color }}"><p class="teacher-rating-name" style="animation: none; font-size: 20px; z-index: 100; margin-top: 25%;">{{ teacher.count }}</p></div>
+                {% endif %}
+                </div>
+            </div>
+            <p class="teacher-rating-name">{{ teacher.name|title }}</p>
+           </a>
+            </div>
+        {% endfor %}
+        </div>
+        <hr>
+
+        <h5 id="votes_another_title" style="text-align: center; cursor: pointer;  margin-bottom: 0px;">Остальные <i class="fa fa-arrow-down" aria-hidden="true"></i></h5>
+        <div id="votes_another_data" style="display:none;">
+            {% for teacher in votes_teachers %}
+            {% cycle '#c7cdcd' '#c7cdcd6b' '#c7cdcd' '#c7cdcd6b' as row_color silent  %}
+            <div class="row" style="min-width:15px; text-align: left; background: {{ row_color }}">
+                <p style="font-size: larger;">{{ teacher.name }}: {{ teacher.count }}</p>
+            </div>
+            {% endfor %}
+                <p style="font-size: larger; text-align: center;">Остальные: 0</p>
+        </div>
+        {% else %}
+        <div class="row"><h5 style="text-align: center;">Оценок пока нет 🙂</h5></div>
+        {% endif %}
+        <hr style="height: 3px; margin-top: 1rem;">
+    </div>
+</div>
+
+{% endblock %}

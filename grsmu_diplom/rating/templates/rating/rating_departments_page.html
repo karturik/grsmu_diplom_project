@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block page_content %}
 {% load static %}
+<link href="{% static 'css/styles/rating/rating_main_page.css' %}" rel="stylesheet" type="text/css" />
+
 <!--<script>-->
 <!--$(document).ready(function(){-->
 
@@ -21,16 +23,20 @@
         <h1 style="text-align: center;">СТАТИСТИКА КАФЕДР</h1>
         <hr>
 
-        <h2 style="text-align: center;">Cамые комментрируемые кафедры:</h2>
+        <h4 style="text-align: center;">Cамые комментрируемые кафедры</h4>
+        <div class="row">
         {% for key, value in most_comment_departments.items %}
-            {{ key.title }}: {{ value }}
+        <div class="teacher-rating-card" style="font-size: 20px; text-align: center; cursor: default;">{{ key.title }} <p style="margin-bottom: 0px;"><b>{{ value }}</b></p></div>
         {% endfor %}
+        </div>
         <hr>
 
-        <h2 style="text-align: center;">Cамые оцененные кафедры:</h2>
+        <h4 style="text-align: center;">Cамые оцененные кафедры</h4>
+        <div class="row">
         {% for key, value in most_votes_departments.items %}
-            {{ key.title }}: {{ value }}
+        <div class="teacher-rating-card" style="font-size: 20px; text-align: center; cursor: default;">{{ key.title }} <p style="margin-bottom: 0px;"><b>{{ value }}</b></p></div>
         {% endfor %}
+        </div>
         <hr>
 
 

@@ -6,6 +6,8 @@ from django.views import generic
 from django.urls import reverse_lazy
 from .forms import CommentForm, VoteForm, CommentAnswerForm
 from django.contrib import messages
+from datetime import datetime
+
 
 #PAGINATION
 from django.core.paginator import Paginator

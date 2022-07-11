@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'rating',
     # 3-d side apps
     'notifications',
-
+    'proxie',
 ]
 
 MIDDLEWARE = [

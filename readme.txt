@@ -1,58 +1,48 @@
-Проект: GrSMU-Check
+# Project: GrSMU-Check
 
+**Author:** Artur Kazukevich, a student of the ItAcademy "Web Application Development with Python + Django" course.
 
-Автор: Казукевич Артур, студент курса ItAcademy "разработка веб-приложений на Python + Django"
+**Project Goal:** Eliminate the influence of personal factors on student learning. Assist students in their education. Provide a rating assessment of the teaching staff.
 
+## Project Advantages:
 
-Цель проекта: исключить влияние личностного фактора на обучение студентов. Помочь студентам в обучении. Рейтинговая оценка преподавательского состава.
+1. **Relevance:**
+   - Uniqueness: There are no analogs. The problem exists, and there is demand for a solution. Universities will always exist, and there will always be students and teachers.
+   - Continuous Interest: The project addresses a persistent need.
 
+2. **Uniqueness:**
+   - No Analogues: The project stands alone, offering functionality that has no close counterparts.
 
-Достоинства проекта:
-•	Актуальность – этим будут пользоваться! Во-первых, аналогов нет. Во-вторых, проблема и спрос есть и будут всегда.
-Люди закончат универ, их внуки закончат универ, внуки внуков – универ будет всегда, студенты будут всегда, преподаватели будут всегда!
-Интерес будет всегда.
-•	Уникальность – аналогов нет вообще, абсолютно. Даже схожей функциональности нет близко. Проект такой один.
-•	Автоматизированность – все добавляется, образно говоря, по одной кнопке. Руками делать абсолютно ничего не надо!
-•	Защита и подтверждение аккаунта – система защиты от лишних глаз, информация только для своих.
-•	Масштабируемость проекта – уникальная характеристика: поменять пару ссылок на странице скрапера и все! Готов проект для БГМУ,БНТУ, БГУ, ГГМУ, Янки – такие вопросы существуют в каждой учебке. НЕ ТОЛЬКО В БЕЛАРУСИ!
-•	Масштабируемость не только в отношении университетов: нужна система отзывов/рейтингов в больницу? –пожалуйста! База готовая, система готовая – меняем пару строк, пару фамилий и все! Современная книга отзывов и жалоб! Аналогов нет. Этим будут пользоваться.
-•	Готовность для мобильного устройства.
+3. **Automation:**
+   - One-Click Operation: Everything is automated; no manual work is required.
 
+4. **Account Security:**
+   - Account Protection: Robust account security ensures that information is only accessible to authorized users.
 
+5. **Project Scalability:**
+   - University Diversity: Easily adaptable to various universities with a simple modification of scraper links.
+   - Beyond Universities: The project can be extended to other institutions like hospitals for feedback and ratings.
 
-В будущих релизах:
-•	Лайки и дизлайки к комментариям, их сортировка.
-•	Доска лидеров по рейтингу в различных категориях.
-•	Возможность пожаловаться на комментарий. Комментарий, получивший большое количество жалоб закрывается плашкой или удаляется.
-•	Админ-панель для управления пользователями и контентом сайта.
+6. **Mobile Ready:**
+   - Prepared for Mobile Devices: The project is designed to be accessible on mobile devices.
 
+## Future Releases:
 
-TROUBLESHOOTING
-sudo apt install docker.io -y
-с этой команды запускается: sudo docker compose up --build
+- **Like and Dislike for Comments:**
+   - Users can express their opinion on comments, and comments can be sorted based on these reactions.
 
+- **Leaderboard:**
+   - A leaderboard showcasing top performers in different categories.
 
-ОШИБКА С ПОДКЛЮЧЕНИЕМ К ПОРТУ И НЕПРАВИЛЬНЫМ ПАРОЛЕМ
-$ sudo -u postgres psql
-\password
-Enter password: ...
-$ psql -U postgres -h localhost
+- **Complaints System:**
+   - Users can report inappropriate comments. Comments with a high number of complaints will be flagged or removed.
 
+- **Admin Panel:**
+   - An admin panel for user and content management.
 
-ОШИБКА С ПОРТОМ И НЕ ПОДКЛЮЧЕНИЕМ
-Go to Program Files/Postgres/<required_version>/data
-Open the postgresql.conf file
-Search for Port and change the port number to 5432.
-Open Windows Services (Press Cmd + R then type services.msc)
-Stop the service for the version you don't want (You can stop it permanentally from the Right Click > Properties menu.)
-Start the service for the version you want.
+## Troubleshooting:
 
-
-t = TemperatureData.objects.get(id=1)
-t.value = 999  # change field
-t.save() # this will update only
-
-
-Для выбора предмета: class Select
-
-
+- **Docker Installation:**
+   ```bash
+   sudo apt install docker.io -y
+   sudo docker compose up --build
